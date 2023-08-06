@@ -105,7 +105,7 @@ class ThompsonSampler:
 
 def main():
     num_iterations = 500
-    reagent_file_list = ["data/aminobenzoic_ok.smi", "data/primary_amines_ok.smi", "data/carboxylic_acids_ok.smi"]
+    reagent_file_list = ["data/aminobenzoic_100.smi", "data/primary_amines_100.smi", "data/carboxylic_acids_100.smi"]
     ts = ThompsonSampler()
     rocs_evaluator = ROCSEvaluator("data/2chw_lig.sdf")
     ts.set_evaluator(rocs_evaluator)

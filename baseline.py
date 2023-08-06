@@ -34,15 +34,15 @@ def exhaustive_baseline():
 
 def random_baseline():
     num_trials = 1000
+    num_reagents_to_read = 100
     rocs_eval = ROCSEvaluator("data/2chw_lig.sdf")
 
     reagent_file_list = ["data/aminobenzoic_100.smi", "data/primary_amines_100.smi", "data/carboxylic_acids_100.smi"]
     quinazoline_smarts = "N[c:4][c:3]C(O)=O.[#6:1][NH2].[#6:2]C(=O)[OH]>>[C:2]c1n[c:4][c:3]c(=O)n1[C:1]"
     rxn = AllChem.ReactionFromSmarts(quinazoline_smarts)
-    reagent_df_list = read_reagents(reagent_file_list, 100)
+    reagent_df_list = read_reagents(reagent_file_list, num_reagents_to_read)
 
     mol_lol = [x.mol for x in reagent_df_list]
-    score_list = []
     len_list = [len(x) for x in reagent_df_list]
     num_reagents = len(len_list)
     product_score_list = []
