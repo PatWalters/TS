@@ -1,0 +1,2 @@
+# TS
+Thompson Sampling
