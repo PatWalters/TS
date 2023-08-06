@@ -7,6 +7,7 @@ from rdkit.Chem import AllChem
 from tqdm.auto import tqdm
 
 from evaluators import ROCSEvaluator
+from ts_utils import read_reagents
 
 
 class ThompsonSampler:
@@ -23,21 +24,7 @@ class ThompsonSampler:
             raise ValueError(f"{mode} is not a supported argument")
 
     def read_reagents(self, reagent_file_list, num_to_select=-1):
-        """
-        Read the reagents SMILES files
-        :param reagent_file_list: a list of filename
-        :param num_to_select: select how many reagents to read, mostly a development function
-        """
-        for r in reagent_file_list:
-            # read the data
-            df = pd.read_csv(r, sep=" ", names=["SMILES", "Name"])
-            # randomize the dataframe
-            df = df.sample(frac=1)
-            if num_to_select > 0:
-                df = df.head(num_to_select).copy()
-            # add an rdkit molecule to the dataframe
-            df['mol'] = df.SMILES.apply(Chem.MolFromSmiles)
-            self.reagent_df_list.append(df)
+        self.reagent_df_list = read_reagents(reagent_file_list, num_to_select)
         # initialize empty weigh lists
         for df in self.reagent_df_list:
             self.weight_list.append([[] for _ in range(len(df))])
@@ -128,7 +115,7 @@ def main():
     ts.warm_up()
     out_list = ts.search(num_cycles=num_iterations)
     out_df = pd.DataFrame(out_list, columns=["SMILES", "score"])
-    out_df.to_csv("results.csv", index=False)
+    out_df.to_csv("ts_results.csv", index=False)
     print(out_df.sort_values("score", ascending=False).drop_duplicates(subset="SMILES").head(10))
 
 
