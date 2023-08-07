@@ -2,7 +2,8 @@ import useful_rdkit_utils as uru
 from openeye import oechem
 from openeye import oeomega
 from openeye import oeshape
-from rdkit import Chem
+from rdkit import Chem, DataStructs
+import useful_rdkit_utils as uru
 
 
 class MWEvaluator:
@@ -15,9 +16,21 @@ class MWEvaluator:
     def evaluate(self, mol):
         return uru.MolWt(mol)
 
+class FPEvaluator:
+    """An evaluator class that calculates a fingerprint Tanimoto to a reference molecule
+    """
+
+    def __init__(self, ref_smiles):
+        self.ref_fp = uru.smi2morgan_fp(ref_smiles)
+
+    def evaluate(self, rd_mol_in):
+        rd_mol_fp = uru.mol2morgan_fp(rd_mol_in)
+        return DataStructs.TanimotoSimilarity(self.ref_fp, rd_mol_fp)
+
+
 
 class ROCSEvaluator:
-    """An Evaluator class that calculates a ROCS score to a reference molecule
+    """An evaluator class that calculates a ROCS score to a reference molecule
     """
 
     def __init__(self, ref_filename):

@@ -7,8 +7,14 @@ from rdkit.Chem import AllChem
 from tqdm.auto import tqdm
 
 from evaluators import ROCSEvaluator
+from evaluators import FPEvaluator
 from ts_utils import read_reagents
 
+import math
+
+
+# This is just a placeholder implementation
+# TODO: Add a proper Bayesian prior and updates
 
 class ThompsonSampler:
     def __init__(self, mode="maximize"):
@@ -25,6 +31,8 @@ class ThompsonSampler:
 
     def read_reagents(self, reagent_file_list, num_to_select=-1):
         self.reagent_df_list = read_reagents(reagent_file_list, num_to_select)
+        num_prods = math.prod([len(x) for x in self.reagent_df_list])
+        print(f"{num_prods:.2e} possible products")
         # initialize empty weigh lists
         for df in self.reagent_df_list:
             self.weight_list.append([[] for _ in range(len(df))])
@@ -105,14 +113,16 @@ class ThompsonSampler:
 
 def main():
     num_iterations = 500
-    reagent_file_list = ["data/aminobenzoic_100.smi", "data/primary_amines_100.smi", "data/carboxylic_acids_100.smi"]
+    reagent_file_list = ["data/aminobenzoic_ok.smi", "data/primary_amines_ok.smi", "data/carboxylic_acids_ok.smi"]
     ts = ThompsonSampler()
-    rocs_evaluator = ROCSEvaluator("data/2chw_lig.sdf")
-    ts.set_evaluator(rocs_evaluator)
-    ts.read_reagents(reagent_file_list, 100)
+    fp_evaluator = FPEvaluator("COC(=O)[C@@H](CC(=O)O)n1c(C[C@H](O)C(=O)OC)nc2c(OC)cccc2c1=O")
+    ts.set_evaluator(fp_evaluator)
+    #rocs_evaluator = ROCSEvaluator("data/2chw_lig.sdf")
+    #ts.set_evaluator(rocs_evaluator)
+    ts.read_reagents(reagent_file_list,-1)
     quinazoline_rxn_smarts = "N[c:4][c:3]C(O)=O.[#6:1][NH2].[#6:2]C(=O)[OH]>>[C:2]c1n[c:4][c:3]c(=O)n1[C:1]"
     ts.set_reaction(quinazoline_rxn_smarts)
-    ts.warm_up()
+    ts.warm_up(num_warmup_trials=10)
     out_list = ts.search(num_cycles=num_iterations)
     out_df = pd.DataFrame(out_list, columns=["SMILES", "score"])
     out_df.to_csv("ts_results.csv", index=False)
