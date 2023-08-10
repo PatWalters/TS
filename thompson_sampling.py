@@ -1,4 +1,5 @@
 import random
+from typing import List
 
 import numpy as np
 import pandas as pd
@@ -14,13 +15,16 @@ import math
 
 
 # This is just a placeholder implementation
-# TODO: Add a proper Bayesian prior and updates
+# TODO: Refactor so that the code does not need to re-compute the prior each time
 
 class ThompsonSampler:
     def __init__(self, mode="maximize"):
         self.reagent_df_list = []
         self.reaction = None
         self.evaluator = None
+        # Weight list contains a list of scores for each reagent and each component. For example, a reaction with two
+        # components with 2 reagents each might look like the following, assuming each reagent has been sampled 3x:
+        # [ [ [1., 2., .5], [1.2, 1.7, .3] ], [ [1.1, 0.4, .02], [.8, .9, 1.] ] ]
         self.weight_list = []
         if mode == "maximize":
             self.pick_function = np.argmax
@@ -73,6 +77,18 @@ class ThompsonSampler:
                 self.weight_list[i][c].append(res)
         return product_smiles, res
 
+    @staticmethod
+    def _sample(scores: List[float]) -> float:
+        """
+        Creates the prior (normal distribution) from a list of scores for the reagent,
+        returns a random sample from the prior.
+        :param scores: list of scores previously collected for the reagent
+        :return: Random sample from the prior distribution
+        """
+        loc = np.mean(scores)
+        scale = np.std(scores)
+        return np.random.normal(loc=loc, scale=scale)
+
     def warm_up(self, num_warmup_trials=3):
         """Warm-up phase, each reagent is sampled with num_warmup_trials random partners
         :param num_warmup_trials: number of times to sample each reagent
@@ -103,7 +119,7 @@ class ThompsonSampler:
             for r_list in self.weight_list:
                 choice_row = []
                 for wt in r_list:
-                    choice_row.append(random.choice(wt))
+                    choice_row.append(self._sample(scores=wt))
                 choice_list.append(choice_row)
             pick = [self.pick_function(x) for x in choice_list]
             smiles, score = self.evaluate(pick)
