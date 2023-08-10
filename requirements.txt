@@ -1,0 +1,6 @@
+numpy~=1.25.2
+pandas~=1.5.3
+rdkit~=2023.3.2
+tqdm~=4.66.0
+# Note, some macs may need to re-install pillow like this:
+# https://github.com/python-pillow/Pillow/issues/6179#issuecomment-1369636428
