@@ -31,7 +31,7 @@ class ThompsonSampler:
         else:
             raise ValueError(f"{mode} is not a supported argument")
 
-    def read_reagents(self, reagent_file_list, num_to_select: Optional[int]=None):
+    def read_reagents(self, reagent_file_list, num_to_select: Optional[int] = None):
         self.reagent_lists = read_reagents(reagent_file_list, num_to_select)
         num_prods = math.prod([len(x) for x in self.reagent_lists])
         print(f"{num_prods:.2e} possible products")
@@ -131,8 +131,8 @@ def main():
     ts = ThompsonSampler()
     fp_evaluator = FPEvaluator("COC(=O)[C@@H](CC(=O)O)n1c(C[C@H](O)C(=O)OC)nc2c(OC)cccc2c1=O")
     ts.set_evaluator(fp_evaluator)
-    #rocs_evaluator = ROCSEvaluator("data/2chw_lig.sdf")
-    #ts.set_evaluator(rocs_evaluator)
+    # rocs_evaluator = ROCSEvaluator("data/2chw_lig.sdf")
+    # ts.set_evaluator(rocs_evaluator)
     ts.read_reagents(reagent_file_list=reagent_file_list, num_to_select=None)
     quinazoline_rxn_smarts = "N[c:4][c:3]C(O)=O.[#6:1][NH2].[#6:2]C(=O)[OH]>>[C:2]c1n[c:4][c:3]c(=O)n1[C:1]"
     ts.set_reaction(quinazoline_rxn_smarts)
