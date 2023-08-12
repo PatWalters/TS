@@ -1,3 +1,4 @@
+import math
 import random
 from typing import List, Optional
 
@@ -7,12 +8,9 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from tqdm.auto import tqdm
 
-from evaluators import ROCSEvaluator
 from evaluators import FPEvaluator
 from reagent import Reagent
 from ts_utils import read_reagents
-
-import math
 
 
 # This is just a placeholder implementation
@@ -104,6 +102,9 @@ class ThompsonSampler:
                     for p in partner_list:
                         current_list[p] = random.randint(0, reagent_count_list[p] - 1)
                     self.evaluate(current_list)
+        for i in range(0, len(self.reagent_lists)):
+            for j in range(0, len(self.reagent_lists[i])):
+                self.reagent_lists[i][j].init()
 
     def search(self, num_cycles=25):
         """Run the search

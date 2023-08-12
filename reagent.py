@@ -3,13 +3,16 @@ from rdkit import Chem
 
 
 class Reagent:
-    __slots__ = ["reagent_name", "smiles", "scores", "mol"]
+    __slots__ = ["reagent_name", "smiles", "scores", "mol", "prior_std", "current_mean", "current_std"]
 
     def __init__(self, reagent_name: str, smiles: str):
         self.smiles = smiles
         self.scores = []
         self.reagent_name = reagent_name
         self.mol = Chem.MolFromSmiles(self.smiles)
+        self.prior_std = 2.0
+        self.current_mean = None
+        self.current_std = None
 
     @property
     def mean(self) -> float:
@@ -35,9 +38,10 @@ class Reagent:
         :param score: New score to append to self.scores
         :return: None
         """
-        # TODO: once we have the bayesian update to a prior distribution we can just directly re-compute the mean and
-        #  standard deviation rather than appending to the list
         self.scores.append(score)
+        if self.current_mean and self.current_std:
+            self.current_mean = self.update_mean(score)
+            self.current_std = self.update_std()
         return
 
     def sample(self) -> float:
@@ -45,4 +49,27 @@ class Reagent:
         Takes a random sample from the prior distribution
         :return: sample from the prior distribution
         """
-        return np.random.normal(loc=self.mean, scale=self.std)
+        return np.random.normal(loc=self.current_mean, scale=self.current_std)
+
+    def init(self):
+        """
+        After warm-up initialize self.current_mean and self.current_std
+        """
+        self.current_mean = np.mean(self.scores)
+        self.current_std = np.std(self.scores)
+
+    def update_mean(self, observed_value: float) -> float:
+        """
+        Bayesian update to the mean
+        """
+        numerator = self.current_std * observed_value + (self.prior_std ** 2) * self.current_mean
+        denominator = self.current_std + (self.prior_std ** 2)
+        return numerator / denominator
+
+    def update_std(self) -> float:
+        """
+        Bayesian update to the standard deviation
+        """
+        numerator = self.current_std * (self.prior_std ** 2)
+        denominator = self.current_std + (self.prior_std ** 2)
+        return numerator / denominator
