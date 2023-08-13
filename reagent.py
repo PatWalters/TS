@@ -14,24 +14,6 @@ class Reagent:
         self.current_mean = None
         self.current_std = None
 
-    @property
-    def mean(self) -> float:
-        """
-        Returns the mean of self.scores
-        """
-        if not self.scores:
-            raise ValueError(f"Must add scores to self.scores before accessing the mean")
-        return np.mean(self.scores)
-
-    @property
-    def std(self) -> float:
-        """
-        Returns the standard deviation of self.scores
-        """
-        if not self.scores:
-            raise ValueError(f"Must add scores to self.scores before accessing the standard deviation")
-        return np.std(self.scores)
-
     def add_score(self, score: float):
         """
         Adds a score to self.scores
