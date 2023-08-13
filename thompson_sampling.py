@@ -13,9 +13,6 @@ from reagent import Reagent
 from ts_utils import read_reagents
 
 
-# This is just a placeholder implementation
-# TODO: Refactor so that the code does not need to re-compute the prior each time
-
 class ThompsonSampler:
     def __init__(self, mode="maximize"):
         # A list of lists of Reagents. Each component in the reaction will have one list of Reagents in this list
@@ -135,10 +132,14 @@ def main():
     # rocs_evaluator = ROCSEvaluator("data/2chw_lig.sdf")
     # ts.set_evaluator(rocs_evaluator)
     ts.read_reagents(reagent_file_list=reagent_file_list, num_to_select=None)
+    # Niementowski quinazoline synthesis https://en.wikipedia.org/wiki/Niementowski_quinazoline_synthesis
     quinazoline_rxn_smarts = "N[c:4][c:3]C(O)=O.[#6:1][NH2].[#6:2]C(=O)[OH]>>[C:2]c1n[c:4][c:3]c(=O)n1[C:1]"
     ts.set_reaction(quinazoline_rxn_smarts)
+    # run the warm-up phase to generate an initial set of scores for each reagent
     ts.warm_up(num_warmup_trials=10)
+    # run the search with TS
     out_list = ts.search(num_cycles=num_iterations)
+    # write the results to disk
     out_df = pd.DataFrame(out_list, columns=["SMILES", "score"])
     out_df.to_csv("ts_results.csv", index=False)
     print(out_df.sort_values("score", ascending=False).drop_duplicates(subset="SMILES").head(10))

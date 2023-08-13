@@ -61,6 +61,8 @@ class Reagent:
     def update_mean(self, observed_value: float) -> float:
         """
         Bayesian update to the mean
+        :param observed_value: value to use to update the mean
+        :return: the updated mean
         """
         numerator = self.current_std * observed_value + (self.prior_std ** 2) * self.current_mean
         denominator = self.current_std + (self.prior_std ** 2)
@@ -69,6 +71,7 @@ class Reagent:
     def update_std(self) -> float:
         """
         Bayesian update to the standard deviation
+        :return: the updated standard deviation
         """
         numerator = self.current_std * (self.prior_std ** 2)
         denominator = self.current_std + (self.prior_std ** 2)
