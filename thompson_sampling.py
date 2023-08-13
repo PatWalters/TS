@@ -99,6 +99,7 @@ class ThompsonSampler:
                     for p in partner_list:
                         current_list[p] = random.randint(0, reagent_count_list[p] - 1)
                     self.evaluate(current_list)
+        # initialize the mean and standard deviation for each reagent
         for i in range(0, len(self.reagent_lists)):
             for j in range(0, len(self.reagent_lists[i])):
                 self.reagent_lists[i][j].init()
