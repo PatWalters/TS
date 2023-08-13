@@ -95,7 +95,7 @@ class ThompsonSampler:
                 for k in range(0, num_warmup_trials):
                     current_list = [-1] * len(idx_list)
                     current_list[i] = j
-                    # Ranomdly select reagents for each additional component of the reaction
+                    # Randomly select reagents for each additional component of the reaction
                     for p in partner_list:
                         current_list[p] = random.randint(0, reagent_count_list[p] - 1)
                     self.evaluate(current_list)
