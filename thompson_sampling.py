@@ -14,11 +14,19 @@ from ts_utils import read_reagents
 
 
 class ThompsonSampler:
-    def __init__(self, mode="maximize"):
+    def __init__(self, mode="maximize", minimum_uncertainty: float = .1):
+        """
+        Basic init
+        :param mode: maximize or minimize
+        :param minimum_uncertainty: Minimum uncertainty about the mean for the prior. We don't want to start with too
+        little uncertainty about the mean if we (randomly) get initial samples which are very close together. Can set
+        this higher for more exploration / diversity, lower for more exploitation.
+        """
         # A list of lists of Reagents. Each component in the reaction will have one list of Reagents in this list
         self.reagent_lists: List[List[Reagent]] = []
         self.reaction = None
         self.evaluator = None
+        self.minimum_uncertainty = minimum_uncertainty
         if mode == "maximize":
             self.pick_function = np.argmax
         elif mode == "minimize":
@@ -27,7 +35,8 @@ class ThompsonSampler:
             raise ValueError(f"{mode} is not a supported argument")
 
     def read_reagents(self, reagent_file_list, num_to_select: Optional[int] = None):
-        self.reagent_lists = read_reagents(reagent_file_list, num_to_select)
+        self.reagent_lists = read_reagents(reagent_file_list, num_to_select,
+                                           minimum_uncertainty=self.minimum_uncertainty)
         num_prods = math.prod([len(x) for x in self.reagent_lists])
         print(f"{num_prods:.2e} possible products")
 
@@ -100,9 +109,13 @@ class ThompsonSampler:
                         current_list[p] = random.randint(0, reagent_count_list[p] - 1)
                     self.evaluate(current_list)
         # initialize the mean and standard deviation for each reagent
+        scores = []
         for i in range(0, len(self.reagent_lists)):
             for j in range(0, len(self.reagent_lists[i])):
-                self.reagent_lists[i][j].init()
+                reagent = self.reagent_lists[i][j]
+                reagent.init()
+                scores += reagent.initial_scores
+        print(f"*** Top score found during warmup: {max(scores)} ***")
 
     def search(self, num_cycles=25):
         """Run the search
@@ -120,14 +133,19 @@ class ThompsonSampler:
             # Select a reagent for each component, according to the choice function
             pick = [self.pick_function(x) for x in choice_list]
             smiles, score = self.evaluate(pick)
-            out_list.append([smiles, score])
+            out_list.append([score, smiles])
+            if i % 10 == 0:
+                sorted_outlist = sorted(out_list, reverse=True)
+                top_score = sorted_outlist[0][0]
+                top_smiles = sorted_outlist[0][1]
+                print(f"Iteration: {i} max score: {top_score:2f} smiles: {top_smiles}")
         return out_list
 
 
 def main():
-    num_iterations = 500
+    num_iterations = 1000
     reagent_file_list = ["data/aminobenzoic_ok.smi", "data/primary_amines_ok.smi", "data/carboxylic_acids_ok.smi"]
-    ts = ThompsonSampler()
+    ts = ThompsonSampler(minimum_uncertainty=.1)
     fp_evaluator = FPEvaluator("COC(=O)[C@@H](CC(=O)O)n1c(C[C@H](O)C(=O)OC)nc2c(OC)cccc2c1=O")
     ts.set_evaluator(fp_evaluator)
     # rocs_evaluator = ROCSEvaluator("data/2chw_lig.sdf")
@@ -141,7 +159,7 @@ def main():
     # run the search with TS
     out_list = ts.search(num_cycles=num_iterations)
     # write the results to disk
-    out_df = pd.DataFrame(out_list, columns=["SMILES", "score"])
+    out_df = pd.DataFrame(out_list, columns=["score", "SMILES"])
     out_df.to_csv("ts_results.csv", index=False)
     print(out_df.sort_values("score", ascending=False).drop_duplicates(subset="SMILES").head(10))
 
