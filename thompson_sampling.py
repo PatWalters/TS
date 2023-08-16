@@ -143,7 +143,7 @@ class ThompsonSampler:
             pick = [self.pick_function(x) for x in choice_list]
             smiles, score = self.evaluate(pick)
             out_list.append([score, smiles])
-            if i % 10 == 0:
+            if i % 100 == 0:
                 sorted_outlist = sorted(out_list, reverse=True)
                 top_score = sorted_outlist[0][0]
                 top_smiles = sorted_outlist[0][1]
