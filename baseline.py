@@ -40,7 +40,7 @@ def random_baseline():
     reagent_file_list = ["data/aminobenzoic_100.smi", "data/primary_amines_100.smi", "data/carboxylic_acids_100.smi"]
     quinazoline_smarts = "N[c:4][c:3]C(O)=O.[#6:1][NH2].[#6:2]C(=O)[OH]>>[C:2]c1n[c:4][c:3]c(=O)n1[C:1]"
     rxn = AllChem.ReactionFromSmarts(quinazoline_smarts)
-    reagent_df_list = read_reagents(reagent_file_list, num_reagents_to_read, minimum_uncertainty=.1, known_std=2.0)
+    reagent_df_list = read_reagents(reagent_file_list, num_reagents_to_read, minimum_uncertainty=.1, known_std=1.0)
 
     mol_lol = [x.mol for x in reagent_df_list]
     len_list = [len(x) for x in reagent_df_list]

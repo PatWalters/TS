@@ -154,7 +154,7 @@ class ThompsonSampler:
 def main():
     num_iterations = 1000
     reagent_file_list = ["data/aminobenzoic_ok.smi", "data/primary_amines_ok.smi", "data/carboxylic_acids_ok.smi"]
-    ts = ThompsonSampler(minimum_uncertainty=1.0, known_std=2.0)
+    ts = ThompsonSampler(minimum_uncertainty=.1, known_std=1.0)
     fp_evaluator = FPEvaluator("COC(=O)[C@@H](CC(=O)O)n1c(C[C@H](O)C(=O)OC)nc2c(OC)cccc2c1=O")
     ts.set_evaluator(fp_evaluator)
     # rocs_evaluator = ROCSEvaluator("data/2chw_lig.sdf")
