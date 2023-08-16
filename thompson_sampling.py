@@ -14,14 +14,14 @@ from ts_utils import read_reagents
 
 
 class ThompsonSampler:
-    def __init__(self, prior_std: float, mode="maximize", minimum_uncertainty: float = .1):
+    def __init__(self, known_std: float, mode="maximize", minimum_uncertainty: float = .1):
         """
         Basic init
         :param mode: maximize or minimize
         :param minimum_uncertainty: Minimum uncertainty about the mean for the prior. We don't want to start with too
         little uncertainty about the mean if we (randomly) get initial samples which are very close together. Can set
         this higher for more exploration / diversity, lower for more exploitation.
-        :param prior_std: This is the "known" standard deviation for the distribution of which we are trying to estimate
+        :param known_std: This is the "known" standard deviation for the distribution of which we are trying to estimate
         the mean. Should be proportional to the range of possible values the scoring function can produce.
         """
         # A list of lists of Reagents. Each component in the reaction will have one list of Reagents in this list
@@ -29,7 +29,7 @@ class ThompsonSampler:
         self.reaction = None
         self.evaluator = None
         self.minimum_uncertainty = minimum_uncertainty
-        self.prior_std: float = prior_std
+        self.known_std: float = known_std
         if mode == "maximize":
             self.pick_function = np.argmax
         elif mode == "minimize":
@@ -45,7 +45,7 @@ class ThompsonSampler:
         :return: None
         """
         self.reagent_lists = read_reagents(reagent_file_list, num_to_select,
-                                           minimum_uncertainty=self.minimum_uncertainty, prior_std=self.prior_std)
+                                           minimum_uncertainty=self.minimum_uncertainty, known_std=self.known_std)
         num_prods = math.prod([len(x) for x in self.reagent_lists])
         print(f"{num_prods:.2e} possible products")
 
@@ -154,7 +154,7 @@ class ThompsonSampler:
 def main():
     num_iterations = 1000
     reagent_file_list = ["data/aminobenzoic_ok.smi", "data/primary_amines_ok.smi", "data/carboxylic_acids_ok.smi"]
-    ts = ThompsonSampler(minimum_uncertainty=1.0, prior_std=2.0)
+    ts = ThompsonSampler(minimum_uncertainty=1.0, known_std=2.0)
     fp_evaluator = FPEvaluator("COC(=O)[C@@H](CC(=O)O)n1c(C[C@H](O)C(=O)OC)nc2c(OC)cccc2c1=O")
     ts.set_evaluator(fp_evaluator)
     # rocs_evaluator = ROCSEvaluator("data/2chw_lig.sdf")
