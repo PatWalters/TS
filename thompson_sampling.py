@@ -14,19 +14,22 @@ from ts_utils import read_reagents
 
 
 class ThompsonSampler:
-    def __init__(self, mode="maximize", minimum_uncertainty: float = .1):
+    def __init__(self, known_std: float, mode="maximize", minimum_uncertainty: float = .1):
         """
         Basic init
         :param mode: maximize or minimize
         :param minimum_uncertainty: Minimum uncertainty about the mean for the prior. We don't want to start with too
         little uncertainty about the mean if we (randomly) get initial samples which are very close together. Can set
         this higher for more exploration / diversity, lower for more exploitation.
+        :param known_std: This is the "known" standard deviation for the distribution of which we are trying to estimate
+        the mean. Should be proportional to the range of possible values the scoring function can produce.
         """
         # A list of lists of Reagents. Each component in the reaction will have one list of Reagents in this list
         self.reagent_lists: List[List[Reagent]] = []
         self.reaction = None
         self.evaluator = None
         self.minimum_uncertainty = minimum_uncertainty
+        self.known_std: float = known_std
         if mode == "maximize":
             self.pick_function = np.argmax
         elif mode == "minimize":
@@ -35,8 +38,14 @@ class ThompsonSampler:
             raise ValueError(f"{mode} is not a supported argument")
 
     def read_reagents(self, reagent_file_list, num_to_select: Optional[int] = None):
+        """
+        Reads the reagents from reagent_file_list
+        :param reagent_file_list: List of reagent filepaths
+        :param num_to_select: Max number of reagents to select from the reagents file (for dev purposes only)
+        :return: None
+        """
         self.reagent_lists = read_reagents(reagent_file_list, num_to_select,
-                                           minimum_uncertainty=self.minimum_uncertainty)
+                                           minimum_uncertainty=self.minimum_uncertainty, known_std=self.known_std)
         num_prods = math.prod([len(x) for x in self.reagent_lists])
         print(f"{num_prods:.2e} possible products")
 
@@ -134,7 +143,7 @@ class ThompsonSampler:
             pick = [self.pick_function(x) for x in choice_list]
             smiles, score = self.evaluate(pick)
             out_list.append([score, smiles])
-            if i % 10 == 0:
+            if i % 100 == 0:
                 sorted_outlist = sorted(out_list, reverse=True)
                 top_score = sorted_outlist[0][0]
                 top_smiles = sorted_outlist[0][1]
@@ -145,7 +154,7 @@ class ThompsonSampler:
 def main():
     num_iterations = 1000
     reagent_file_list = ["data/aminobenzoic_ok.smi", "data/primary_amines_ok.smi", "data/carboxylic_acids_ok.smi"]
-    ts = ThompsonSampler(minimum_uncertainty=.1)
+    ts = ThompsonSampler(minimum_uncertainty=.1, known_std=1.0)
     fp_evaluator = FPEvaluator("COC(=O)[C@@H](CC(=O)O)n1c(C[C@H](O)C(=O)OC)nc2c(OC)cccc2c1=O")
     ts.set_evaluator(fp_evaluator)
     # rocs_evaluator = ROCSEvaluator("data/2chw_lig.sdf")
