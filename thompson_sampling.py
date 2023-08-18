@@ -1,5 +1,6 @@
 import math
 import random
+import sys
 from typing import List, Optional
 
 import numpy as np
@@ -28,6 +29,7 @@ class ThompsonSampler:
         self.reagent_lists: List[List[Reagent]] = []
         self.reaction = None
         self.evaluator = None
+        self.num_prods = 0
         self.minimum_uncertainty = minimum_uncertainty
         self.known_std: float = known_std
         if mode == "maximize":
@@ -46,8 +48,15 @@ class ThompsonSampler:
         """
         self.reagent_lists = read_reagents(reagent_file_list, num_to_select,
                                            minimum_uncertainty=self.minimum_uncertainty, known_std=self.known_std)
-        num_prods = math.prod([len(x) for x in self.reagent_lists])
-        print(f"{num_prods:.2e} possible products")
+        self.num_prods = math.prod([len(x) for x in self.reagent_lists])
+        print(f"{self.num_prods:.2e} possible products")
+
+    def get_num_prods(self) -> int:
+        """
+        Get the total number of possible products
+        :return: num_prods
+        """
+        return self.num_prods
 
     def set_evaluator(self, evaluator):
         """
@@ -124,7 +133,7 @@ class ThompsonSampler:
                 reagent = self.reagent_lists[i][j]
                 reagent.init()
                 scores += reagent.initial_scores
-        print(f"*** Top score found during warmup: {max(scores)} ***")
+        print(f"*** Top score found during warmup: {max(scores):.3f} ***", file=sys.stderr)
 
     def search(self, num_cycles=25):
         """Run the search
@@ -132,6 +141,7 @@ class ThompsonSampler:
         :return: a list of SMILES and scores
         """
         out_list = []
+        log_fs = open("ts_logfile.txt", "w")
         for i in tqdm(range(0, num_cycles), desc="Cycle"):
             choice_list = []
             for reagent_list in self.reagent_lists:
@@ -147,7 +157,8 @@ class ThompsonSampler:
                 sorted_outlist = sorted(out_list, reverse=True)
                 top_score = sorted_outlist[0][0]
                 top_smiles = sorted_outlist[0][1]
-                print(f"Iteration: {i} max score: {top_score:2f} smiles: {top_smiles}")
+                print(f"Iteration: {i} max score: {top_score:2f} smiles: {top_smiles}", file=log_fs)
+        log_fs.close()
         return out_list
 
 
