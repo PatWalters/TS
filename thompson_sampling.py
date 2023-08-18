@@ -4,12 +4,10 @@ import sys
 from typing import List, Optional
 
 import numpy as np
-import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from tqdm.auto import tqdm
 
-from evaluators import FPEvaluator
 from reagent import Reagent
 from ts_utils import read_reagents
 
@@ -160,29 +158,3 @@ class ThompsonSampler:
                 print(f"Iteration: {i} max score: {top_score:2f} smiles: {top_smiles}", file=log_fs)
         log_fs.close()
         return out_list
-
-
-def main():
-    num_iterations = 1000
-    reagent_file_list = ["data/aminobenzoic_ok.smi", "data/primary_amines_ok.smi", "data/carboxylic_acids_ok.smi"]
-    ts = ThompsonSampler(minimum_uncertainty=.1, known_std=1.0)
-    fp_evaluator = FPEvaluator("COC(=O)[C@@H](CC(=O)O)n1c(C[C@H](O)C(=O)OC)nc2c(OC)cccc2c1=O")
-    ts.set_evaluator(fp_evaluator)
-    # rocs_evaluator = ROCSEvaluator("data/2chw_lig.sdf")
-    # ts.set_evaluator(rocs_evaluator)
-    ts.read_reagents(reagent_file_list=reagent_file_list, num_to_select=None)
-    # Niementowski quinazoline synthesis https://en.wikipedia.org/wiki/Niementowski_quinazoline_synthesis
-    quinazoline_rxn_smarts = "N[c:4][c:3]C(O)=O.[#6:1][NH2].[#6:2]C(=O)[OH]>>[C:2]c1n[c:4][c:3]c(=O)n1[C:1]"
-    ts.set_reaction(quinazoline_rxn_smarts)
-    # run the warm-up phase to generate an initial set of scores for each reagent
-    ts.warm_up(num_warmup_trials=10)
-    # run the search with TS
-    out_list = ts.search(num_cycles=num_iterations)
-    # write the results to disk
-    out_df = pd.DataFrame(out_list, columns=["score", "SMILES"])
-    out_df.to_csv("ts_results.csv", index=False)
-    print(out_df.sort_values("score", ascending=False).drop_duplicates(subset="SMILES").head(10))
-
-
-if __name__ == "__main__":
-    main()
