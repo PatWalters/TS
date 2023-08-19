@@ -1,7 +1,5 @@
 # Thompson Sampling for Virtual Screening
 
-**This repository is under active development.**
-
 Thompson Sampling
 is an active learning strategy that balances the tradeoff between exploitation and exploration. The code in this
 repository implements Thompson Sampling as an efficient searching algorithm for screening large, un-enumerated
