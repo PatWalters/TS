@@ -1,7 +1,12 @@
 import useful_rdkit_utils as uru
-from openeye import oechem
-from openeye import oeomega
-from openeye import oeshape
+import warnings
+try:
+    from openeye import oechem
+    from openeye import oeomega
+    from openeye import oeshape
+except ImportError:
+    # Since openeye is a commercial software package, just pass with a warning if not available
+    warnings.warn(f"Openeye packages not available in this environment; do not attempt to use ROCSEvaluator")
 from rdkit import Chem, DataStructs
 
 
