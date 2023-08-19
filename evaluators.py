@@ -1,3 +1,5 @@
+from abc import ABC, abstractmethod
+
 import useful_rdkit_utils as uru
 import warnings
 try:
@@ -10,14 +12,26 @@ except ImportError:
 from rdkit import Chem, DataStructs
 
 
-class MWEvaluator:
+class Evaluator(ABC):
+    @abstractmethod
+    def evaluate(self, mol):
+        pass
+
+    @property
+    @abstractmethod
+    def counter(self):
+        pass
+
+
+class MWEvaluator(Evaluator):
     """A simple evaluation class that calculates molecular weight, this was just a development tool
     """
 
     def __init__(self):
         self.num_evaluations = 0
 
-    def get_num_evaluations(self):
+    @property
+    def counter(self):
         return self.num_evaluations
 
     def evaluate(self, mol):
@@ -25,7 +39,7 @@ class MWEvaluator:
         return uru.MolWt(mol)
 
 
-class FPEvaluator:
+class FPEvaluator(Evaluator):
     """An evaluator class that calculates a fingerprint Tanimoto to a reference molecule
     """
 
@@ -33,7 +47,8 @@ class FPEvaluator:
         self.ref_fp = uru.smi2morgan_fp(ref_smiles)
         self.num_evaluations = 0
 
-    def get_num_evaluations(self):
+    @property
+    def counter(self):
         return self.num_evaluations
 
     def evaluate(self, rd_mol_in):
@@ -42,7 +57,7 @@ class FPEvaluator:
         return DataStructs.TanimotoSimilarity(self.ref_fp, rd_mol_fp)
 
 
-class ROCSEvaluator:
+class ROCSEvaluator(Evaluator):
     """An evaluator class that calculates a ROCS score to a reference molecule
     """
 
@@ -54,7 +69,8 @@ class ROCSEvaluator:
         self.score_cache = {}
         self.num_evaluations = 0
 
-    def get_num_evaluations(self):
+    @property
+    def counter(self):
         return self.num_evaluations
 
     def set_max_confs(self, max_confs):
@@ -119,10 +135,14 @@ class ROCSEvaluator:
         return score.GetTanimotoCombo()
 
 
-if __name__ == "__main__":
+def test():
     rocs_eval = ROCSEvaluator("data/2chw_lig.sdf")
     mol = oechem.OEMol()
     smi = "CCSc1ncc2c(=O)n(-c3c(C)nc4ccccn34)c(-c3[nH]nc(C)c3F)nc2n1"
     oechem.OEParseSmiles(mol, smi)
     combo_score = rocs_eval.evaluate(mol)
     print(combo_score)
+
+
+if __name__ == "__main__":
+    test()
