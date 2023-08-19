@@ -41,8 +41,10 @@ def run_ts(json_filename: str) -> None:
     num_warmup_trials = input_dict["num_warmup_trials"]
     result_filename = input_dict.get("results_filename")
     ts_mode = input_dict["ts_mode"]
-    known_std = input_dict['known_std']
-    minimum_uncertainty = input_dict['minimum_uncertainty']
+    known_std = input_dict.get('known_std')
+    known_std = known_std if known_std is not None else 1.0
+    minimum_uncertainty = input_dict.get('minimum_uncertainty')
+    minimum_uncertainty = minimum_uncertainty if minimum_uncertainty is not None else 0.1
     log_filename = input_dict.get("log_filename")
     logger = get_logger(__name__, filename=log_filename)
     ts = ThompsonSampler(mode=ts_mode, known_std=known_std, minimum_uncertainty=minimum_uncertainty)
