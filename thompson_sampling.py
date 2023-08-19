@@ -9,11 +9,13 @@ from rdkit.Chem import AllChem
 from tqdm.auto import tqdm
 
 from reagent import Reagent
+from ts_logger import get_logger
 from ts_utils import read_reagents
 
 
 class ThompsonSampler:
-    def __init__(self, known_std: float, mode="maximize", minimum_uncertainty: float = .1):
+    def __init__(self, known_std: float, mode="maximize", minimum_uncertainty: float = .1,
+                 log_filename: Optional[str] = None):
         """
         Basic init
         :param mode: maximize or minimize
@@ -22,6 +24,7 @@ class ThompsonSampler:
         this higher for more exploration / diversity, lower for more exploitation.
         :param known_std: This is the "known" standard deviation for the distribution of which we are trying to estimate
         the mean. Should be proportional to the range of possible values the scoring function can produce.
+        :param log_filename: Optional filename to write logging to. If None, logging will be output to stdout
         """
         # A list of lists of Reagents. Each component in the reaction will have one list of Reagents in this list
         self.reagent_lists: List[List[Reagent]] = []
@@ -30,6 +33,7 @@ class ThompsonSampler:
         self.num_prods = 0
         self.minimum_uncertainty = minimum_uncertainty
         self.known_std: float = known_std
+        self.logger = get_logger(__name__, filename=log_filename)
         if mode == "maximize":
             self.pick_function = np.argmax
         elif mode == "minimize":
@@ -47,7 +51,7 @@ class ThompsonSampler:
         self.reagent_lists = read_reagents(reagent_file_list, num_to_select,
                                            minimum_uncertainty=self.minimum_uncertainty, known_std=self.known_std)
         self.num_prods = math.prod([len(x) for x in self.reagent_lists])
-        print(f"{self.num_prods:.2e} possible products")
+        self.logger.info(f"{self.num_prods:.2e} possible products")
 
     def get_num_prods(self) -> int:
         """
@@ -131,7 +135,7 @@ class ThompsonSampler:
                 reagent = self.reagent_lists[i][j]
                 reagent.init()
                 scores += reagent.initial_scores
-        print(f"*** Top score found during warmup: {max(scores):.3f} ***", file=sys.stderr)
+        self.logger.info(f"Top score found during warmup: {max(scores):.3f}")
 
     def search(self, num_cycles=25):
         """Run the search
@@ -139,7 +143,6 @@ class ThompsonSampler:
         :return: a list of SMILES and scores
         """
         out_list = []
-        log_fs = open("ts_logfile.txt", "w")
         for i in tqdm(range(0, num_cycles), desc="Cycle"):
             choice_list = []
             for reagent_list in self.reagent_lists:
@@ -155,6 +158,5 @@ class ThompsonSampler:
                 sorted_outlist = sorted(out_list, reverse=True)
                 top_score = sorted_outlist[0][0]
                 top_smiles = sorted_outlist[0][1]
-                print(f"Iteration: {i} max score: {top_score:2f} smiles: {top_smiles}", file=log_fs)
-        log_fs.close()
+                self.logger.info(f"Iteration: {i} max score: {top_score:2f} smiles: {top_smiles}")
         return out_list
