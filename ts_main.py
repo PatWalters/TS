@@ -63,7 +63,10 @@ def run_ts(json_filename: str) -> None:
     if result_filename is not None:
         out_df.to_csv(result_filename, index=False)
         logger.info(f"Saved results to: {result_filename}")
-    print(out_df.sort_values("score", ascending=False).drop_duplicates(subset="SMILES").head(10))
+    if ts_mode == "maximize":
+        print(out_df.sort_values("score", ascending=False).drop_duplicates(subset="SMILES").head(10))
+    else:
+        print(out_df.sort_values("score", ascending=True).drop_duplicates(subset="SMILES").head(10))
 
 
 if __name__ == "__main__":
