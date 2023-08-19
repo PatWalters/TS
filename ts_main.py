@@ -48,7 +48,7 @@ def run_ts(json_filename: str) -> None:
     ts.warm_up(num_warmup_trials=num_warmup_trials)
     # run the search with TS
     out_list = ts.search(num_cycles=num_ts_iterations)
-    total_evaluations = evaluator.get_num_evaluations()
+    total_evaluations = evaluator.counter
     percent_searched = total_evaluations/ts.get_num_prods() * 100
     print(f"{total_evaluations} evaluations | {percent_searched:.3f}% of total")
     # write the results to disk
