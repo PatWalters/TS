@@ -63,7 +63,7 @@ class ThompsonSampler:
     def set_evaluator(self, evaluator):
         """
         Define the evaluator
-        :param evaluator: evaluator class, must define an evaluate method that takes and RDKit molecule
+        :param evaluator: evaluator class, must define an evaluate method that takes an RDKit molecule
         """
         self.evaluator = evaluator
 
