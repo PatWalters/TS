@@ -139,7 +139,7 @@ class ThompsonSampler:
 
     def search(self, num_cycles=25):
         """Run the search
-        :param num_cycles: number of search iterations
+        :param: num_cycles: number of search iterations
         :return: a list of SMILES and scores
         """
         out_list = []
