@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import heapq
 import math
 from itertools import product
@@ -99,5 +101,5 @@ def exhaustive_baseline(json_filename, num_to_select=None, num_to_save=100, asce
 
 
 if __name__ == "__main__":
-    #exhaustive_baseline("examples/amide_fp_sim.json", num_to_select=10)
-    random_baseline("examples/amide_fp_sim.json", 561680)
+    exhaustive_baseline("examples/amide_fp_sim.json", num_to_select=None)
+    #random_baseline("examples/amide_fp_sim.json", 561680)
