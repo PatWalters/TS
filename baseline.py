@@ -13,7 +13,7 @@ from ts_utils import read_reagents
 
 
 def keep_largest(items, n):
-    """Keeps the n largest items in a list.
+    """Keeps the n largest items in a list, designed to work with a list of [score,SMILES]
     :param items: the list of items to keep
     :param n: the number of items to keep
     :return: list of the n largest items
@@ -23,14 +23,18 @@ def keep_largest(items, n):
         if len(heap) < n:
             heapq.heappush(heap, item)
         else:
-            if item > heap[0]:
+            if item[0] > heap[0][0]:
                 heapq.heapreplace(heap, item)
-
-    # Return the heap.
     return heap
 
 
 def setup_baseline(json_filename, num_to_select=None):
+    """ Common code for baseline methods, reads JSON input and creates necessary objects
+    :param json_filename: JSON file with configuration options
+    :param num_to_select: number of reagents to use with exhaustive search. Set to a lower values for development.
+    Setting to None uses all reagents.
+    :return: evaluator class, RDKit reaction, list of lists with reagents
+    """
     input_dict = read_input(json_filename)
     evaluator = input_dict["evaluator_class"]
     reaction_smarts = input_dict["reaction_smarts"]
@@ -40,11 +44,16 @@ def setup_baseline(json_filename, num_to_select=None):
     return evaluator, rxn, reagent_lists
 
 
-def random_baseline(json_filename, num_trials, num_to_save=100):
+def random_baseline(json_filename, num_trials, num_to_save=100, ascending_output=False):
+    """ Randomly combine reagents
+    :param json_filename: JSON file with parameters
+    :param num_trials: number of molecules ot generate
+    :param num_to_save: number of molecules to save to the output csv file
+    :param ascending_output: save the output in ascending order
+    """
     score_list = []
     evaluator, rxn, reagent_lists = setup_baseline(json_filename, None)
     num_reagents = len(reagent_lists)
-    score_list = []
     len_list = [len(x) for x in reagent_lists]
     total_prods = math.prod(len_list)
     print(f"{total_prods:.2e} products")
@@ -58,13 +67,21 @@ def random_baseline(json_filename, num_trials, num_to_save=100):
             product_mol = prod[0][0]
             Chem.SanitizeMol(product_mol)
             score = evaluator.evaluate(product_mol)
-            score_list = keep_largest(score_list + [score], num_to_save)
-    print(sorted(score_list, reverse=True))
+            product_smiles = Chem.MolToSmiles(product_mol)
+            score_list = keep_largest(score_list + [[score, product_smiles]], num_to_save)
+    score_df = pd.DataFrame(score_list, columns=["score", "SMILES"])
+    score_df.sort_values(by="score", ascending=ascending_output).to_csv("random_scores.csv", index=False)
 
 
-def exhaustive_baseline(json_filename, num_to_select=None):
-    evaluator, rxn, reagent_lists = setup_baseline(json_filename, num_to_select)
+def exhaustive_baseline(json_filename, num_to_select=None, num_to_save=100, ascending_output=False):
+    """ Exhaustively combine all reagents
+    :param json_filename: JSON file with parameters
+    :param num_to_select: Number of reagents to use, set to a lower number for development.  Set to None to use all.
+    :param num_to_save: number of molecules to save to the output csv file
+    :param ascending_output: save the output in ascending order
+    """
     score_list = []
+    evaluator, rxn, reagent_lists = setup_baseline(json_filename, num_to_select)
     len_list = [len(x) for x in reagent_lists]
     total_prods = math.prod(len_list)
     print(f"{total_prods:.2e} products")
@@ -74,13 +91,13 @@ def exhaustive_baseline(json_filename, num_to_select=None):
         if len(prod):
             product_mol = prod[0][0]
             Chem.SanitizeMol(product_mol)
+            product_smiles = Chem.MolToSmiles(product_mol)
             score = evaluator.evaluate(product_mol)
-            score_list.append(score)
-    score_df = pd.DataFrame(score_list,columns=["score"])
-    score_df.to_csv("scores.csv")
-
+            score_list = keep_largest(score_list + [[score, product_smiles]], num_to_save)
+    score_df = pd.DataFrame(score_list, columns=["score", "SMILES"])
+    score_df.sort_values(by="score", ascending=ascending_output).to_csv("exhaustive_scores.csv", index=False)
 
 
 if __name__ == "__main__":
-    exhaustive_baseline("examples/amide_fp_sim.json", num_to_select=10)
-    #random_baseline("examples/amide_fp_sim.json", 100000)
+    #exhaustive_baseline("examples/amide_fp_sim.json", num_to_select=10)
+    random_baseline("examples/amide_fp_sim.json", 561680)

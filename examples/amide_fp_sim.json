@@ -5,7 +5,7 @@
     ],
     "reaction_smarts": "[NH2:2][#6:1].[#6:4][C:3]([OH])=O>>[NH:2]([#6:1])[C:3]([#6:4])=O",
     "num_warmup_trials": 3,
-    "num_ts_iterations": 100,
+    "num_ts_iterations": 2000,
     "evaluator_class_name": "FPEvaluator",
     "evaluator_arg": "COC(=O)[C@@H](O)CC(=O)Nc1nncc2ccccc12",
     "ts_mode": "maximize",
