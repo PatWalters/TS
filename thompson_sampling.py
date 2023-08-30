@@ -1,7 +1,7 @@
 import math
 import random
 import sys
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import numpy as np
 from rdkit import Chem
@@ -74,7 +74,7 @@ class ThompsonSampler:
         """
         self.reaction = AllChem.ReactionFromSmarts(rxn_smarts)
 
-    def evaluate(self, choice_list: List[int]):
+    def evaluate(self, choice_list: List[int]) -> Tuple[str, float]:
         """Evaluate a set of reagents
         :param choice_list: list of reagent ids
         :return: smiles for the reaction product, score for the reaction product
@@ -94,18 +94,6 @@ class ThompsonSampler:
             [reagent.add_score(res) for reagent in selected_reagents]
         return product_smiles, res
 
-    @staticmethod
-    def _sample(scores: List[float]) -> float:
-        """
-        Creates the prior (normal distribution) from a list of scores for the reagent,
-        returns a random sample from the prior.
-        :param scores: list of scores previously collected for the reagent
-        :return: Random sample from the prior distribution
-        """
-        loc = np.mean(scores)
-        scale = np.std(scores)
-        return np.random.normal(loc=loc, scale=scale)
-
     def warm_up(self, num_warmup_trials=3):
         """Warm-up phase, each reagent is sampled with num_warmup_trials random partners
         :param num_warmup_trials: number of times to sample each reagent
@@ -114,6 +102,7 @@ class ThompsonSampler:
         idx_list = list(range(0, len(self.reagent_lists)))
         # get the number of reagents for each component in the reaction
         reagent_count_list = [len(x) for x in self.reagent_lists]
+        warmup_scores = []
         for i in idx_list:
             partner_list = [x for x in idx_list if x != i]
             # The number of reagents for this component
@@ -127,15 +116,19 @@ class ThompsonSampler:
                     # Randomly select reagents for each additional component of the reaction
                     for p in partner_list:
                         current_list[p] = random.randint(0, reagent_count_list[p] - 1)
-                    self.evaluate(current_list)
-        # initialize the mean and standard deviation for each reagent
-        scores = []
+                    _, score = self.evaluate(current_list)
+                    warmup_scores.append(score)
+        self.logger.info(
+              f"warmup score stats: cnt={len(warmup_scores)}, mean={np.mean(warmup_scores):0.4f}, std={np.std(warmup_scores):0.4f}, "
+              f"min={np.min(warmup_scores):0.4f}, max={np.max(warmup_scores):0.4f}")
+        # initialize each reagent
+        prior_mean = np.mean(warmup_scores)
+        prior_std = np.std(warmup_scores)
         for i in range(0, len(self.reagent_lists)):
             for j in range(0, len(self.reagent_lists[i])):
                 reagent = self.reagent_lists[i][j]
-                reagent.init()
-                scores += reagent.initial_scores
-        self.logger.info(f"Top score found during warmup: {max(scores):.3f}")
+                reagent.init_given_prior(prior_mean=prior_mean, prior_std=prior_std)
+        self.logger.info(f"Top score found during warmup: {max(warmup_scores):.3f}")
 
     def search(self, num_cycles=25):
         """Run the search
