@@ -81,6 +81,31 @@ class Reagent:
             self.current_std = self.min_uncertainty
         self.current_phase = "search"
 
+    def init_given_prior(self, prior_mean: float, prior_std: float):
+        """
+        After warmup, set the prior distribution from the given parameters and replay the warmup scores.
+
+        The meaning of "prior" here is the distribution before any scores have been seen for this reagent.
+        This would typically be the from the score distribution seen across all reagents during the warm up phase.
+        The specific values seen during warmup (stored in initial_scores) will then be run as updates just
+        as they would be during the regular search phase.
+
+        :param prior_mean: Mean of the prior distribution
+        :param prior_std: Mean of the prior distribution
+        """
+        if self.current_phase != "warmup":
+            raise ValueError(f"Reagent {self.reagent_name} has already been initialized.")
+        elif not self.initial_scores:
+            raise ValueError(f"Must collect initial scores before initializing Reagent {self.reagent_name}")
+
+        self.current_std = prior_std
+        self.current_mean = prior_mean
+
+        self.current_phase = "search"
+
+        for score in self.initial_scores:
+            self.add_score(score)
+
     def _update_mean(self, current_var: float, observed_value: float) -> float:
         """
         Bayesian update to the mean
