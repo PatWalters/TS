@@ -128,11 +128,24 @@ class ThompsonSampler:
             for j in tqdm(range(0, current_max), desc=f"Warmup {i + 1} of {len(idx_list)}"):
                 # For each warmup trial...
                 for k in range(0, num_warmup_trials):
-                    current_list = [-1] * len(idx_list)
-                    current_list[i] = j
-                    # Randomly select reagents for each additional component of the reaction
-                    for p in partner_list:
-                        current_list[p] = random.randint(0, reagent_count_list[p] - 1)
+                    current_list = [DisallowTracker.Empty] * len(idx_list)
+                    current_list[i] = DisallowTracker.To_Fill
+                    disallow_mask = self._disallow_tracker.get_disallowed_selection_mask(current_list)
+                    if j not in disallow_mask:
+                        ## ok we can select this reagent
+                        current_list[i] = j
+                        # Randomly select reagents for each additional component of the reaction
+                        for p in partner_list:
+                            # tell the disallow tracker which site we are filling
+                            current_list[p] = DisallowTracker.To_Fill
+                            # get the new disallow mask
+                            disallow_mask = self._disallow_tracker.get_disallowed_selection_mask(current_list)
+                            selection_scores = np.random.uniform(size=reagent_count_list[p])
+                            # null out the disallowed ones
+                            selection_scores[list(disallow_mask)] = np.NaN
+                            # and select a random one
+                            current_list[p] = np.nanargmax(selection_scores).item(0)
+                    self._disallow_tracker.update(current_list)
                     self.evaluate(current_list)
         # initialize the mean and standard deviation for each reagent
         scores = []
