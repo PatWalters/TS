@@ -8,6 +8,7 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from tqdm.auto import tqdm
 
+from disallow_tracker import DisallowTracker
 from reagent import Reagent
 from ts_logger import get_logger
 from ts_utils import read_reagents
@@ -34,10 +35,14 @@ class ThompsonSampler:
         self.minimum_uncertainty = minimum_uncertainty
         self.known_std: float = known_std
         self.logger = get_logger(__name__, filename=log_filename)
-        if mode == "maximize":
-            self.pick_function = np.argmax
-        elif mode == "minimize":
-            self.pick_function = np.argmin
+        self._disallow_tracker = None
+        self._mode = mode
+        if self._mode == "maximize":
+            self.pick_function = np.nanargmax
+            self._top_func = max
+        elif self._mode == "minimize":
+            self.pick_function = np.nanargmin
+            self._top_func = min
         else:
             raise ValueError(f"{mode} is not a supported argument")
 
@@ -52,6 +57,7 @@ class ThompsonSampler:
                                            minimum_uncertainty=self.minimum_uncertainty, known_std=self.known_std)
         self.num_prods = math.prod([len(x) for x in self.reagent_lists])
         self.logger.info(f"{self.num_prods:.2e} possible products")
+        self._disallow_tracker = DisallowTracker([len(x) for x in self.reagent_lists])
 
     def get_num_prods(self) -> int:
         """
@@ -144,19 +150,19 @@ class ThompsonSampler:
         """
         out_list = []
         for i in tqdm(range(0, num_cycles), desc="Cycle"):
-            choice_list = []
-            for reagent_list in self.reagent_lists:
-                choice_row = []  # Create a list of scores for each reagent
-                for reagent in reagent_list:
-                    choice_row.append(reagent.sample())
-                choice_list.append(choice_row)
+            selected_reagents = [DisallowTracker.Empty] * len(self.reagent_lists)
+            for cycle_id, reagent_list in enumerate(self.reagent_lists):
+                choice_row = np.zeros(len(reagent_list))  # Create a list of scores for each reagent
+                selected_reagents[cycle_id] = DisallowTracker.To_Fill
+                disallow_mask = self._disallow_tracker.get_disallowed_selection_mask(selected_reagents)
+                for reagent_idx, reagent in enumerate(reagent_list):
+                    choice_row[reagent_idx] = reagent.sample() if reagent_idx not in disallow_mask else np.NaN
+                selected_reagents[cycle_id] = self.pick_function(choice_row)
+            self._disallow_tracker.update(selected_reagents)
             # Select a reagent for each component, according to the choice function
-            pick = [self.pick_function(x) for x in choice_list]
-            smiles, score = self.evaluate(pick)
+            smiles, score = self.evaluate(selected_reagents)
             out_list.append([score, smiles])
             if i % 100 == 0:
-                sorted_outlist = sorted(out_list, reverse=True)
-                top_score = sorted_outlist[0][0]
-                top_smiles = sorted_outlist[0][1]
+                top_score, top_smiles = self._top_func(out_list)
                 self.logger.info(f"Iteration: {i} max score: {top_score:2f} smiles: {top_smiles}")
         return out_list

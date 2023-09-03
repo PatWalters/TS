@@ -36,6 +36,8 @@ The scores and SMILES string for each molecule made and scored are saved and (op
 
 **evaluators.py** - Contains the evaluation functions.
 
+**disallow_tracker.py** - Contains the class for keeping track of sampled products.
+
 **thompson_sampling.py** - Contains the ThompsonSampling class that runs Thompson Sampling
 
 **Setting up the environment for running Thompson Sampling**
