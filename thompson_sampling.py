@@ -15,16 +15,10 @@ from ts_utils import read_reagents
 
 
 class ThompsonSampler:
-    def __init__(self, known_std: float, mode="maximize", minimum_uncertainty: float = .1,
-                 log_filename: Optional[str] = None):
+    def __init__(self, mode="maximize", log_filename: Optional[str] = None):
         """
         Basic init
         :param mode: maximize or minimize
-        :param minimum_uncertainty: Minimum uncertainty about the mean for the prior. We don't want to start with too
-        little uncertainty about the mean if we (randomly) get initial samples which are very close together. Can set
-        this higher for more exploration / diversity, lower for more exploitation.
-        :param known_std: This is the "known" standard deviation for the distribution of which we are trying to estimate
-        the mean. Should be proportional to the range of possible values the scoring function can produce.
         :param log_filename: Optional filename to write logging to. If None, logging will be output to stdout
         """
         # A list of lists of Reagents. Each component in the reaction will have one list of Reagents in this list
@@ -32,8 +26,6 @@ class ThompsonSampler:
         self.reaction = None
         self.evaluator = None
         self.num_prods = 0
-        self.minimum_uncertainty = minimum_uncertainty
-        self.known_std: float = known_std
         self.logger = get_logger(__name__, filename=log_filename)
         self._disallow_tracker = None
         self._mode = mode
@@ -53,8 +45,7 @@ class ThompsonSampler:
         :param num_to_select: Max number of reagents to select from the reagents file (for dev purposes only)
         :return: None
         """
-        self.reagent_lists = read_reagents(reagent_file_list, num_to_select,
-                                           minimum_uncertainty=self.minimum_uncertainty, known_std=self.known_std)
+        self.reagent_lists = read_reagents(reagent_file_list, num_to_select)
         self.num_prods = math.prod([len(x) for x in self.reagent_lists])
         self.logger.info(f"{self.num_prods:.2e} possible products")
         self._disallow_tracker = DisallowTracker([len(x) for x in self.reagent_lists])
