@@ -1,6 +1,4 @@
 import math
-import random
-import sys
 from typing import List, Optional, Tuple
 
 import numpy as np
@@ -28,6 +26,7 @@ class ThompsonSampler:
         self.num_prods = 0
         self.logger = get_logger(__name__, filename=log_filename)
         self._disallow_tracker = None
+        self.hide_progress = False
         self._mode = mode
         if self._mode == "maximize":
             self.pick_function = np.nanargmax
@@ -37,6 +36,13 @@ class ThompsonSampler:
             self._top_func = min
         else:
             raise ValueError(f"{mode} is not a supported argument")
+
+    def set_hide_progress(self, hide_progress: bool) -> None:
+        """
+        Hide the progress bars
+        :param hide_progress: set to True to hide the progress baars
+        """
+        self.hide_progress = hide_progress
 
     def read_reagents(self, reagent_file_list, num_to_select: Optional[int] = None):
         """
@@ -105,7 +111,7 @@ class ThompsonSampler:
             # The number of reagents for this component
             current_max = reagent_count_list[i]
             # For each reagent...
-            for j in tqdm(range(0, current_max), desc=f"Warmup {i + 1} of {len(idx_list)}"):
+            for j in tqdm(range(0, current_max), desc=f"Warmup {i + 1} of {len(idx_list)}", disable=self.hide_progress):
                 # For each warmup trial...
                 for k in range(0, num_warmup_trials):
                     current_list = [DisallowTracker.Empty] * len(idx_list)
@@ -150,7 +156,7 @@ class ThompsonSampler:
         :return: a list of SMILES and scores
         """
         out_list = []
-        for i in tqdm(range(0, num_cycles), desc="Cycle"):
+        for i in tqdm(range(0, num_cycles), desc="Cycle", disable=self.hide_progress):
             selected_reagents = [DisallowTracker.Empty] * len(self.reagent_lists)
             for cycle_id, reagent_list in enumerate(self.reagent_lists):
                 choice_row = np.zeros(len(reagent_list))  # Create a list of scores for each reagent

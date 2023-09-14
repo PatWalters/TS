@@ -2,7 +2,6 @@
 
 import importlib
 import json
-import logging
 import sys
 
 import pandas as pd
@@ -29,12 +28,25 @@ def read_input(json_filename: str) -> dict:
     return input_data
 
 
-def run_ts(json_filename: str) -> None:
+def parse_input_dict(input_data: dict) -> None:
+    """
+    Parse the input dictionary and add the necessary information
+    :param input_data:
+    """
+    module = importlib.import_module("evaluators")
+    evaluator_class_name = input_data["evaluator_class_name"]
+    class_ = getattr(module, evaluator_class_name)
+    evaluator_arg = input_data["evaluator_arg"]
+    evaluator = class_(evaluator_arg)
+    input_data['evaluator_class'] = evaluator
+
+
+def run_ts(input_dict: dict, hide_progress: bool = False) -> None:
     """
     Perform a Thompson sampling run
-    :param json_filename: Name of the json file with the input parameters
+    :param hide_progress: hide the progress bar
+    :param input_dict: dictionary with input parameters
     """
-    input_dict = read_input(json_filename)
     evaluator = input_dict["evaluator_class"]
     reaction_smarts = input_dict["reaction_smarts"]
     num_ts_iterations = input_dict["num_ts_iterations"]
@@ -45,6 +57,7 @@ def run_ts(json_filename: str) -> None:
     log_filename = input_dict.get("log_filename")
     logger = get_logger(__name__, filename=log_filename)
     ts = ThompsonSampler(mode=ts_mode)
+    ts.set_hide_progress(hide_progress)
     ts.set_evaluator(evaluator)
     ts.read_reagents(reagent_file_list=reagent_file_list, num_to_select=None)
     ts.set_reaction(reaction_smarts)
@@ -53,19 +66,21 @@ def run_ts(json_filename: str) -> None:
     # run the search with TS
     out_list = ts.search(num_cycles=num_ts_iterations)
     total_evaluations = evaluator.counter
-    percent_searched = total_evaluations/ts.get_num_prods() * 100
+    percent_searched = total_evaluations / ts.get_num_prods() * 100
     logger.info(f"{total_evaluations} evaluations | {percent_searched:.3f}% of total")
     # write the results to disk
     out_df = pd.DataFrame(out_list, columns=["score", "SMILES"])
     if result_filename is not None:
         out_df.to_csv(result_filename, index=False)
         logger.info(f"Saved results to: {result_filename}")
-    if ts_mode == "maximize":
-        print(out_df.sort_values("score", ascending=False).drop_duplicates(subset="SMILES").head(10))
-    else:
-        print(out_df.sort_values("score", ascending=True).drop_duplicates(subset="SMILES").head(10))
+    if not hide_progress:
+        if ts_mode == "maximize":
+            print(out_df.sort_values("score", ascending=False).drop_duplicates(subset="SMILES").head(10))
+        else:
+            print(out_df.sort_values("score", ascending=True).drop_duplicates(subset="SMILES").head(10))
 
 
 if __name__ == "__main__":
     json_file_name = sys.argv[1]
-    run_ts(json_file_name)
+    input_dict = read_input(json_file_name)
+    run_ts(input_dict, hide_progress=True)
