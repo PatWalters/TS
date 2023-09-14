@@ -15,23 +15,17 @@ class Reagent:
         "current_phase"
     ]
 
-    def __init__(self, reagent_name: str, smiles: str, minimum_uncertainty: float, known_std: float):
+    def __init__(self, reagent_name: str, smiles: str):
         """
         Basic init
         :param reagent_name: Reagent name
         :param smiles: smiles string
-        :param minimum_uncertainty: Minimum uncertainty about the mean for the prior. We don't want to start with too
-        little uncertainty about the mean if we (randomly) get initial samples which are very close together. Can set
-        this higher for more exploration / diversity, lower for more exploitation.
-        :param known_std: This is the "known" standard deviation for the distribution of which we are trying to
-        estimate the mean. Should be proportional to the range of possible values the scoring function can produce.
         """
         self.smiles = smiles
         self.reagent_name = reagent_name
-        self.min_uncertainty = minimum_uncertainty
         self.mol = Chem.MolFromSmiles(self.smiles)
         self.initial_scores = []
-        self.known_var = known_std ** 2
+        self.known_var = None  # Will be initialized during init_given_prior
         self.current_phase = "warmup"
         self.current_mean = None
         self.current_std = None
@@ -63,23 +57,36 @@ class Reagent:
             raise ValueError(f"Must call Reagent.init() before sampling")
         return np.random.normal(loc=self.current_mean, scale=self.current_std)
 
-    def init(self):
+    def init_given_prior(self, prior_mean: float, prior_std: float):
         """
-        After warm-up initialize self.current_mean and self.current_std
+        After warmup, set the prior distribution from the given parameters and replay the warmup scores.
+
+        The meaning of "prior" here is the distribution before any scores have been seen for this reagent.
+        This would typically be the from the score distribution seen across all reagents during the warm up phase.
+        The specific values seen during warmup (stored in initial_scores) will then be run as updates just
+        as they would be during the regular search phase.
+
+        :param prior_mean: Mean of the prior distribution
+        :param prior_std: Standard deviation of the prior distribution
         """
         if self.current_phase != "warmup":
             raise ValueError(f"Reagent {self.reagent_name} has already been initialized.")
         elif not self.initial_scores:
             raise ValueError(f"Must collect initial scores before initializing Reagent {self.reagent_name}")
 
-        self.current_mean = np.mean(self.initial_scores)
-        self.current_std = np.std(self.initial_scores)
-        # We don't want the uncertainty about the mean to be 0 (or close to zero, e.g. when all the initial samples
-        # return the same score) otherwise it will be very difficult or impossible to update the mean and standard
-        # deviation with new data.
-        if self.current_std < self.min_uncertainty:
-            self.current_std = self.min_uncertainty
+        self.current_std = prior_std
+        self.current_mean = prior_mean
+        # This is an interesting assumption. Namely that the standard deviation of the
+        # distribution of a reagent is estimated by the standard deviation across all reagents
+        # during warmup.
+        # Likely, each reagent has a smaller standard deviation than the one across all warmup
+        # but this still practically works well.
+        self.known_var = prior_std ** 2
+
         self.current_phase = "search"
+
+        for score in self.initial_scores:
+            self.add_score(score)
 
     def _update_mean(self, current_var: float, observed_value: float) -> float:
         """

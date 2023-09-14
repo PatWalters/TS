@@ -1,7 +1,7 @@
 import math
 import random
 import sys
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import numpy as np
 from rdkit import Chem
@@ -15,16 +15,10 @@ from ts_utils import read_reagents
 
 
 class ThompsonSampler:
-    def __init__(self, known_std: float, mode="maximize", minimum_uncertainty: float = .1,
-                 log_filename: Optional[str] = None):
+    def __init__(self, mode="maximize", log_filename: Optional[str] = None):
         """
         Basic init
         :param mode: maximize or minimize
-        :param minimum_uncertainty: Minimum uncertainty about the mean for the prior. We don't want to start with too
-        little uncertainty about the mean if we (randomly) get initial samples which are very close together. Can set
-        this higher for more exploration / diversity, lower for more exploitation.
-        :param known_std: This is the "known" standard deviation for the distribution of which we are trying to estimate
-        the mean. Should be proportional to the range of possible values the scoring function can produce.
         :param log_filename: Optional filename to write logging to. If None, logging will be output to stdout
         """
         # A list of lists of Reagents. Each component in the reaction will have one list of Reagents in this list
@@ -32,8 +26,6 @@ class ThompsonSampler:
         self.reaction = None
         self.evaluator = None
         self.num_prods = 0
-        self.minimum_uncertainty = minimum_uncertainty
-        self.known_std: float = known_std
         self.logger = get_logger(__name__, filename=log_filename)
         self._disallow_tracker = None
         self._mode = mode
@@ -53,8 +45,7 @@ class ThompsonSampler:
         :param num_to_select: Max number of reagents to select from the reagents file (for dev purposes only)
         :return: None
         """
-        self.reagent_lists = read_reagents(reagent_file_list, num_to_select,
-                                           minimum_uncertainty=self.minimum_uncertainty, known_std=self.known_std)
+        self.reagent_lists = read_reagents(reagent_file_list, num_to_select)
         self.num_prods = math.prod([len(x) for x in self.reagent_lists])
         self.logger.info(f"{self.num_prods:.2e} possible products")
         self._disallow_tracker = DisallowTracker([len(x) for x in self.reagent_lists])
@@ -80,7 +71,7 @@ class ThompsonSampler:
         """
         self.reaction = AllChem.ReactionFromSmarts(rxn_smarts)
 
-    def evaluate(self, choice_list: List[int]):
+    def evaluate(self, choice_list: List[int]) -> Tuple[str, float]:
         """Evaluate a set of reagents
         :param choice_list: list of reagent ids
         :return: smiles for the reaction product, score for the reaction product
@@ -100,18 +91,6 @@ class ThompsonSampler:
             [reagent.add_score(res) for reagent in selected_reagents]
         return product_smiles, res
 
-    @staticmethod
-    def _sample(scores: List[float]) -> float:
-        """
-        Creates the prior (normal distribution) from a list of scores for the reagent,
-        returns a random sample from the prior.
-        :param scores: list of scores previously collected for the reagent
-        :return: Random sample from the prior distribution
-        """
-        loc = np.mean(scores)
-        scale = np.std(scores)
-        return np.random.normal(loc=loc, scale=scale)
-
     def warm_up(self, num_warmup_trials=3):
         """Warm-up phase, each reagent is sampled with num_warmup_trials random partners
         :param num_warmup_trials: number of times to sample each reagent
@@ -120,6 +99,7 @@ class ThompsonSampler:
         idx_list = list(range(0, len(self.reagent_lists)))
         # get the number of reagents for each component in the reaction
         reagent_count_list = [len(x) for x in self.reagent_lists]
+        warmup_scores = []
         for i in idx_list:
             partner_list = [x for x in idx_list if x != i]
             # The number of reagents for this component
@@ -146,15 +126,23 @@ class ThompsonSampler:
                             # and select a random one
                             current_list[p] = np.nanargmax(selection_scores).item(0)
                     self._disallow_tracker.update(current_list)
-                    self.evaluate(current_list)
-        # initialize the mean and standard deviation for each reagent
-        scores = []
+                    _, score = self.evaluate(current_list)
+                    warmup_scores.append(score)
+        self.logger.info(
+            f"warmup score stats: "
+            f"cnt={len(warmup_scores)}, "
+            f"mean={np.mean(warmup_scores):0.4f}, "
+            f"std={np.std(warmup_scores):0.4f}, "
+            f"min={np.min(warmup_scores):0.4f}, "
+            f"max={np.max(warmup_scores):0.4f}")
+        # initialize each reagent
+        prior_mean = np.mean(warmup_scores)
+        prior_std = np.std(warmup_scores)
         for i in range(0, len(self.reagent_lists)):
             for j in range(0, len(self.reagent_lists[i])):
                 reagent = self.reagent_lists[i][j]
-                reagent.init()
-                scores += reagent.initial_scores
-        self.logger.info(f"Top score found during warmup: {max(scores):.3f}")
+                reagent.init_given_prior(prior_mean=prior_mean, prior_std=prior_std)
+        self.logger.info(f"Top score found during warmup: {max(warmup_scores):.3f}")
 
     def search(self, num_cycles=25):
         """Run the search

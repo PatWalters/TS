@@ -9,8 +9,6 @@
     "evaluator_class_name": "FPEvaluator",
     "evaluator_arg": "COC(=O)[C@@H](O)CC(=O)Nc1nncc2ccccc12",
     "ts_mode": "maximize",
-    "known_std": 1.0,
-    "minimum_uncertainty": 0.1,
     "log_filename": "ts_logs.txt",
     "results_filename": "ts_results.csv"
 }
