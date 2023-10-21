@@ -149,7 +149,8 @@ def exhaustive_benchmark(input_smiles_file, json_filename, output_filename, n_pr
 
 if __name__ == "__main__":
     num_cpu = os.cpu_count()
+    json_file = "examples/quinazoline_fp_sim.json"
     exhaustive_benchmark("examples/quinazoline_1M.csv.gz",
-                         "examples/quinazoline_fp_sim.json",
-                         "examples/quinazoline_1M_tanimoto.csv",
+                         json_file,
+                         "examples/quinazoline_1M_ROCS.csv",
                          n_proc=num_cpu)
