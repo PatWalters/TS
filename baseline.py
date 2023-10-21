@@ -3,6 +3,7 @@
 import heapq
 import math
 import os
+import sys
 from itertools import product
 
 import numpy as np
@@ -77,8 +78,8 @@ def random_baseline(json_filename, num_trials, num_to_save=100, ascending_output
     score_df.sort_values(by="score", ascending=ascending_output).to_csv("random_scores.csv", index=False)
 
 
-def enumerate_library(json_filename, num_to_select, outfile_name):
-    evaluator, rxn, reagent_lists = setup_baseline(json_filename, num_to_select)
+def enumerate_library(json_filename, outfile_name, num_to_select):
+    _, rxn, reagent_lists = setup_baseline(json_filename, num_to_select)
     len_list = [len(x) for x in reagent_lists]
     total_prods = math.prod(len_list)
     print(f"{total_prods:.2e} products")
@@ -92,7 +93,7 @@ def enumerate_library(json_filename, num_to_select, outfile_name):
             product_smiles = Chem.MolToSmiles(product_mol)
             product_list.append(product_smiles)
     product_df = pd.DataFrame(product_list, columns=["SMILES"])
-    product_df.to_csv(outfile_name, index=False)
+    product_df.to_csv(outfile_name, index=False, compression="gzip")
 
 
 def exhaustive_baseline(json_filename, num_to_select=None, num_to_save=100, invert_score=False):
@@ -144,13 +145,45 @@ def exhaustive_benchmark(input_smiles_file, json_filename, output_filename, n_pr
         df_list.append(pd.DataFrame(r, columns=["SMILES", "val"]))
     pd.concat(df_list)
     result_df = pd.concat(df_list)
-    result_df.to_csv(output_filename, index=False)
+    result_df.to_csv(output_filename, index=False, compression="gzip")
+
+
+def main():
+    num_cpu = os.cpu_count()
+    action = sys.argv[1]
+    match action:
+        case "enumerate":
+            outfile_name = "quinazoline_1M.csv.gz"
+            json_file = "examples/quinazoline_fp_sim.json"
+            enumerate_library(json_file, outfile_name , num_to_select=100)
+            print(f"wrote {outfile_name}")
+        case "rocs":
+            outfile_name = "examples/quinazoline_1M_ROCS.csv.gz"
+            json_file = "examples/quinazoline_rocs.json"
+            exhaustive_benchmark("examples/quinazoline_1M.csv.gz",
+                                 json_file,
+                                 outfile_name,
+                                 n_proc=num_cpu)
+            print(f"wrote {outfile_name}")
+        case "tanimoto":
+            outfile_name = "examples/quinazoline_1M_tanimoto.csv.gz"
+            json_file = "examples/quinazoline_fp_sim.json"
+            exhaustive_benchmark("examples/quinazoline_1M.csv.gz",
+                                 json_file,
+                                 outfile_name,
+                                 n_proc=num_cpu)
+            print(f"wrote {outfile_name}")
+        case "docking":
+            outfile_name = "examples/quinazoline_1M_docking.csv.gz"
+            json_file = "examples/quinazoline_fp_sim.json"
+            exhaustive_benchmark("examples/quinazoline_1M.csv.gz",
+                                 json_file,
+                                 outfile_name,
+                                 n_proc=num_cpu)
+            print(f"wrote {outfile_name}")
+        case _:
+            print("argument must be one of [enumerate, rocs, tanimoto, docking]")
 
 
 if __name__ == "__main__":
-    num_cpu = os.cpu_count()
-    json_file = "examples/quinazoline_rocs.json"
-    exhaustive_benchmark("examples/quinazoline_1M.csv.gz",
-                         json_file,
-                         "examples/quinazoline_1M_ROCS.csv",
-                         n_proc=num_cpu)
+    main()
