@@ -178,7 +178,7 @@ def main():
             print(f"Wrote {outfile_name}")
         case "docking":
             outfile_name = "examples/quinazoline_1M_docking.csv.gz"
-            json_file = "examples/quinazoline_fp_sim.json"
+            json_file = "examples/quinazoline_docking.json"
             exhaustive_benchmark("examples/quinazoline_1M.csv.gz",
                                  json_file,
                                  outfile_name,
