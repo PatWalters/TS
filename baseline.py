@@ -4,7 +4,9 @@ import heapq
 import math
 import os
 import sys
+from datetime import timedelta
 from itertools import product
+from timeit import default_timer as timer
 
 import numpy as np
 import pandas as pd
@@ -149,14 +151,15 @@ def exhaustive_benchmark(input_smiles_file, json_filename, output_filename, n_pr
 
 
 def main():
+    start = timer()
     num_cpu = os.cpu_count()
     action = sys.argv[1]
     match action:
         case "enumerate":
             outfile_name = "quinazoline_1M.csv.gz"
             json_file = "examples/quinazoline_fp_sim.json"
-            enumerate_library(json_file, outfile_name , num_to_select=100)
-            print(f"wrote {outfile_name}")
+            enumerate_library(json_file, outfile_name, num_to_select=100)
+            print(f"Wrote {outfile_name}")
         case "rocs":
             outfile_name = "examples/quinazoline_1M_ROCS.csv.gz"
             json_file = "examples/quinazoline_rocs.json"
@@ -164,7 +167,7 @@ def main():
                                  json_file,
                                  outfile_name,
                                  n_proc=num_cpu)
-            print(f"wrote {outfile_name}")
+            print(f"Wrote {outfile_name}")
         case "tanimoto":
             outfile_name = "examples/quinazoline_1M_tanimoto.csv.gz"
             json_file = "examples/quinazoline_fp_sim.json"
@@ -172,7 +175,7 @@ def main():
                                  json_file,
                                  outfile_name,
                                  n_proc=num_cpu)
-            print(f"wrote {outfile_name}")
+            print(f"Wrote {outfile_name}")
         case "docking":
             outfile_name = "examples/quinazoline_1M_docking.csv.gz"
             json_file = "examples/quinazoline_fp_sim.json"
@@ -180,9 +183,11 @@ def main():
                                  json_file,
                                  outfile_name,
                                  n_proc=num_cpu)
-            print(f"wrote {outfile_name}")
+            print(f"Wrote {outfile_name}")
         case _:
             print("argument must be one of [enumerate, rocs, tanimoto, docking]")
+    end = timer()
+    print("Elapsed time", timedelta(seconds=end - start))
 
 
 if __name__ == "__main__":
