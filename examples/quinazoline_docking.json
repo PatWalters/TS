@@ -8,7 +8,9 @@
     "num_warmup_trials": 10,
     "num_ts_iterations": 10000,
     "evaluator_class_name": "FredEvaluator",
-    "evaluator_arg": "data/2zdt_receptor.oedu",
+    "evaluator_arg": {
+        "design_unit_file": "data/2zdt_receptor.oedu"
+    },
     "ts_mode": "maximize",
     "log_filename": "ts_logs.txt",
     "results_filename": "ts_results.csv"

@@ -47,8 +47,9 @@ class FPEvaluator(Evaluator):
     """An evaluator class that calculates a fingerprint Tanimoto to a reference molecule
     """
 
-    def __init__(self, ref_smiles):
-        self.ref_fp = uru.smi2morgan_fp(ref_smiles)
+    def __init__(self, input_dict):
+        self.ref_smiles = input_dict["query_smiles"]
+        self.ref_fp = uru.smi2morgan_fp(self.ref_smiles)
         self.num_evaluations = 0
 
     @property
@@ -65,7 +66,8 @@ class ROCSEvaluator(Evaluator):
     """An evaluator class that calculates a ROCS score to a reference molecule
     """
 
-    def __init__(self, ref_filename):
+    def __init__(self, input_dict):
+        ref_filename = input_dict['query_molfile']
         ref_fs = oechem.oemolistream(ref_filename)
         self.ref_mol = oechem.OEMol()
         oechem.OEReadMolecule(ref_fs, self.ref_mol)
@@ -124,7 +126,8 @@ class FredEvaluator(Evaluator):
     """An evaluator class that docks a molecule with the OEDocking Toolkit and returns the score
     """
 
-    def __init__(self, du_file):
+    def __init__(self, input_dict):
+        du_file = input_dict["design_unit_file"]
         if not os.path.isfile(du_file):
             raise FileNotFoundError(f"{du_file} was not found or is a directory")
         self.dock = read_design_unit(du_file)

@@ -95,7 +95,7 @@ def enumerate_library(json_filename, outfile_name, num_to_select):
             product_smiles = Chem.MolToSmiles(product_mol)
             product_list.append(product_smiles)
     product_df = pd.DataFrame(product_list, columns=["SMILES"])
-    product_df.to_csv(outfile_name, index=False, compression="gzip")
+    product_df.to_csv(outfile_name, index=False)
 
 
 def exhaustive_baseline(json_filename, num_to_select=None, num_to_save=100, invert_score=False):
@@ -157,7 +157,7 @@ def main():
     match action:
         case "enumerate":
             outfile_name = "quinazoline_1M.csv.gz"
-            json_file = "examples/quinazoline_fp_sim.json"
+            json_file = "examples/quinazoline_fp_100.json"
             enumerate_library(json_file, outfile_name, num_to_select=100)
             print(f"Wrote {outfile_name}")
         case "rocs":

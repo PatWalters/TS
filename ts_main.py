@@ -80,7 +80,26 @@ def run_ts(input_dict: dict, hide_progress: bool = False) -> None:
             print(out_df.sort_values("score", ascending=True).drop_duplicates(subset="SMILES").head(10))
 
 
-if __name__ == "__main__":
+def run_10_cycles():
     json_file_name = sys.argv[1]
     input_dict = read_input(json_file_name)
-    run_ts(input_dict, hide_progress=True)
+    for i in range(0, 10):
+        input_dict['results_filename'] = f"ts_result_{i:03d}.csv"
+        run_ts(input_dict, hide_progress=False)
+
+
+def compare_iterations():
+    json_file_name = sys.argv[1]
+    input_dict = read_input(json_file_name)
+    for i in (2, 5, 10, 50, 100):
+        num_ts_iterations = i * 1000
+        input_dict["num_ts_iterations"] = num_ts_iterations
+        input_dict["results_filename"] = f"iteration_test_{i}K.csv"
+        run_ts(input_dict)
+
+
+if __name__ == "__main__":
+    json_filename = sys.argv[1]
+    output_filename = sys.argv[2]
+    input_dict = read_input(json_filename)
+    run_ts(input_dict, output_filename)
