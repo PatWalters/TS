@@ -7,7 +7,9 @@
     "num_warmup_trials": 3,
     "num_ts_iterations": 2000,
     "evaluator_class_name": "FPEvaluator",
-    "evaluator_arg": "COC(=O)[C@@H](O)CC(=O)Nc1nncc2ccccc12",
+    "evaluator_arg": {
+        "query_smiles": "COC(=O)[C@@H](O)CC(=O)Nc1nncc2ccccc12"
+    },
     "ts_mode": "maximize",
     "log_filename": "ts_logs.txt",
     "results_filename": "ts_results.csv"
