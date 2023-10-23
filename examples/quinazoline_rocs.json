@@ -13,5 +13,5 @@
     },
     "ts_mode": "maximize",
     "log_filename": "ts_logs.txt",
-    "results_filename": "ts_results.csv"
+    "results_filename": "quinazoline_rocs_results.csv"
 }
