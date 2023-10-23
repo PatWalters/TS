@@ -98,8 +98,11 @@ def compare_iterations():
         run_ts(input_dict)
 
 
-if __name__ == "__main__":
+def main():
     json_filename = sys.argv[1]
-    output_filename = sys.argv[2]
     input_dict = read_input(json_filename)
-    run_ts(input_dict, output_filename)
+    run_ts(input_dict)
+
+
+if __name__ == "__main__":
+    main()

@@ -93,8 +93,9 @@ def enumerate_library(json_filename, outfile_name, num_to_select):
             product_mol = prod[0][0]
             Chem.SanitizeMol(product_mol)
             product_smiles = Chem.MolToSmiles(product_mol)
-            product_list.append(product_smiles)
-    product_df = pd.DataFrame(product_list, columns=["SMILES"])
+            product_name = "_".join([x.reagent_name for x in reagents])
+            product_list.append([product_smiles, product_name])
+    product_df = pd.DataFrame(product_list, columns=["SMILES", "Name"])
     product_df.to_csv(outfile_name, index=False)
 
 
@@ -132,10 +133,10 @@ def evaluate_chunk(input_vals):
     df['chunk'] = df.index % num_chunks
     chunk_df = df.query("chunk == @chunk_id")
     result_list = []
-    for smi in chunk_df.SMILES.values:
+    for smi,name in chunk_df[["SMILES","Name"]].values:
         mol = Chem.MolFromSmiles(smi)
         res = evaluator.evaluate(mol)
-        result_list.append([smi, res])
+        result_list.append([smi, name, res])
     return result_list
 
 
@@ -144,7 +145,7 @@ def exhaustive_benchmark(input_smiles_file, json_filename, output_filename, n_pr
     res = process_map(evaluate_chunk, input_lst, max_workers=n_proc)
     df_list = []
     for r in res:
-        df_list.append(pd.DataFrame(r, columns=["SMILES", "val"]))
+        df_list.append(pd.DataFrame(r, columns=["SMILES", "Name", "val"]))
     pd.concat(df_list)
     result_df = pd.concat(df_list)
     result_df.to_csv(output_filename, index=False, compression="gzip")
@@ -156,7 +157,7 @@ def main():
     action = sys.argv[1]
     match action:
         case "enumerate":
-            outfile_name = "quinazoline_1M.csv.gz"
+            outfile_name = "examples/quinazoline_1M.csv.gz"
             json_file = "examples/quinazoline_fp_100.json"
             enumerate_library(json_file, outfile_name, num_to_select=100)
             print(f"Wrote {outfile_name}")
