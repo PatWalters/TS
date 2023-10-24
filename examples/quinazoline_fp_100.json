@@ -13,5 +13,5 @@
     },
     "ts_mode": "maximize",
     "log_filename": "ts_logs.txt",
-    "results_filename": "quinazoline_fp_100_results.csv.gz"
+    "results_filename": "examples/quinazoline_fp_100_results.csv.gz"
 }

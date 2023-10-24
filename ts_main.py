@@ -9,6 +9,9 @@ import pandas as pd
 from thompson_sampling import ThompsonSampler
 from ts_logger import get_logger
 
+from datetime import timedelta
+from timeit import default_timer as timer
+
 
 def read_input(json_filename: str) -> dict:
     """
@@ -69,15 +72,15 @@ def run_ts(input_dict: dict, hide_progress: bool = False) -> None:
     percent_searched = total_evaluations / ts.get_num_prods() * 100
     logger.info(f"{total_evaluations} evaluations | {percent_searched:.3f}% of total")
     # write the results to disk
-    out_df = pd.DataFrame(out_list, columns=["val", "SMILES"])
+    out_df = pd.DataFrame(out_list, columns=["val", "SMILES","Name"])
     if result_filename is not None:
         out_df.to_csv(result_filename, index=False)
         logger.info(f"Saved results to: {result_filename}")
     if not hide_progress:
         if ts_mode == "maximize":
-            print(out_df.sort_values("score", ascending=False).drop_duplicates(subset="SMILES").head(10))
+            print(out_df.sort_values("val", ascending=False).drop_duplicates(subset="SMILES").head(10))
         else:
-            print(out_df.sort_values("score", ascending=True).drop_duplicates(subset="SMILES").head(10))
+            print(out_df.sort_values("val", ascending=True).drop_duplicates(subset="SMILES").head(10))
 
 
 def run_10_cycles():
@@ -99,9 +102,12 @@ def compare_iterations():
 
 
 def main():
+    start = timer()
     json_filename = sys.argv[1]
     input_dict = read_input(json_filename)
     run_ts(input_dict)
+    end = timer()
+    print("Elapsed time", timedelta(seconds=end - start))
 
 
 if __name__ == "__main__":

@@ -87,6 +87,7 @@ class ThompsonSampler:
             component_reagent_list = self.reagent_lists[idx]
             selected_reagents.append(component_reagent_list[choice])
         prod = self.reaction.RunReactants([reagent.mol for reagent in selected_reagents])
+        product_name = "_".join([reagent.reagent_name for reagent in selected_reagents])
         res = -1
         product_smiles = "FAIL"
         if prod:
@@ -95,7 +96,7 @@ class ThompsonSampler:
             product_smiles = Chem.MolToSmiles(prod_mol)
             res = self.evaluator.evaluate(prod_mol)
             [reagent.add_score(res) for reagent in selected_reagents]
-        return product_smiles, res
+        return product_smiles, product_name, res
 
     def warm_up(self, num_warmup_trials=3):
         """Warm-up phase, each reagent is sampled with num_warmup_trials random partners
@@ -132,7 +133,7 @@ class ThompsonSampler:
                             # and select a random one
                             current_list[p] = np.nanargmax(selection_scores).item(0)
                     self._disallow_tracker.update(current_list)
-                    _, score = self.evaluate(current_list)
+                    _, _, score = self.evaluate(current_list)
                     warmup_scores.append(score)
         self.logger.info(
             f"warmup score stats: "
@@ -167,9 +168,9 @@ class ThompsonSampler:
                 selected_reagents[cycle_id] = self.pick_function(choice_row)
             self._disallow_tracker.update(selected_reagents)
             # Select a reagent for each component, according to the choice function
-            smiles, score = self.evaluate(selected_reagents)
-            out_list.append([score, smiles])
+            smiles, name, score = self.evaluate(selected_reagents)
+            out_list.append([score, smiles, name])
             if i % 100 == 0:
-                top_score, top_smiles = self._top_func(out_list)
+                top_score, top_smiles, top_name = self._top_func(out_list)
                 self.logger.info(f"Iteration: {i} max score: {top_score:2f} smiles: {top_smiles}")
         return out_list
