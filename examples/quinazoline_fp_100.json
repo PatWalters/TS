@@ -6,12 +6,12 @@
     ],
     "reaction_smarts": "N[c:4][c:3]C(O)=O.[#6:1][NH2].[#6:2]C(=O)[OH]>>[C:2]c1n[c:4][c:3]c(=O)n1[C:1]",
     "num_warmup_trials": 10,
-    "num_ts_iterations": 10000,
+    "num_ts_iterations": 50000,
     "evaluator_class_name": "FPEvaluator",
     "evaluator_arg": {
         "query_smiles": "CCc1cccc2c(=O)n(C3CNC3)c([C@@H](C)N)nc12"
     },
     "ts_mode": "maximize",
     "log_filename": "ts_logs.txt",
-    "results_filename": "quinzaoline_fp_100_results.csv"
+    "results_filename": "quinazoline_fp_100_results.csv.gz"
 }

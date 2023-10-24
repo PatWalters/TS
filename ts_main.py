@@ -69,7 +69,7 @@ def run_ts(input_dict: dict, hide_progress: bool = False) -> None:
     percent_searched = total_evaluations / ts.get_num_prods() * 100
     logger.info(f"{total_evaluations} evaluations | {percent_searched:.3f}% of total")
     # write the results to disk
-    out_df = pd.DataFrame(out_list, columns=["score", "SMILES"])
+    out_df = pd.DataFrame(out_list, columns=["val", "SMILES"])
     if result_filename is not None:
         out_df.to_csv(result_filename, index=False)
         logger.info(f"Saved results to: {result_filename}")
