@@ -2,18 +2,13 @@
 
 import heapq
 import math
-import os
-import sys
-from datetime import timedelta
 from itertools import product
-from timeit import default_timer as timer
 
 import numpy as np
 import pandas as pd
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from tqdm.auto import tqdm
-from tqdm.contrib.concurrent import process_map
 
 from ts_main import read_input, parse_input_dict
 from ts_utils import read_reagents
@@ -36,6 +31,11 @@ def keep_largest(items, n):
 
 
 def unpack_input_dict(input_dict, num_to_select=None):
+    """ Unpack the input dictionary and create the Evaluator object
+    :param input_dict:
+    :param num_to_select:
+    :return:
+    """
     if input_dict.get("evaluator_class") is None:
         parse_input_dict(input_dict)
     evaluator = input_dict["evaluator_class"]
@@ -86,25 +86,6 @@ def random_baseline(input_dict, num_trials, outfile_name, num_to_save=100, ascen
     score_df.sort_values(by="score", ascending=ascending_output).to_csv(outfile_name, index=False)
 
 
-def enumerate_library(json_filename, outfile_name, num_to_select):
-    _, rxn, reagent_lists = setup_baseline(json_filename, num_to_select)
-    len_list = [len(x) for x in reagent_lists]
-    total_prods = math.prod(len_list)
-    print(f"{total_prods:.2e} products")
-    product_list = []
-    for reagents in tqdm(product(*reagent_lists), total=total_prods):
-        reagent_mol_list = [x.mol for x in reagents]
-        prod = rxn.RunReactants(reagent_mol_list)
-        if len(prod):
-            product_mol = prod[0][0]
-            Chem.SanitizeMol(product_mol)
-            product_smiles = Chem.MolToSmiles(product_mol)
-            product_name = "_".join([x.reagent_name for x in reagents])
-            product_list.append([product_smiles, product_name])
-    product_df = pd.DataFrame(product_list, columns=["SMILES", "Name"])
-    product_df.to_csv(outfile_name, index=False)
-
-
 def exhaustive_baseline(json_filename, num_to_select=None, num_to_save=100, invert_score=False):
     """ Exhaustively combine all reagents
     :param json_filename: JSON file with parameters
@@ -130,72 +111,3 @@ def exhaustive_baseline(json_filename, num_to_select=None, num_to_save=100, inve
             score_list = keep_largest(score_list + [[score, product_smiles]], num_to_save)
     score_df = pd.DataFrame(score_list, columns=["score", "SMILES"])
     score_df.sort_values(by="score", ascending=False).to_csv("exhaustive_scores.csv", index=False)
-
-
-def evaluate_chunk(input_vals):
-    input_smiles_file, json_filename, chunk_id, num_chunks = input_vals
-    evaluator, _, _ = setup_baseline(json_filename)
-    df = pd.read_csv(input_smiles_file)
-    df['chunk'] = df.index % num_chunks
-    chunk_df = df.query("chunk == @chunk_id")
-    result_list = []
-    for smi, name in chunk_df[["SMILES", "Name"]].values:
-        mol = Chem.MolFromSmiles(smi)
-        res = evaluator.evaluate(mol)
-        result_list.append([smi, name, res])
-    return result_list
-
-
-def exhaustive_benchmark(input_smiles_file, json_filename, output_filename, n_proc):
-    input_lst = [(input_smiles_file, json_filename, i, n_proc) for i in range(0, n_proc)]
-    res = process_map(evaluate_chunk, input_lst, max_workers=n_proc)
-    df_list = []
-    for r in res:
-        df_list.append(pd.DataFrame(r, columns=["SMILES", "Name", "val"]))
-    pd.concat(df_list)
-    result_df = pd.concat(df_list)
-    result_df.to_csv(output_filename, index=False, compression="gzip")
-
-
-def main():
-    start = timer()
-    num_cpu = os.cpu_count()
-    action = sys.argv[1]
-    match action:
-        case "enumerate":
-            outfile_name = "examples/quinazoline_1M.csv.gz"
-            json_file = "examples/quinazoline_fp_100.json"
-            enumerate_library(json_file, outfile_name, num_to_select=100)
-            print(f"Wrote {outfile_name}")
-        case "rocs":
-            outfile_name = "examples/quinazoline_1M_ROCS.csv.gz"
-            json_file = "examples/quinazoline_rocs.json"
-            exhaustive_benchmark("examples/quinazoline_1M.csv.gz",
-                                 json_file,
-                                 outfile_name,
-                                 n_proc=num_cpu)
-            print(f"Wrote {outfile_name}")
-        case "tanimoto":
-            outfile_name = "examples/quinazoline_1M_tanimoto.csv.gz"
-            json_file = "examples/quinazoline_fp_sim.json"
-            exhaustive_benchmark("examples/quinazoline_1M.csv.gz",
-                                 json_file,
-                                 outfile_name,
-                                 n_proc=num_cpu)
-            print(f"Wrote {outfile_name}")
-        case "docking":
-            outfile_name = "examples/quinazoline_1M_docking.csv.gz"
-            json_file = "examples/quinazoline_docking.json"
-            exhaustive_benchmark("examples/quinazoline_1M.csv.gz",
-                                 json_file,
-                                 outfile_name,
-                                 n_proc=num_cpu)
-            print(f"Wrote {outfile_name}")
-        case _:
-            print("argument must be one of [enumerate, rocs, tanimoto, docking]")
-    end = timer()
-    print("Elapsed time", timedelta(seconds=end - start))
-
-
-if __name__ == "__main__":
-    main()
