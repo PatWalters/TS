@@ -15,7 +15,7 @@ from rdkit.Chem import AllChem
 from tqdm.auto import tqdm
 from tqdm.contrib.concurrent import process_map
 
-from ts_main import read_input
+from ts_main import read_input, parse_input_dict
 from ts_utils import read_reagents
 
 
@@ -35,14 +35,9 @@ def keep_largest(items, n):
     return heap
 
 
-def setup_baseline(json_filename, num_to_select=None):
-    """ Common code for baseline methods, reads JSON input and creates necessary objects
-    :param json_filename: JSON file with configuration options
-    :param num_to_select: number of reagents to use with exhaustive search. Set to a lower values for development.
-    Setting to None uses all reagents.
-    :return: evaluator class, RDKit reaction, list of lists with reagents
-    """
-    input_dict = read_input(json_filename)
+def unpack_input_dict(input_dict, num_to_select=None):
+    if input_dict.get("evaluator_class") is None:
+        parse_input_dict(input_dict)
     evaluator = input_dict["evaluator_class"]
     reaction_smarts = input_dict["reaction_smarts"]
     reagent_file_list = input_dict["reagent_file_list"]
@@ -51,15 +46,26 @@ def setup_baseline(json_filename, num_to_select=None):
     return evaluator, rxn, reagent_lists
 
 
-def random_baseline(json_filename, num_trials, num_to_save=100, ascending_output=False):
+def setup_baseline(json_filename, num_to_select=None):
+    """ Common code for baseline methods, reads JSON input and creates necessary objects
+    :param json_filename: JSON file with configuration options
+    :param num_to_select: number of reagents to use with exhaustive search. Set to a lower values for development.
+    Setting to None uses all reagents.
+    :return: evaluator class, RDKit reaction, list of lists with reagents
+    """
+    input_dict = read_input(json_filename, num_to_select)
+    return unpack_input_dict(input_dict)
+
+
+def random_baseline(input_dict, num_trials, outfile_name, num_to_save=100, ascending_output=False):
     """ Randomly combine reagents
     :param json_filename: JSON file with parameters
-    :param num_trials: number of molecules ot generate
+    :param num_trials: number of molecules to generate
     :param num_to_save: number of molecules to save to the output csv file
     :param ascending_output: save the output in ascending order
     """
     score_list = []
-    evaluator, rxn, reagent_lists = setup_baseline(json_filename, None)
+    evaluator, rxn, reagent_lists = unpack_input_dict(input_dict)
     num_reagents = len(reagent_lists)
     len_list = [len(x) for x in reagent_lists]
     total_prods = math.prod(len_list)
@@ -77,7 +83,7 @@ def random_baseline(json_filename, num_trials, num_to_save=100, ascending_output
             product_smiles = Chem.MolToSmiles(product_mol)
             score_list = keep_largest(score_list + [[score, product_smiles]], num_to_save)
     score_df = pd.DataFrame(score_list, columns=["score", "SMILES"])
-    score_df.sort_values(by="score", ascending=ascending_output).to_csv("random_scores.csv", index=False)
+    score_df.sort_values(by="score", ascending=ascending_output).to_csv(outfile_name, index=False)
 
 
 def enumerate_library(json_filename, outfile_name, num_to_select):
@@ -133,7 +139,7 @@ def evaluate_chunk(input_vals):
     df['chunk'] = df.index % num_chunks
     chunk_df = df.query("chunk == @chunk_id")
     result_list = []
-    for smi,name in chunk_df[["SMILES","Name"]].values:
+    for smi, name in chunk_df[["SMILES", "Name"]].values:
         mol = Chem.MolFromSmiles(smi)
         res = evaluator.evaluate(mol)
         result_list.append([smi, name, res])

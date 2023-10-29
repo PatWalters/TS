@@ -72,15 +72,16 @@ def run_ts(input_dict: dict, hide_progress: bool = False) -> None:
     percent_searched = total_evaluations / ts.get_num_prods() * 100
     logger.info(f"{total_evaluations} evaluations | {percent_searched:.3f}% of total")
     # write the results to disk
-    out_df = pd.DataFrame(out_list, columns=["val", "SMILES","Name"])
+    out_df = pd.DataFrame(out_list, columns=["score", "SMILES","Name"])
     if result_filename is not None:
         out_df.to_csv(result_filename, index=False)
         logger.info(f"Saved results to: {result_filename}")
     if not hide_progress:
         if ts_mode == "maximize":
-            print(out_df.sort_values("val", ascending=False).drop_duplicates(subset="SMILES").head(10))
+            print(out_df.sort_values("score", ascending=False).drop_duplicates(subset="SMILES").head(10))
         else:
-            print(out_df.sort_values("val", ascending=True).drop_duplicates(subset="SMILES").head(10))
+            print(out_df.sort_values("score", ascending=True).drop_duplicates(subset="SMILES").head(10))
+    return out_df
 
 
 def run_10_cycles():

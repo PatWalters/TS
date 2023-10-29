@@ -14,6 +14,7 @@ except ImportError:
     warnings.warn(f"Openeye packages not available in this environment; do not attempt to use ROCSEvaluator or "
                   f"FredEvaluator")
 from rdkit import Chem, DataStructs
+import pandas as pd
 
 
 class Evaluator(ABC):
@@ -122,6 +123,27 @@ class ROCSEvaluator(Evaluator):
         return score.GetTanimotoCombo()
 
 
+class LookupEvaluator(Evaluator):
+    """A simple evaluation class that looks up values from a file.
+    This is primarily used for testing.
+    """
+
+    def __init__(self, input_dictionary):
+        self.num_evaluations = 0
+        ref_filename = input_dictionary['ref_filename']
+        ref_df = pd.read_csv(ref_filename)
+        self.ref_dict = dict([(a, b) for a, b in ref_df[['SMILES', 'val']].values])
+
+    @property
+    def counter(self):
+        return self.num_evaluations
+
+    def evaluate(self, mol):
+        self.num_evaluations += 1
+        smi = Chem.MolToSmiles(mol)
+        return self.ref_dict[smi]
+
+
 class FredEvaluator(Evaluator):
     """An evaluator class that docks a molecule with the OEDocking Toolkit and returns the score
     """
@@ -187,6 +209,10 @@ def generate_confs(mol, max_confs):
 
 
 def read_design_unit(filename):
+    """Read an OpenEye design unit
+    :param filename: design unit filename (.oedu)
+    :return: a docking grid
+    """
     du = oechem.OEDesignUnit()
     rfs = oechem.oeifstream()
     if not rfs.open(filename):
@@ -204,6 +230,9 @@ def read_design_unit(filename):
 
 
 def test_fred_eval():
+    """Test function for the Fred docking Evaluator
+    :return: None
+    """
     fred_eval = FredEvaluator("data/2zdt_receptor.oedu")
     smi = "CCSc1ncc2c(=O)n(-c3c(C)nc4ccccn34)c(-c3[nH]nc(C)c3F)nc2n1"
     mol = Chem.MolFromSmiles(smi)
@@ -212,6 +241,9 @@ def test_fred_eval():
 
 
 def test_rocs_eval():
+    """Test function for the ROCS evaluator
+    :return: None
+    """
     rocs_eval = ROCSEvaluator("data/2chw_lig.sdf")
     smi = "CCSc1ncc2c(=O)n(-c3c(C)nc4ccccn34)c(-c3[nH]nc(C)c3F)nc2n1"
     mol = Chem.MolFromSmiles(smi)
