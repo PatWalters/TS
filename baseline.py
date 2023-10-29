@@ -53,13 +53,14 @@ def setup_baseline(json_filename, num_to_select=None):
     Setting to None uses all reagents.
     :return: evaluator class, RDKit reaction, list of lists with reagents
     """
-    input_dict = read_input(json_filename, num_to_select)
-    return unpack_input_dict(input_dict)
+    input_dict = read_input(json_filename)
+    return unpack_input_dict(input_dict, num_to_select=num_to_select)
 
 
-def random_baseline(input_dict, num_trials, outfile_name, num_to_save=100, ascending_output=False):
+def random_baseline(input_dict, num_trials, outfile_name="random_scores.csv", num_to_save=100, ascending_output=False):
     """ Randomly combine reagents
-    :param json_filename: JSON file with parameters
+    :param input_dict: dictionary with parameters from the JSON file
+    :param outfile_name: output filename
     :param num_trials: number of molecules to generate
     :param num_to_save: number of molecules to save to the output csv file
     :param ascending_output: save the output in ascending order
@@ -86,15 +87,15 @@ def random_baseline(input_dict, num_trials, outfile_name, num_to_save=100, ascen
     score_df.sort_values(by="score", ascending=ascending_output).to_csv(outfile_name, index=False)
 
 
-def exhaustive_baseline(json_filename, num_to_select=None, num_to_save=100, invert_score=False):
+def exhaustive_baseline(input_dict, num_to_select=None, num_to_save=100, invert_score=False):
     """ Exhaustively combine all reagents
-    :param json_filename: JSON file with parameters
+    :param input_dict: parameters from the input JSON file
     :param num_to_select: Number of reagents to use, set to a lower number for development.  Set to None to use all.
     :param num_to_save: number of molecules to save to the output csv file
-    :param ascending_output: save the output in ascending order
+    :param invert_score: set to True when more negative values are better
     """
     score_list = []
-    evaluator, rxn, reagent_lists = setup_baseline(json_filename, num_to_select)
+    evaluator, rxn, reagent_lists = unpack_input_dict(input_dict, num_to_select)
     len_list = [len(x) for x in reagent_lists]
     total_prods = math.prod(len_list)
     print(f"{total_prods:.2e} products")
@@ -111,3 +112,16 @@ def exhaustive_baseline(json_filename, num_to_select=None, num_to_save=100, inve
             score_list = keep_largest(score_list + [[score, product_smiles]], num_to_save)
     score_df = pd.DataFrame(score_list, columns=["score", "SMILES"])
     score_df.sort_values(by="score", ascending=False).to_csv("exhaustive_scores.csv", index=False)
+
+
+def main():
+    num_to_select = 50
+    input_dict = read_input("examples/quinazoline_fp_sim.json")
+    # enumerate 1M molecules
+    exhaustive_baseline(input_dict, num_to_select=num_to_select)
+    # enumerate 50K random molecules
+    random_baseline(input_dict, num_trials=50000)
+
+
+if __name__ == "__main__":
+    main()
