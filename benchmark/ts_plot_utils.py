@@ -7,6 +7,9 @@ import seaborn as sns
 from rdkit import Chem
 
 
+# functions to generate plots for the paper.
+# It probably would have been better to generalize this into a couple of functions
+
 def smi2cansmi(smi_in):
     mol = Chem.MolFromSmiles(smi_in)
     return Chem.MolToSmiles(mol)

@@ -3,14 +3,13 @@
 import importlib
 import json
 import sys
+from datetime import timedelta
+from timeit import default_timer as timer
 
 import pandas as pd
 
 from thompson_sampling import ThompsonSampler
 from ts_logger import get_logger
-
-from datetime import timedelta
-from timeit import default_timer as timer
 
 
 def read_input(json_filename: str) -> dict:
@@ -72,7 +71,7 @@ def run_ts(input_dict: dict, hide_progress: bool = False) -> None:
     percent_searched = total_evaluations / ts.get_num_prods() * 100
     logger.info(f"{total_evaluations} evaluations | {percent_searched:.3f}% of total")
     # write the results to disk
-    out_df = pd.DataFrame(out_list, columns=["score", "SMILES","Name"])
+    out_df = pd.DataFrame(out_list, columns=["score", "SMILES", "Name"])
     if result_filename is not None:
         out_df.to_csv(result_filename, index=False)
         logger.info(f"Saved results to: {result_filename}")
@@ -85,6 +84,9 @@ def run_ts(input_dict: dict, hide_progress: bool = False) -> None:
 
 
 def run_10_cycles():
+    """ A testing function for the paper
+    :return: None
+    """
     json_file_name = sys.argv[1]
     input_dict = read_input(json_file_name)
     for i in range(0, 10):
@@ -93,6 +95,9 @@ def run_10_cycles():
 
 
 def compare_iterations():
+    """ A testing function for the paper
+    :return:
+    """
     json_file_name = sys.argv[1]
     input_dict = read_input(json_file_name)
     for i in (2, 5, 10, 50, 100):

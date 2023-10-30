@@ -12,6 +12,8 @@ from baseline import random_baseline
 from tqdm.auto import tqdm
 
 
+# Benchmark functions used to generate data for the figures for the paper
+
 def compare_warmup_cycles(input_dict, base_name, num_cycles=10, warmup_trial_list=[3, 10]):
     for i in tqdm(range(0, num_cycles)):
         for num_warmup_trials in warmup_trial_list:
@@ -37,7 +39,7 @@ def run_random_trials(input_dict, num_random_cycles=10, num_warmup_trials=10, nu
     input_dict["num_warmup_trials"] = num_warmup_trials
     input_dict["num_ts_iterations"] = num_ts_iterations
     for i in range(0, num_random_cycles):
-        random_baseline(input_dict, num_trials=num_ts_iterations, outfile_name=f"benchmark_data/ts_random_{i+1}.csv")
+        random_baseline(input_dict, num_trials=num_ts_iterations, outfile_name=f"benchmark_data/ts_random_{i + 1}.csv")
 
 
 quinazoline_json = """{
@@ -61,8 +63,8 @@ def main():
     os.makedirs("benchmark_data", exist_ok=True)
     quinazoline_dict = json.loads(quinazoline_json)
     parse_input_dict(quinazoline_dict)
-    #run_iteration_trials(quinazoline_dict, "quinazoline")
-    #compare_warmup_cycles(quinazoline_dict, "quinazoline")
+    run_iteration_trials(quinazoline_dict, "quinazoline")
+    compare_warmup_cycles(quinazoline_dict, "quinazoline")
     run_random_trials(quinazoline_dict)
 
 
