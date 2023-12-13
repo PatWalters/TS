@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import sys
 import heapq
 import math
 from itertools import product
@@ -101,26 +102,28 @@ def exhaustive_baseline(input_dict, num_to_select=None, num_to_save=100, invert_
     print(f"{total_prods:.2e} products")
     for reagents in tqdm(product(*reagent_lists), total=total_prods):
         reagent_mol_list = [x.mol for x in reagents]
+        reagent_name_list = [x.reagent_name for  x in reagents]
         prod = rxn.RunReactants(reagent_mol_list)
         if len(prod):
             product_mol = prod[0][0]
             Chem.SanitizeMol(product_mol)
             product_smiles = Chem.MolToSmiles(product_mol)
+            product_name = "_".join(reagent_name_list)
             score = evaluator.evaluate(product_mol)
             if invert_score:
                 score = score * -1.0
-            score_list = keep_largest(score_list + [[score, product_smiles]], num_to_save)
-    score_df = pd.DataFrame(score_list, columns=["score", "SMILES"])
+            score_list = keep_largest(score_list + [[score, product_smiles,product_name]], num_to_save)
+    score_df = pd.DataFrame(score_list, columns=["score", "SMILES","Name"])
     score_df.sort_values(by="score", ascending=False).to_csv("exhaustive_scores.csv", index=False)
 
 
 def main():
     num_to_select = 50
-    input_dict = read_input("examples/quinazoline_fp_sim.json")
-    # enumerate 1M molecules
-    exhaustive_baseline(input_dict, num_to_select=num_to_select)
+    input_dict = read_input(sys.argv[1])
+    num_to_select = -1
+    exhaustive_baseline(input_dict, num_to_select=num_to_select,num_to_save=10000)
     # enumerate 50K random molecules
-    random_baseline(input_dict, num_trials=50000)
+#    random_baseline(input_dict, num_trials=50000)
 
 
 if __name__ == "__main__":
