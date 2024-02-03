@@ -46,7 +46,7 @@ Create a new conda environment and install rdkit:
 `conda create -c conda-forge -n <your-env-name> rdkit`
 
 Activate your environment and install the rest of the requirements:
-`conda activate <your-env-name`
+`conda activate <your-env-name>`
 `pip install -r requirements.txt`
 
 Optionally: install Openeye [toolkits](https://docs.eyesopen.com/toolkits/python/quickstart-python/install.html) to use
@@ -63,7 +63,7 @@ Or try one of the example queries:
 
 `python ts_main.py examples/amide_fp_sim.json`
 
-or 
+or
 
 `python ts_main.py examples/quinazoline_fp_sim.json`
 
@@ -95,7 +95,3 @@ set a minimum uncertainty > 0 so that the prior can be updated. Increasing this 
 decreasing it will lead to more exploitation. We recommend starting with ~10% of the range of the scoring function. If
 not set, a default of 0.1 is used.
 - `log_filename`: Optional. Log filename to save logs to. If not set, logging will be printed to stdout.
-
-
-
-
