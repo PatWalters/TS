@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import sys
 import heapq
 import math
 from itertools import product
@@ -47,6 +46,25 @@ def unpack_input_dict(input_dict, num_to_select=None):
     return evaluator, rxn, reagent_lists
 
 
+def enumerate_library(json_filename, outfile_name, num_to_select):
+    _, rxn, reagent_lists = setup_baseline(json_filename, num_to_select)
+    len_list = [len(x) for x in reagent_lists]
+    total_prods = math.prod(len_list)
+    print(f"{total_prods:.2e} products")
+    product_list = []
+    for reagents in tqdm(product(*reagent_lists), total=total_prods):
+        reagent_mol_list = [x.mol for x in reagents]
+        prod = rxn.RunReactants(reagent_mol_list)
+        if len(prod):
+            product_mol = prod[0][0]
+            Chem.SanitizeMol(product_mol)
+            product_smiles = Chem.MolToSmiles(product_mol)
+            product_name = "_".join([x.reagent_name for x in reagents])
+            product_list.append([product_smiles, product_name])
+    product_df = pd.DataFrame(product_list, columns=["SMILES", "Name"])
+    product_df.to_csv(outfile_name, index=False)
+
+
 def setup_baseline(json_filename, num_to_select=None):
     """ Common code for baseline methods, reads JSON input and creates necessary objects
     :param json_filename: JSON file with configuration options
@@ -74,17 +92,20 @@ def random_baseline(input_dict, num_trials, outfile_name="random_scores.csv", nu
     print(f"{total_prods:.2e} products")
     for i in tqdm(range(0, num_trials)):
         reagent_mol_list = []
+        reagen_name_list = []
         for j in range(0, num_reagents):
             reagent_idx = np.random.randint(0, len_list[j] - 1)
             reagent_mol_list.append(reagent_lists[j][reagent_idx].mol)
+            reagen_name_list.append(reagent_lists[j][reagent_idx].reagent_name)
         prod = rxn.RunReactants(reagent_mol_list)
         if len(prod):
             product_mol = prod[0][0]
             Chem.SanitizeMol(product_mol)
             score = evaluator.evaluate(product_mol)
             product_smiles = Chem.MolToSmiles(product_mol)
-            score_list = keep_largest(score_list + [[score, product_smiles]], num_to_save)
-    score_df = pd.DataFrame(score_list, columns=["score", "SMILES"])
+            product_name = "_".join(reagen_name_list)
+            score_list = keep_largest(score_list + [[product_smiles, product_name, score]], num_to_save)
+    score_df = pd.DataFrame(score_list, columns=["SMILES", "Name", "score"]).round(3)
     score_df.sort_values(by="score", ascending=ascending_output).to_csv(outfile_name, index=False)
 
 
@@ -102,28 +123,25 @@ def exhaustive_baseline(input_dict, num_to_select=None, num_to_save=100, invert_
     print(f"{total_prods:.2e} products")
     for reagents in tqdm(product(*reagent_lists), total=total_prods):
         reagent_mol_list = [x.mol for x in reagents]
-        reagent_name_list = [x.reagent_name for  x in reagents]
         prod = rxn.RunReactants(reagent_mol_list)
         if len(prod):
             product_mol = prod[0][0]
             Chem.SanitizeMol(product_mol)
             product_smiles = Chem.MolToSmiles(product_mol)
-            product_name = "_".join(reagent_name_list)
             score = evaluator.evaluate(product_mol)
             if invert_score:
                 score = score * -1.0
-            score_list = keep_largest(score_list + [[score, product_smiles,product_name]], num_to_save)
-    score_df = pd.DataFrame(score_list, columns=["score", "SMILES","Name"])
+            score_list = keep_largest(score_list + [[score, product_smiles]], num_to_save)
+    score_df = pd.DataFrame(score_list, columns=["score", "SMILES"])
     score_df.sort_values(by="score", ascending=False).to_csv("exhaustive_scores.csv", index=False)
 
 
 def main():
-    num_to_select = 50
-    input_dict = read_input(sys.argv[1])
     num_to_select = -1
-    exhaustive_baseline(input_dict, num_to_select=num_to_select,num_to_save=10000)
+    input_dict = read_input("examples/quinazoline_fp_sim.json")
+    # exhaustive_baseline(input_dict, num_to_select=num_to_select)
     # enumerate 50K random molecules
-#    random_baseline(input_dict, num_trials=50000)
+    random_baseline(input_dict, num_trials=50000, num_to_save=50000)
 
 
 if __name__ == "__main__":
