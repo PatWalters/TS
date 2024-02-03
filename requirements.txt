@@ -4,3 +4,6 @@ rdkit>=2022.03
 tqdm>=4.65
 useful-rdkit-utils>=0.2.7
 pillow>=9.5  # See discussion here https://github.com/python-pillow/Pillow/issues/6179#issuecomment-1673988403
+jupyter
+scikit-learn
+seaborn
