@@ -40,7 +40,7 @@ The scores and SMILES string for each molecule made and scored are saved and (op
 
 **thompson_sampling.py** - Contains the ThompsonSampling class that runs Thompson Sampling
 
-# Setting up the environment for running Thompson Sampling
+### Setting up the environment for running Thompson Sampling
 
 Create a new conda environment and install rdkit:
 `conda create -c conda-forge -n <your-env-name> rdkit`
@@ -55,7 +55,7 @@ ROCS scoring function.
 Construct a json file with the desired parameters for your run, see example json files in the `examples` directory. See
 required and optional parameter explanations below.
 
-**How to run Thompson Sampling**
+### How to run Thompson Sampling
 
 `python ts_main.py <path-to-json-params-file>.json`
 
@@ -68,7 +68,7 @@ or
 `python ts_main.py examples/quinazoline_fp_sim.json`
 
 
-**Parameters**
+### Parameters
 
 Required params:
 - `evaluator_arg`: The argument to be passed to the instantiation of the evaluator (e.g. smiles string of the query
