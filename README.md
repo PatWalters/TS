@@ -40,7 +40,7 @@ The scores and SMILES string for each molecule made and scored are saved and (op
 
 **thompson_sampling.py** - Contains the ThompsonSampling class that runs Thompson Sampling
 
-**Setting up the environment for running Thompson Sampling**
+# Setting up the environment for running Thompson Sampling
 
 Create a new conda environment and install rdkit:
 `conda create -c conda-forge -n <your-env-name> rdkit`
