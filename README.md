@@ -1,5 +1,7 @@
 # Thompson Sampling for Virtual Screening
 
+This repo accompanies our paper ["Thompson Sampling─An Efficient Method for Searching Ultralarge Synthesis on Demand Databases"](https://pubs.acs.org/doi/10.1021/acs.jcim.3c01790)
+
 Thompson Sampling
 is an active learning strategy that balances the tradeoff between exploitation and exploration. The code in this
 repository implements Thompson Sampling as an efficient searching algorithm for screening large, un-enumerated
