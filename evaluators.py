@@ -9,6 +9,7 @@ try:
     from openeye import oeomega
     from openeye import oeshape
     from openeye import oedocking
+    import joblib
 except ImportError:
     # Since openeye is a commercial software package, just pass with a warning if not available
     warnings.warn(f"Openeye packages not available in this environment; do not attempt to use ROCSEvaluator or "
@@ -233,7 +234,8 @@ def test_fred_eval():
     """Test function for the Fred docking Evaluator
     :return: None
     """
-    fred_eval = FredEvaluator("data/2zdt_receptor.oedu")
+    input_dict = {"design_unit_file": "data/2zdt_receptor.oedu"}
+    fred_eval = FredEvaluator(input_dict)
     smi = "CCSc1ncc2c(=O)n(-c3c(C)nc4ccccn34)c(-c3[nH]nc(C)c3F)nc2n1"
     mol = Chem.MolFromSmiles(smi)
     score = fred_eval.evaluate(mol)
@@ -244,12 +246,43 @@ def test_rocs_eval():
     """Test function for the ROCS evaluator
     :return: None
     """
-    rocs_eval = ROCSEvaluator("data/2chw_lig.sdf")
+    input_dict = {"query_molfile": "data/2chw_lig.sdf"}
+    rocs_eval = ROCSEvaluator(input_dict)
     smi = "CCSc1ncc2c(=O)n(-c3c(C)nc4ccccn34)c(-c3[nH]nc(C)c3F)nc2n1"
     mol = Chem.MolFromSmiles(smi)
     combo_score = rocs_eval.evaluate(mol)
     print(combo_score)
 
 
+class MLClassifierEvaluator(Evaluator):
+    """An evaluator class the calculates a score based on a trained ML model
+    """
+
+    def __init__(self, input_dict):
+        self.cls = joblib.load(input_dict["model_filename"])
+        self.num_evaluations = 0
+
+    @property
+    def counter(self):
+        return self.num_evaluations
+
+    def evaluate(self, mol):
+        self.num_evaluations += 1
+        fp = uru.mol2morgan_fp(mol)
+        return self.cls.predict_proba([fp])[:,1][0]
+
+
+def test_ml_classifier_eval():
+    """Test function for the ML Classifier Evaluator
+    :return: None
+    """
+    input_dict = {"model_filename": "mapk1_modl.pkl"}
+    ml_cls_eval = MLClassifierEvaluator(input_dict)
+    smi = "CCSc1ncc2c(=O)n(-c3c(C)nc4ccccn34)c(-c3[nH]nc(C)c3F)nc2n1"
+    mol = Chem.MolFromSmiles(smi)
+    score = ml_cls_eval.evaluate(mol)
+    print(score)
+
+
 if __name__ == "__main__":
-    test_fred_eval()
+    test_rocs_eval()
