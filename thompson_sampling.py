@@ -1,6 +1,7 @@
-import math
 from typing import List, Optional, Tuple
 
+import functools
+import math
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem import AllChem
@@ -10,6 +11,7 @@ from disallow_tracker import DisallowTracker
 from reagent import Reagent
 from ts_logger import get_logger
 from ts_utils import read_reagents
+
 
 
 class ThompsonSampler:
@@ -34,8 +36,35 @@ class ThompsonSampler:
         elif self._mode == "minimize":
             self.pick_function = np.nanargmin
             self._top_func = min
+        elif self._mode == "maximize_boltzmann":
+            # See documentation for _boltzmann_reweighted_pick
+            self.pick_function = functools.partial(self._boltzmann_reweighted_pick)
+            self._top_func = max
+        elif self._mode == "minimize_boltzmann":
+            # See documentation for _boltzmann_reweighted_pick
+            self.pick_function = functools.partial(self._boltzmann_reweighted_pick)
+            self._top_func = min
         else:
             raise ValueError(f"{mode} is not a supported argument")
+        self._warmup_std = None
+
+    def _boltzmann_reweighted_pick(self, scores: np.ndarray):
+        """Rather than choosing the top sampled score, use a reweighted probability.
+
+        Zhao, H., Nittinger, E. & Tyrchan, C. Enhanced Thompson Sampling by Roulette
+        Wheel Selection for Screening Ultra-Large Combinatorial Libraries.
+        bioRxiv 2024.05.16.594622 (2024) doi:10.1101/2024.05.16.594622
+        suggested several modifications to the Thompson Sampling procedure.
+        This method implements one of those, namely a Boltzmann style probability distribution
+        from the sampled values. The reagent is chosen based on that distribution rather than
+        simply the max sample.
+        """
+        if self._mode == "minimize_boltzmann":
+            scores = -scores
+        exp_terms = np.exp(scores / self._warmup_std)
+        probs = exp_terms / np.nansum(exp_terms)
+        probs[np.isnan(probs)] = 0.0
+        return np.random.choice(probs.shape[0], p=probs)
 
     def set_hide_progress(self, hide_progress: bool) -> None:
         """
@@ -145,6 +174,7 @@ class ThompsonSampler:
         # initialize each reagent
         prior_mean = np.mean(warmup_scores)
         prior_std = np.std(warmup_scores)
+        self._warmup_std = prior_std
         for i in range(0, len(self.reagent_lists)):
             for j in range(0, len(self.reagent_lists[i])):
                 reagent = self.reagent_lists[i][j]
