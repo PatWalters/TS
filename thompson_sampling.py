@@ -123,7 +123,7 @@ class ThompsonSampler:
             prod_mol = prod[0][0]  # RunReactants returns Tuple[Tuple[Mol]]
             Chem.SanitizeMol(prod_mol)
             product_smiles = Chem.MolToSmiles(prod_mol)
-            res = self.evaluator.evaluate(product_name)
+            res = self.evaluator.evaluate(prod_mol)
             if np.isfinite(res):
                 [reagent.add_score(res) for reagent in selected_reagents]
         return product_smiles, product_name, res
@@ -186,7 +186,7 @@ class ThompsonSampler:
                 except ValueError:
                     self.logger.info(f"Skipping reagent {reagent.reagent_name} because there were no successful evaluations during warmup")
                     self._disallow_tracker.retire_one_synthon(i, j)
-        self.logger.info(f"Top score found during warmup: {max([ws[0] for ws in warmup_scores]):.3f}")
+        self.logger.info(f"Top score found during warmup: {max(warmup_scores):.3f}")
         return warmup_results
 
     def search(self, num_cycles=25):
