@@ -106,7 +106,7 @@ class ThompsonSampler:
         """
         self.reaction = AllChem.ReactionFromSmarts(rxn_smarts)
 
-    def evaluate(self, choice_list: List[int]) -> Tuple[str, float]:
+    def evaluate(self, choice_list: List[int]) -> Tuple[str, str, float]:
         """Evaluate a set of reagents
         :param choice_list: list of reagent ids
         :return: smiles for the reaction product, score for the reaction product
@@ -117,14 +117,15 @@ class ThompsonSampler:
             selected_reagents.append(component_reagent_list[choice])
         prod = self.reaction.RunReactants([reagent.mol for reagent in selected_reagents])
         product_name = "_".join([reagent.reagent_name for reagent in selected_reagents])
-        res = -1
+        res = np.nan
         product_smiles = "FAIL"
         if prod:
             prod_mol = prod[0][0]  # RunReactants returns Tuple[Tuple[Mol]]
             Chem.SanitizeMol(prod_mol)
             product_smiles = Chem.MolToSmiles(prod_mol)
             res = self.evaluator.evaluate(prod_mol)
-            [reagent.add_score(res) for reagent in selected_reagents]
+            if np.isfinite(res):
+                [reagent.add_score(res) for reagent in selected_reagents]
         return product_smiles, product_name, res
 
     def warm_up(self, num_warmup_trials=3):
@@ -135,7 +136,7 @@ class ThompsonSampler:
         idx_list = list(range(0, len(self.reagent_lists)))
         # get the number of reagents for each component in the reaction
         reagent_count_list = [len(x) for x in self.reagent_lists]
-        warmup_scores = []
+        warmup_results = []
         for i in idx_list:
             partner_list = [x for x in idx_list if x != i]
             # The number of reagents for this component
@@ -161,9 +162,12 @@ class ThompsonSampler:
                             selection_scores[list(disallow_mask)] = np.NaN
                             # and select a random one
                             current_list[p] = np.nanargmax(selection_scores).item(0)
-                    self._disallow_tracker.update(current_list)
-                    _, _, score = self.evaluate(current_list)
-                    warmup_scores.append(score)
+                        self._disallow_tracker.update(current_list)
+                        product_smiles, product_name, score = self.evaluate(current_list)
+                        if np.isfinite(score):
+                            warmup_results.append([score, product_smiles, product_name])
+
+        warmup_scores = [ws[0] for ws in warmup_results]
         self.logger.info(
             f"warmup score stats: "
             f"cnt={len(warmup_scores)}, "
@@ -174,12 +178,16 @@ class ThompsonSampler:
         # initialize each reagent
         prior_mean = np.mean(warmup_scores)
         prior_std = np.std(warmup_scores)
-        self._warmup_std = prior_std
         for i in range(0, len(self.reagent_lists)):
             for j in range(0, len(self.reagent_lists[i])):
                 reagent = self.reagent_lists[i][j]
-                reagent.init_given_prior(prior_mean=prior_mean, prior_std=prior_std)
+                try:
+                    reagent.init_given_prior(prior_mean=prior_mean, prior_std=prior_std)
+                except ValueError:
+                    self.logger.info(f"Skipping reagent {reagent.reagent_name} because there were no successful evaluations during warmup")
+                    self._disallow_tracker.retire_one_synthon(i, j)
         self.logger.info(f"Top score found during warmup: {max(warmup_scores):.3f}")
+        return warmup_results
 
     def search(self, num_cycles=25):
         """Run the search
@@ -199,8 +207,9 @@ class ThompsonSampler:
             self._disallow_tracker.update(selected_reagents)
             # Select a reagent for each component, according to the choice function
             smiles, name, score = self.evaluate(selected_reagents)
-            out_list.append([score, smiles, name])
+            if np.isfinite(score):
+                out_list.append([score, smiles, name])
             if i % 100 == 0:
                 top_score, top_smiles, top_name = self._top_func(out_list)
-                self.logger.info(f"Iteration: {i} max score: {top_score:2f} smiles: {top_smiles}")
+                self.logger.info(f"Iteration: {i} max score: {top_score:2f} smiles: {top_smiles} {top_name}")
         return out_list

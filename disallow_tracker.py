@@ -53,6 +53,33 @@ class DisallowTracker:
 
         return self._disallow_mask[tuple(current_selection)]
 
+    def retire_one_synthon(self, cycle_id: int, synthon_index: int):
+        retire_mask = [self.Empty] * self.n_cycles
+        retire_mask[cycle_id] = synthon_index
+        self._retire_synthon_mask(retire_mask=retire_mask)
+
+    def _retire_synthon_mask(self, retire_mask: list[int]):
+        # get the list of cycles that we need to search for retiring
+        if retire_mask.count(self.Empty) == 0:
+            # if n_to_fill is one - then we have a completed mask (all spot filled)
+            # so say that we sampled this synthon by updating the counts
+            self._n_sampled += 1
+            # and then update the disallow tracker
+            self._update(retire_mask)
+        else:
+            for cycle_id in [i for i in range(self.n_cycles) if retire_mask[i] == self.Empty]:
+                # mark which cycle we are going to search for synthons that can be paired with the synthon we are retiring
+                retire_mask[cycle_id] = self.To_Fill
+                ts_locations = np.ones(shape=self._initial_reagent_counts[cycle_id])
+                # update ts_locations
+                disallowed_selections = self.get_disallowed_selection_mask(retire_mask)
+                ts_locations[np.array(list(disallowed_selections))] = np.NaN
+                # anything that is not nan is still in play so we need to denote
+                # that pairing it with the synthon we will retire is not allowed
+                for synthon_idx in np.argwhere(~np.isnan(ts_locations)).flatten():
+                    retire_mask[cycle_id] = synthon_idx
+                    self._retire_synthon_mask(retire_mask=retire_mask)
+
     def update(self, selected: list[int | None]) -> None:
         """
         Updates the disallow tracker with the selected reagents.
@@ -75,7 +102,7 @@ class DisallowTracker:
             msg = f"DisallowTracker selected size {len(selected)} but reaction has {self.n_cycles} sites of diversity"
             raise ValueError(msg)
         for site_id, sel, max_size in zip(list(range(self.n_cycles)), selected, self._initial_reagent_counts):
-            if sel >= max_size:
+            if sel is not None and sel >= max_size:
                 raise ValueError(f"Disallowed given index {sel} for site {site_id} which has {max_size} reagents")
 
         # all ok so call the internal update
