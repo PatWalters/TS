@@ -1,3 +1,4 @@
+import random
 from typing import List, Optional, Tuple
 
 import functools
@@ -197,7 +198,8 @@ class ThompsonSampler:
         out_list = []
         for i in tqdm(range(0, num_cycles), desc="Cycle", disable=self.hide_progress):
             selected_reagents = [DisallowTracker.Empty] * len(self.reagent_lists)
-            for cycle_id, reagent_list in enumerate(self.reagent_lists):
+            for cycle_id in random.sample(range(0, len(self.reagent_lists)), len(self.reagent_lists)):
+                reagent_list = self.reagent_lists[cycle_id]
                 choice_row = np.zeros(len(reagent_list))  # Create a list of scores for each reagent
                 selected_reagents[cycle_id] = DisallowTracker.To_Fill
                 disallow_mask = self._disallow_tracker.get_disallowed_selection_mask(selected_reagents)
