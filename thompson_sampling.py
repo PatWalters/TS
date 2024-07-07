@@ -124,7 +124,11 @@ class ThompsonSampler:
             prod_mol = prod[0][0]  # RunReactants returns Tuple[Tuple[Mol]]
             Chem.SanitizeMol(prod_mol)
             product_smiles = Chem.MolToSmiles(prod_mol)
-            res = self.evaluator.evaluate(prod_mol)
+            if str(self.evaluator) == "DBEvalutor":
+                res = self.evaluator.evaluate(product_name)
+                res = float(res)
+            else:
+                res = self.evaluator.evaluate(prod_mol)
             if np.isfinite(res):
                 [reagent.add_score(res) for reagent in selected_reagents]
         return product_smiles, product_name, res
@@ -196,6 +200,7 @@ class ThompsonSampler:
         :return: a list of SMILES and scores
         """
         out_list = []
+        rng = np.random.default_rng()
         for i in tqdm(range(0, num_cycles), desc="Cycle", disable=self.hide_progress):
             selected_reagents = [DisallowTracker.Empty] * len(self.reagent_lists)
             for cycle_id in random.sample(range(0, len(self.reagent_lists)), len(self.reagent_lists)):
