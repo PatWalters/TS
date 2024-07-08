@@ -205,11 +205,12 @@ class ThompsonSampler:
             selected_reagents = [DisallowTracker.Empty] * len(self.reagent_lists)
             for cycle_id in random.sample(range(0, len(self.reagent_lists)), len(self.reagent_lists)):
                 reagent_list = self.reagent_lists[cycle_id]
-                choice_row = np.zeros(len(reagent_list))  # Create a list of scores for each reagent
                 selected_reagents[cycle_id] = DisallowTracker.To_Fill
                 disallow_mask = self._disallow_tracker.get_disallowed_selection_mask(selected_reagents)
-                for reagent_idx, reagent in enumerate(reagent_list):
-                    choice_row[reagent_idx] = reagent.sample() if reagent_idx not in disallow_mask else np.NaN
+                stds = np.array([r.current_std for r in reagent_list])
+                mu = np.array([r.current_mean for r in reagent_list])
+                choice_row = rng.normal(size=len(reagent_list)) * stds + mu
+                choice_row[np.array(list(disallow_mask))] = np.NaN
                 selected_reagents[cycle_id] = self.pick_function(choice_row)
             self._disallow_tracker.update(selected_reagents)
             # Select a reagent for each component, according to the choice function
