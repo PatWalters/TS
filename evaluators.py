@@ -1,6 +1,7 @@
 import os
 import warnings
 from abc import ABC, abstractmethod
+import numpy as np
 
 import useful_rdkit_utils as uru
 
@@ -16,7 +17,7 @@ except ImportError:
                   f"FredEvaluator")
 from rdkit import Chem, DataStructs
 import pandas as pd
-
+from sqlitedict import SqliteDict
 
 class Evaluator(ABC):
     @abstractmethod
@@ -144,6 +145,32 @@ class LookupEvaluator(Evaluator):
         smi = Chem.MolToSmiles(mol)
         return self.ref_dict[smi]
 
+class DBEvaluator(Evaluator):
+    """A simple evaluator class that looks up values from a database.
+    This is primarily used for benchmarking
+    """
+
+    def __init__(self, input_dictionary):
+        self.num_evaluations = 0
+        self.db_prefix = input_dictionary['db_prefix']
+        db_filename = input_dictionary['db_filename']
+        self.ref_dict = SqliteDict(db_filename)
+
+    @property
+    def counter(self):
+        return self.num_evaluations
+
+
+    def evaluate(self, smiles):
+        self.num_evaluations += 1
+        res = self.ref_dict.get(f"{self.db_prefix}{smiles}")
+        if res is None:
+            return np.nan
+        else:
+            if res == -500:
+                return np.nan
+            return res
+    
 
 class FredEvaluator(Evaluator):
     """An evaluator class that docks a molecule with the OEDocking Toolkit and returns the score
