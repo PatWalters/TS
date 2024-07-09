@@ -27,8 +27,8 @@ class Reagent:
         self.initial_scores = []
         self.known_var = None  # Will be initialized during init_given_prior
         self.current_phase = "warmup"
-        self.current_mean = None
-        self.current_std = None
+        self.current_mean = 0
+        self.current_std = 0
 
     def add_score(self, score: float):
         """
