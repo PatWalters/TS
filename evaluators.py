@@ -156,6 +156,10 @@ class DBEvaluator(Evaluator):
         db_filename = input_dictionary['db_filename']
         self.ref_dict = SqliteDict(db_filename)
 
+    def __repr__(self):
+        return "DBEvalutor"
+
+
     @property
     def counter(self):
         return self.num_evaluations
