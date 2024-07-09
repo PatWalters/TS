@@ -12,6 +12,7 @@ from disallow_tracker import DisallowTracker
 from reagent import Reagent
 from ts_logger import get_logger
 from ts_utils import read_reagents
+from evaluators import DBEvaluator
 
 
 
@@ -124,7 +125,7 @@ class ThompsonSampler:
             prod_mol = prod[0][0]  # RunReactants returns Tuple[Tuple[Mol]]
             Chem.SanitizeMol(prod_mol)
             product_smiles = Chem.MolToSmiles(prod_mol)
-            if str(self.evaluator) == "DBEvalutor":
+            if isinstance(self.evaluator, DBEvaluator):
                 res = self.evaluator.evaluate(product_name)
                 res = float(res)
             else:
@@ -210,7 +211,8 @@ class ThompsonSampler:
                 stds = np.array([r.current_std for r in reagent_list])
                 mu = np.array([r.current_mean for r in reagent_list])
                 choice_row = rng.normal(size=len(reagent_list)) * stds + mu
-                choice_row[np.array(list(disallow_mask))] = np.NaN
+                if disallow_mask:
+                    choice_row[np.array(list(disallow_mask))] = np.NaN
                 selected_reagents[cycle_id] = self.pick_function(choice_row)
             self._disallow_tracker.update(selected_reagents)
             # Select a reagent for each component, according to the choice function
