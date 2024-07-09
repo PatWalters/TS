@@ -12,6 +12,7 @@ from disallow_tracker import DisallowTracker
 from reagent import Reagent
 from ts_logger import get_logger
 from ts_utils import read_reagents
+from evaluators import DBEvaluator
 
 
 
@@ -124,7 +125,7 @@ class ThompsonSampler:
             prod_mol = prod[0][0]  # RunReactants returns Tuple[Tuple[Mol]]
             Chem.SanitizeMol(prod_mol)
             product_smiles = Chem.MolToSmiles(prod_mol)
-            if str(self.evaluator) == "DBEvalutor":
+            if isinstance(self.evaluator, DBEvaluator):
                 res = self.evaluator.evaluate(product_name)
                 res = float(res)
             else:
