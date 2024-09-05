@@ -315,5 +315,43 @@ def test_ml_classifier_eval():
     print(score)
 
 
+class MPNNEvaluator(Evaluator):
+    """MPNN Evaluator class"""
+
+    def __init__(self, input_dict):
+        self.num_evaluations = 0
+        # self.ref_smiles = input_dict["query_smiles"]
+        # self.ref_pred_result = 0
+
+    @property
+    def counter(self):
+        return self.num_evaluations
+
+    def evaluate(self, mol):
+        from ugi_mapper import ugi_rxn_mapper
+        from mpnn_predictor import get_mpnn_preds
+        
+        self.num_evaluations += 1
+        if isinstance(mol, str) == False:
+            smi = Chem.MolToSmiles(mol)
+        if smi is None:
+            raise ValueError("Invaild Input Molecule")
+        
+        rxn_smi = ugi_rxn_mapper([smi])[0]
+        # print(rxn_smi)
+        # print('======')
+        # rxn_smi_list = [[rxn_smi, "FC(F)(F)CO"]]
+
+        # mpnn_model = load_model(args=args)
+
+        # preds_result = make_predictions(args, smiles=[[rxn_smi, "FC(F)(F)CO"]], model_objects=mpnn_model)
+
+
+        # print(rxn_smi)
+        preds = get_mpnn_preds(rxn_smi)
+        # return preds_result[0][0]
+        return preds
+
+
 if __name__ == "__main__":
     test_rocs_eval()
