@@ -19,6 +19,20 @@ from rdkit import Chem, DataStructs
 import pandas as pd
 from sqlitedict import SqliteDict
 
+from ugi_rxn_mapper import ugi_rxn_mapper
+
+from chemprop.train import make_predictions, load_model
+from chemprop.args import PredictArgs
+# args = PredictArgs()
+# args.features_generator =  ["rdkit_2d","ifg_drugbank_2","ugi_qmdesc_atom"]
+# args.number_of_molecules = 2
+# args.gpu = 0
+# # args.checkpoint_paths = [' /home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_2/model_0/model.pt', ' /home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_1/model_0/model.pt', ' /home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_8/model_0/model.pt', ' /home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_6/model_0/model.pt', ' /home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_0/model_0/model.pt', ' /home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_4/model_0/model.pt', ' /home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_9/model_0/model.pt', ' /home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_7/model_0/model.pt', ' /home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_3/model_0/model.pt', ' /home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_5/model_0/model.pt']
+# args.checkpoint_paths = ['/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_2/model_0/model.pt']
+# args.no_features_scaling = False
+# args.preds_path = "./preds.csv"
+# mpnn_model = load_model(args=args)
+
 class Evaluator(ABC):
     @abstractmethod
     def evaluate(self, mol):
@@ -174,7 +188,7 @@ class DBEvaluator(Evaluator):
             if res == -500:
                 return np.nan
             return res
-    
+
 
 class FredEvaluator(Evaluator):
     """An evaluator class that docks a molecule with the OEDocking Toolkit and returns the score
@@ -320,37 +334,58 @@ class MPNNEvaluator(Evaluator):
 
     def __init__(self, input_dict):
         self.num_evaluations = 0
-        # self.ref_smiles = input_dict["query_smiles"]
-        # self.ref_pred_result = 0
+        self.args = PredictArgs()
+        self.args.features_generator =  ["rdkit_2d","ifg_drugbank_2","ugi_qmdesc_atom"]
+        self.args.number_of_molecules = 2
+        self.args.gpu = 0
+        # self.args.checkpoint_paths = ['/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_2/model_0/model.pt']
+        self.args.checkpoint_paths = [
+            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_2/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_1/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_8/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_6/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_0/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_4/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_9/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_7/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_3/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_5/model_0/model.pt",
+        ]
+        self.args.no_features_scaling = False
+        self.args.preds_path = "./preds.csv"
+        self.mpnn_model = load_model(args=self.args)
 
     @property
     def counter(self):
         return self.num_evaluations
 
     def evaluate(self, mol):
-        from ugi_mapper import ugi_rxn_mapper
-        from mpnn_predictor import get_mpnn_preds
-        
+
         self.num_evaluations += 1
         if isinstance(mol, str) == False:
             smi = Chem.MolToSmiles(mol)
         if smi is None:
             raise ValueError("Invaild Input Molecule")
-        
+
         rxn_smi = ugi_rxn_mapper([smi])[0]
-        # print(rxn_smi)
-        # print('======')
-        # rxn_smi_list = [[rxn_smi, "FC(F)(F)CO"]]
+        rxn_smi = [[rxn_smi,"FC(F)(F)CO"]]
 
-        # mpnn_model = load_model(args=args)
+        # args = PredictArgs()
+        # args.features_generator =  ["rdkit_2d","ifg_drugbank_2","ugi_qmdesc_atom"]
+        # args.number_of_molecules = 2
+        # args.gpu = 0
+        # args.checkpoint_paths = ['/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_2/model_0/model.pt']
+        # args.no_features_scaling = False
+        # args.preds_path = "./preds.csv"
+        # preds_result = make_predictions(args, rxn_smi)
 
-        # preds_result = make_predictions(args, smiles=[[rxn_smi, "FC(F)(F)CO"]], model_objects=mpnn_model)
+        try:
+            preds_result = make_predictions(self.args, smiles=rxn_smi, model_objects=self.mpnn_model)
+        except:
+            self.mpnn_model = load_model(args=self.args)
+            preds_result = make_predictions(self.args, smiles=rxn_smi, model_objects=self.mpnn_model)
 
-
-        # print(rxn_smi)
-        preds = get_mpnn_preds(rxn_smi)
-        # return preds_result[0][0]
-        return preds
+        return preds_result[0][0]
 
 
 if __name__ == "__main__":
