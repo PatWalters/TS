@@ -1,6 +1,6 @@
 # directories and files
 TS_ugi_sampling/
-pred.csv
+preds.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
