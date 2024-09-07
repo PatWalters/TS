@@ -410,7 +410,24 @@ class ActivityMPNNEvaluator(Evaluator):
         self.args = PredictArgs()
         self.args.features_generator =  ["scaffoldkeys", "cats2d", "ifp3_7en8"]
         self.args.gpu = 0
-        self.args.checkpoint_dir = "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest"
+        # self.args.checkpoint_dir = "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest"
+        self.args.checkpoint_paths = [
+            "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_0/model_0/model.pt",
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_0/model_1/model.pt",
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_0/model_2/model.pt",
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_1/model_0/model.pt",
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_1/model_1/model.pt",
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_1/model_2/model.pt",
+            
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_2/model_0/model.pt",
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_3/model_0/model.pt",
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_4/model_0/model.pt",
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_5/model_0/model.pt",
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_6/model_0/model.pt",
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_7/model_0/model.pt",
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_8/model_0/model.pt",
+            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_9/model_0/model.pt",
+        ]
         self.args.no_features_scaling = False
         self.args.preds_path = "./preds.csv"
         self.args.cal_qmdesc = True

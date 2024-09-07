@@ -1,6 +1,7 @@
 # directories and files
 docking_data/
 TS_ugi_sampling/
+TS_ugi_click_activity_sampling/
 preds.csv
 
 # Byte-compiled / optimized / DLL files
