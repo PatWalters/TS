@@ -13,6 +13,7 @@ def create_reagents(filename: str, num_to_select: Optional[int] = None) -> List[
     reagent_list = []
     with open(filename, 'r') as f:
         for line in f.readlines():
+            # print(line)
             smiles, reagent_name = line.split()
             reagent = Reagent(reagent_name=reagent_name, smiles=smiles)
             reagent_list.append(reagent)

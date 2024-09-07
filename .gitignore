@@ -1,4 +1,5 @@
 # directories and files
+unidock_ligands*
 docking_data/
 TS_ugi_sampling/
 TS_ugi_click_activity_sampling/
