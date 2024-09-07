@@ -335,21 +335,35 @@ class MPNNEvaluator(Evaluator):
     def __init__(self, input_dict):
         self.num_evaluations = 0
         self.args = PredictArgs()
-        self.args.features_generator =  ["rdkit_2d","ifg_drugbank_2","ugi_qmdesc_atom"]
+        # self.args.features_generator =  ["rdkit_2d","ifg_drugbank_2","ugi_qmdesc_atom"]
+        self.args.features_generator =  ["rdkit_2d","ifg_drugbank_2"]
+        self.args.cal_qmdesc = True
         self.args.number_of_molecules = 2
         self.args.gpu = 0
         # self.args.checkpoint_paths = ['/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_2/model_0/model.pt']
+        # self.args.checkpoint_paths = [
+        #     "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_2/model_0/model.pt",
+        #     "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_1/model_0/model.pt",
+        #     "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_8/model_0/model.pt",
+        #     "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_6/model_0/model.pt",
+        #     "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_0/model_0/model.pt",
+        #     "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_4/model_0/model.pt",
+        #     "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_9/model_0/model.pt",
+        #     "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_7/model_0/model.pt",
+        #     "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_3/model_0/model.pt",
+        #     "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_5/model_0/model.pt",
+        # ]
         self.args.checkpoint_paths = [
-            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_2/model_0/model.pt",
-            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_1/model_0/model.pt",
-            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_8/model_0/model.pt",
-            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_6/model_0/model.pt",
-            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_0/model_0/model.pt",
-            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_4/model_0/model.pt",
-            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_9/model_0/model.pt",
-            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_7/model_0/model.pt",
-            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_3/model_0/model.pt",
-            "/home/jnliu/chemprop/benchmark_chemprop/hyper_opt/opt_for_pred/trial_seed_60/fold_5/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/yield_pred/all_data/rdkit_ifg2_qmatom_hyper_opted_no_test/fold_2/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/yield_pred/all_data/rdkit_ifg2_qmatom_hyper_opted_no_test/fold_1/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/yield_pred/all_data/rdkit_ifg2_qmatom_hyper_opted_no_test/fold_8/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/yield_pred/all_data/rdkit_ifg2_qmatom_hyper_opted_no_test/fold_6/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/yield_pred/all_data/rdkit_ifg2_qmatom_hyper_opted_no_test/fold_0/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/yield_pred/all_data/rdkit_ifg2_qmatom_hyper_opted_no_test/fold_4/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/yield_pred/all_data/rdkit_ifg2_qmatom_hyper_opted_no_test/fold_9/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/yield_pred/all_data/rdkit_ifg2_qmatom_hyper_opted_no_test/fold_7/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/yield_pred/all_data/rdkit_ifg2_qmatom_hyper_opted_no_test/fold_3/model_0/model.pt",
+            "/home/jnliu/chemprop/benchmark_chemprop/yield_pred/all_data/rdkit_ifg2_qmatom_hyper_opted_no_test/fold_5/model_0/model.pt",
         ]
         self.args.no_features_scaling = False
         self.args.preds_path = "./preds.csv"

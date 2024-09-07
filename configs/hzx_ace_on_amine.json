@@ -6,13 +6,13 @@
         "./data/hzx/BBs_with_ace/ace_on_amine.smi"
     ],
     "reaction_smarts": "[C:1](=O)[OH,O-].[CH1:2]=O.[N+:3]#[C-:4].[NH2,NH3,NH3+,NH4+:5]>>[C:1](=O)[N+0:5][C:2][C+0:4](=O)[NH+0:3]",
-    "num_warmup_trials": 4,
-    "num_ts_iterations": 2000,
+    "num_warmup_trials": 6,
+    "num_ts_iterations": 5000,
     "evaluator_class_name": "MPNNEvaluator",
     "evaluator_arg": {
         "query_smiles": "COc1ccc(NC(=O)C(c2cc(O)cc(OC(F)(F)F)c2)N(C(=O)C(Br)c2ccc(Cl)cc2)C(C)=CC#N)cc1"
     },
     "ts_mode": "maximize",
-    "log_filename": "./TS_ugi_sampling/results/ace_on_amine_logs.txt",
-    "results_filename": "./TS_ugi_sampling/results/ace_on_amine_results.csv"
+    "log_filename": "./TS_ugi_sampling/results_new/ace_on_amine_logs.txt",
+    "results_filename": "./TS_ugi_sampling/results_new/ace_on_amine_results.csv"
 }
