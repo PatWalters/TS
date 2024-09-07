@@ -329,8 +329,8 @@ class DBEvaluator(Evaluator):
 #     print(score)
 
 
-class MPNNEvaluator(Evaluator):
-    """MPNN Evaluator class"""
+class UgiRxnMPNNEvaluator(Evaluator):
+    """Ugi Rxn MPNN Evaluator class"""
 
     def __init__(self, input_dict):
         self.num_evaluations = 0
@@ -401,6 +401,40 @@ class MPNNEvaluator(Evaluator):
 
         return preds_result[0][0]
 
+
+class ActivityMPNNEvaluator(Evaluator):
+    """Activity MPNN Evaluator class"""
+
+    def __init__(self, input_dict):
+        self.num_evaluations = 0
+        self.args = PredictArgs()
+        self.args.features_generator =  ["scaffoldkeys", "cats2d", "ifp3_7en8"]
+        self.args.gpu = 0
+        self.args.checkpoint_dir = "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest"
+        self.args.no_features_scaling = False
+        self.args.preds_path = "./preds.csv"
+        self.args.cal_qmdesc = True
+        self.args.num_workers = 2
+        self.mpnn_model = load_model(args=self.args)
+
+    @property
+    def counter(self):
+        return self.num_evaluations
+    
+    def evaluate(self, mol):
+        self.num_evaluations += 1
+        if isinstance(mol, str) == False:
+            smi = Chem.MolToSmiles(mol)
+        if smi is None:
+            raise ValueError("Invaild Input Molecule")
+
+        try:
+            preds_result = make_predictions(self.args, smiles=[smi], model_objects=self.mpnn_model)
+        except:
+            self.mpnn_model = load_model(args=self.args)
+            preds_result = make_predictions(self.args, smiles=[smi], model_objects=self.mpnn_model)
+
+        return preds_result[0][0]
 
 if __name__ == "__main__":
     # test_rocs_eval()

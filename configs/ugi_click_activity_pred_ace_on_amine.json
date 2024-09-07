@@ -1,0 +1,19 @@
+{
+    "reagent_file_list": [
+        "./data/hzx/BBs/acid.smi",
+        "./data/hzx/BBs/aldehyde.smi",
+        "./data/hzx/BBs/NC.smi",
+        "./data/hzx/BBs_with_ace/ace_on_amine.smi",
+        "./data/hzx/BBs/azide.smi"
+    ],
+    "reaction_smarts": "[C:1](=O)[OH,O-].[CH1:2]=O.[N+:3]#[C-:4].([NH2,NH3,NH3+,NH4+:5].[C:7]#[CH1:8]).[N-:9]=[N+:10]=[N:11]>>([n+0:9]1:[n+0:10]:[n:11]:[c:8]:[c:7]1.[C:1](=O)[N+0:5][C:2][C+0:4](=O)[NH+0:3])",
+    "num_warmup_trials": 4,
+    "num_ts_iterations": 2000,
+    "evaluator_class_name": "ActivityMPNNEvaluator",
+    "evaluator_arg": {
+        "query_smiles": "COc1ccc(NC(=O)C(c2cc(O)cc(OC(F)(F)F)c2)N(C(=O)C(Br)c2ccc(Cl)cc2)C(C)=CC#N)cc1"
+    },
+    "ts_mode": "maximize",
+    "log_filename": "./TS_ugi_click_activity_sampling/results/ace_on_amine_logs.txt",
+    "results_filename": "./TS_ugi_click_activity_sampling/results/ace_on_amine_results.csv"
+}
