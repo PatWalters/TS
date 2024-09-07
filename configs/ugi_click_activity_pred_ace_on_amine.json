@@ -11,7 +11,7 @@
     "num_ts_iterations": 2000,
     "evaluator_class_name": "ActivityMPNNEvaluator",
     "evaluator_arg": {
-        "query_smiles": "COc1ccc(NC(=O)C(c2cc(O)cc(OC(F)(F)F)c2)N(C(=O)C(Br)c2ccc(Cl)cc2)C(C)=CC#N)cc1"
+        "query_smiles": ""
     },
     "ts_mode": "maximize",
     "log_filename": "./TS_ugi_click_activity_sampling/results/ace_on_amine_logs.txt",

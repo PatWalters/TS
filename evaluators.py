@@ -22,7 +22,7 @@ from sqlitedict import SqliteDict
 from ugi_rxn_mapper import ugi_rxn_mapper
 
 from chemprop.train import make_predictions, load_model
-from chemprop.args import PredictArgs
+from chemprop.args import PredictArgs, get_checkpoint_paths
 # args = PredictArgs()
 # args.features_generator =  ["rdkit_2d","ifg_drugbank_2","ugi_qmdesc_atom"]
 # args.number_of_molecules = 2
@@ -410,24 +410,8 @@ class ActivityMPNNEvaluator(Evaluator):
         self.args = PredictArgs()
         self.args.features_generator =  ["scaffoldkeys", "cats2d", "ifp3_7en8"]
         self.args.gpu = 0
-        # self.args.checkpoint_dir = "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest"
-        self.args.checkpoint_paths = [
-            "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_0/model_0/model.pt",
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_0/model_1/model.pt",
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_0/model_2/model.pt",
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_1/model_0/model.pt",
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_1/model_1/model.pt",
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_1/model_2/model.pt",
-            
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_2/model_0/model.pt",
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_3/model_0/model.pt",
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_4/model_0/model.pt",
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_5/model_0/model.pt",
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_6/model_0/model.pt",
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_7/model_0/model.pt",
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_8/model_0/model.pt",
-            # "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest/fold_9/model_0/model.pt",
-        ]
+        self.args.checkpoint_dir = "/home/zxhuang/modular_click/machine_learning/chemprop_project_rescreen/opted_results/doc_1_2_3/scaffoldkeys_cats2d_ifp3_7en8_qmdesc/scaffold_balanced_noTest"
+        self.args.checkpoint_paths = get_checkpoint_paths(checkpoint_dir=self.args.checkpoint_dir)
         self.args.no_features_scaling = False
         self.args.preds_path = "./preds.csv"
         self.args.cal_qmdesc = True
@@ -441,15 +425,20 @@ class ActivityMPNNEvaluator(Evaluator):
     def evaluate(self, mol):
         self.num_evaluations += 1
         if isinstance(mol, str) == False:
-            smi = Chem.MolToSmiles(mol)
+            smi = Chem.MolToSmiles(mol, kekuleSmiles=True)
+        else:
+            smi = mol
         if smi is None:
             raise ValueError("Invaild Input Molecule")
 
+        # raise ValueError("Not Implemented Yet")
         try:
-            preds_result = make_predictions(self.args, smiles=[smi], model_objects=self.mpnn_model)
+            preds_result = make_predictions(self.args, smiles=[[smi]], model_objects=self.mpnn_model)
         except:
             self.mpnn_model = load_model(args=self.args)
-            preds_result = make_predictions(self.args, smiles=[smi], model_objects=self.mpnn_model)
+            preds_result = make_predictions(self.args, smiles=[[smi]], model_objects=self.mpnn_model)
+        print(smi)
+        print(preds_result)
 
         return preds_result[0][0]
 

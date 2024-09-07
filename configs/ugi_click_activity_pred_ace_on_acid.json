@@ -1,0 +1,19 @@
+{
+    "reagent_file_list": [
+        "./data/hzx/BBs_with_ace/ace_on_acid.smi",
+        "./data/hzx/BBs/aldehyde.smi",
+        "./data/hzx/BBs/NC.smi",
+        "./data/hzx/BBs/amine.smi",
+        "./data/hzx/BBs/azide.smi"
+    ],
+    "reaction_smarts": "([C:1](=O)[OH,O-].[C:7]#[CH1:8]).[CH1:2]=O.[N+:3]#[C-:4].[NH2X3,NH3X3,NH3+X4,NH4+X4;!$(NC=[C,O,N,S]);!$(N[#6]:[#7]);!$(N[#5,#7,#8,#15,#16]):5].[N-:9]=[N+:10]=[N:11]>>([n+0:9]1:[n+0:10]:[n:11]:[c:8]:[c:7]1.[C:1](=O)[N+0:5][C:2][C+0:4](=O)[NH+0:3])",
+    "num_warmup_trials": 4,
+    "num_ts_iterations": 2000,
+    "evaluator_class_name": "ActivityMPNNEvaluator",
+    "evaluator_arg": {
+        "query_smiles": ""
+    },
+    "ts_mode": "maximize",
+    "log_filename": "./TS_ugi_click_activity_sampling/results/ace_on_acid_logs.txt",
+    "results_filename": "./TS_ugi_click_activity_sampling/results/ace_on_acid_results.csv"
+}
