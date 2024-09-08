@@ -428,6 +428,7 @@ class ActivityMPNNEvaluator(Evaluator):
             smi = Chem.MolToSmiles(mol, kekuleSmiles=True)
         else:
             smi = mol
+        print(smi)
         if smi is None:
             raise ValueError("Invaild Input Molecule")
 
@@ -436,8 +437,11 @@ class ActivityMPNNEvaluator(Evaluator):
             preds_result = make_predictions(self.args, smiles=[[smi]], model_objects=self.mpnn_model)
         except:
             self.mpnn_model = load_model(args=self.args)
-            preds_result = make_predictions(self.args, smiles=[[smi]], model_objects=self.mpnn_model)
-        print(smi)
+            try:
+                preds_result = make_predictions(self.args, smiles=[[smi]], model_objects=self.mpnn_model)
+            except Exception as e:
+                print(e)
+                return 0.
         print(preds_result)
 
         return preds_result[0][0]
