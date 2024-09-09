@@ -123,6 +123,7 @@ class ThompsonSampler:
         product_smiles = "FAIL"
         if prod:
             prod_mol = prod[0][0]  # RunReactants returns Tuple[Tuple[Mol]]
+            print(f'product smiles: {Chem.MolToSmiles(prod_mol)}')
             Chem.SanitizeMol(prod_mol)
             product_smiles = Chem.MolToSmiles(prod_mol)
             if isinstance(self.evaluator, DBEvaluator):
