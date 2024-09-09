@@ -467,7 +467,6 @@ Cc1ccc(N)c(Br)n1 bide-uc-1401
 N#CC(N)c1ccccc1 bide-uc-1403
 Nc1cc(F)cc(F)c1Cl bide-uc-1406
 CC1(C)OCC(CN)O1 bide-uc-1409
-COc1cc(N)cn[n+]1-c1ccccc1 bide-uc-1412
 C[C@@H](O)CN bide-uc-1418
 N[C@@H]1C[C@H]1c1ccc(F)c(F)c1 bide-uc-1419
 Nc1ccc(F)nc1Br bide-uc-1421
@@ -1123,7 +1122,6 @@ NCc1c(F)ccc(Cl)c1F bide-uc-3440
 Cc1nccc(N)c1C bide-uc-3442
 CN1C(=O)COc2ccc(N)cc21 bide-uc-3443
 CC(=O)Nc1cc(N)ccc1C bide-uc-3448
-C[n+]1cccc2c(N)cccc21 bide-uc-3449
 NC1CCc2[nH]c3ccccc3c2C1 bide-uc-3451
 Nc1cc(Cl)cc(OC(F)(F)F)c1 bide-uc-3455
 CN(C)C(=O)c1cccc(N)c1 bide-uc-3458
@@ -1398,7 +1396,6 @@ Cc1cc(N)cc(O)c1 bide-uc-4132
 Nc1ccc(C(O)c2ccccc2)cc1 bide-uc-4137
 NCc1cc(Br)ccc1O bide-uc-4141
 Nc1cccc(-c2cccnc2)c1 bide-uc-4145
-Nc1ccc(-[n+]2ccccc2)cc1 bide-uc-4146
 CN1CCN(c2ncccc2N)CC1 bide-uc-4147
 C[C@@H](N)c1ccncc1 bide-uc-4149
 C#CCNC(=O)CN bide-uc-4151
