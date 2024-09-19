@@ -57,8 +57,10 @@ COC(=O)C(C)N=[N+]=[N-] bide-click-am-53
 CC1CCCCC1N=[N+]=[N-] bide-click-am-57
 [N-]=[N+]=NCC1=CC=C(F)C=C1 bide-click-am-58
 CCNCCN=[N+]=[N-] bide-click-am-59
+N#CC1=CC=C(CN=[N+]=[N-])C=C1 bide-click-am-60
 CCOC(=O)[C@H](N=[N+]=[N-])C1=CC=CC=C1 bide-click-am-61
 [N-]=[N+]=N[C@@H](CO)C1=CC=CC=C1 bide-click-am-62
+N#CN=[N+]=[N-] bide-click-am-63
 [N-]=[N+]=NCCC1=CNC2=CC=CC=C12 bide-click-am-64
 [N-]=[N+]=NCC(=O)OCC1=CC=CC=C1 bide-click-am-65
 COC(=O)C(N=[N+]=[N-])C1=C(Cl)C=CC=C1 bide-click-am-66
@@ -136,7 +138,7 @@ CC(N=[N+]=[N-])C12CC3CC(CC(C3)C1)C2 bide-click-am-136
 COC(=O)C(N=[N+]=[N-])C1=CC=CC=C1 bide-click-am-138
 CCCC(N=[N+]=[N-])C(=O)OC bide-click-am-139
 [N-]=[N+]=NCC1=C(F)C=CC=C1 bide-click-am-140
-C[C@H](N=[N+]=[N-])C1=CC=C(C2=CC=CC=C2)C=C1 bide-click-am-141
+C[C@H]([NH+]=[N+]=[N-])C1=CC=C(C2=CC=CC=C2)C=C1 bide-click-am-141
 CC(C)(C)OC(=O)N1CCC[C@@H](N=[N+]=[N-])C1 bide-click-am-142
 COC(=O)CCCN=[N+]=[N-] bide-click-am-143
 CC(C)[C@H](N=[N+]=[N-])C(=O)OC(C)(C)C bide-click-am-144
@@ -159,11 +161,11 @@ COC(=O)[C@H](CC1CCCCC1)N=[N+]=[N-] bide-click-am-160
 COC(=O)C1=CC=C(CN=[N+]=[N-])C=C1 bide-click-am-161
 COC1=CC=C([C@H](C)N=[N+]=[N-])C=C1 bide-click-am-162
 CC(C)OC(=O)CN=[N+]=[N-] bide-click-am-163
-C#CCN=[N+]=[N-] bide-click-am-164
 COC(=O)[C@@H](CC(C)C)N=[N+]=[N-] bide-click-am-165
 [N-]=[N+]=NCC1=CC2=C(C=C1)OCO2 bide-click-am-166
 CCCC(N=[N+]=[N-])C(=O)OC(C)(C)C bide-click-am-167
 CC(C)(C)OC(=O)N1CCC(CN=[N+]=[N-])CC1 bide-click-am-168
+[N-]=[N+]=NCC1=CN=C(Cl)C=C1 bide-click-am-169
 CC(C)(C)OC(=O)C(CC1=CC=CC=C1)N=[N+]=[N-] bide-click-am-170
 [N-]=[N+]=NCCCCO bide-click-am-171
 [N-]=[N+]=NCCC1=C(Br)C=CC=C1 bide-click-am-172
@@ -306,6 +308,7 @@ COC(=O)C1=CC=CC(CN=[N+]=[N-])=C1 bide-click-am-305
 CC1=CC(C)=C(CN=[N+]=[N-])C(C)=C1 bide-click-am-309
 N#CC1(N=[N+]=[N-])CC1 bide-click-am-310
 CC1=CC=C(C(C)N=[N+]=[N-])C=C1 bide-click-am-311
+[N-]=[N+]=NCC1=C(Cl)N=CC=N1 bide-click-am-312
 COC(=O)C(CC1=CC=C(F)C=C1)N=[N+]=[N-] bide-click-am-313
 CC(N=[N+]=[N-])C1=CC=C(Cl)C=C1 bide-click-am-314
 [N-]=[N+]=N[C@@H]1CCC[C@H]1O bide-click-am-315
@@ -423,6 +426,7 @@ CC1(N=[N+]=[N-])CC1 bide-click-am-423
 COC(=O)C(N=[N+]=[N-])C(C)(C)C bide-click-am-428
 [N-]=[N+]=NC1CC(F)(F)C1 bide-click-am-429
 CN(C)[C@H]1CCCC[C@@H]1N=[N+]=[N-] bide-click-am-430
+CC(C)CC(N=[N+]=[N-])B1OC2CC3CC(C3(C)C)C2(C)O1 bide-click-am-431
 COC(=O)C1(N=[N+]=[N-])CCC1 bide-click-am-432
 CCOC(=O)C1(N=[N+]=[N-])CC1 bide-click-am-433
 CC(C)CC(CO)N=[N+]=[N-] bide-click-am-434
@@ -479,7 +483,6 @@ COC(=O)C(N=[N+]=[N-])C1=CC=C(Cl)C=C1 bide-click-am-484
 [N-]=[N+]=NC[C@@H](O)CCl bide-click-am-485
 [N-]=[N+]=N[C@H]1CC[C@H](CO)CC1 bide-click-am-486
 CCOC(=O)C(CC)N=[N+]=[N-] bide-click-am-487
-C#CCCN=[N+]=[N-] bide-click-am-488
 [N-]=[N+]=NCC1CCC2=CC=CC=C2O1 bide-click-am-489
 CC1=CC=CC(CN=[N+]=[N-])=N1 bide-click-am-490
 [N-]=[N+]=NC(C1=CC=CC=C1)C1=NC=CC=C1 bide-click-am-491
@@ -492,6 +495,7 @@ C=C[C@@H]1C[C@]1(N=[N+]=[N-])C(=O)OC bide-click-am-497
 [N-]=[N+]=NC1(C2=CC(Br)=CC=C2)CC1 bide-click-am-498
 CC1(CN=[N+]=[N-])CCC1 bide-click-am-499
 CC(N=[N+]=[N-])C1=CC=NC=C1 bide-click-am-500
+N#CC1=CC=CC(CN=[N+]=[N-])=C1 bide-click-am-501
 [N-]=[N+]=NC1CCOC2=CC=CC=C21 bide-click-am-502
 CC1=C(C(C)N=[N+]=[N-])C=CC=C1 bide-click-am-503
 [N-]=[N+]=NCC1CN(C(=O)OCC2=CC=CC=C2)C1 bide-click-am-504
@@ -547,6 +551,7 @@ CC(C)(C)OC(=O)N1CCN(CCCN=[N+]=[N-])CC1 bide-click-am-551
 [N-]=[N+]=NCC1=CN=C(C(F)(F)F)C=C1 bide-click-am-554
 [N-]=[N+]=NCCC1=C2C=CC=CC2=CC=C1 bide-click-am-555
 [N-]=[N+]=NC1CC=CC1 bide-click-am-556
+CC1(C)OB(C2=C(CN=[N+]=[N-])C=CC=C2)OC1(C)C bide-click-am-557
 [N-]=[N+]=NCC1=CC(F)=C(F)C(F)=C1 bide-click-am-558
 CN(C)CC(C)(C)N=[N+]=[N-] bide-click-am-559
 [N-]=[N+]=NCC1=CN=C(Cl)S1 bide-click-am-560
@@ -598,6 +603,7 @@ CC(C)C(N=[N+]=[N-])C1=NC=CC=C1 bide-click-am-605
 [N-]=[N+]=NC1(CO)CCCC1 bide-click-am-606
 CC1CCCC(N=[N+]=[N-])C1 bide-click-am-607
 CC(C)(N=[N+]=[N-])C1=CC(F)=CC(F)=C1 bide-click-am-608
+CC1(C)OB(C2=CC=C(CN=[N+]=[N-])C=C2)OC1(C)C bide-click-am-609
 CC1=NN(C)C(CN=[N+]=[N-])=C1 bide-click-am-610
 [N-]=[N+]=NC1CCSCC1 bide-click-am-611
 CC(C)OC1=CC=C(CN=[N+]=[N-])C=C1 bide-click-am-612
@@ -661,14 +667,15 @@ CN(C)CC1=CC=C(CN=[N+]=[N-])C=C1 bide-click-am-666
 [N-]=[N+]=NCC(=O)NCC1=CC=CC=C1 bide-click-am-670
 [N-]=[N+]=NCC1=NC=C(Cl)C=C1 bide-click-am-671
 CC(C)(C)OC(=O)[C@H](CC1=CC=CC=C1)N=[N+]=[N-] bide-click-am-672
+N#CC1=CC=C(CCN=[N+]=[N-])C=C1 bide-click-am-673
 [N-]=[N+]=NCC1=CN=C(Br)C=C1 bide-click-am-674
 CC(C)(CCO)N=[N+]=[N-] bide-click-am-675
 CC1=CC(C)=C(CN=[N+]=[N-])C=C1 bide-click-am-676
 [N-]=[N+]=NCCC1CCCC1 bide-click-am-677
 CN1N=C(C(C)(C)N=[N+]=[N-])C2=CC=CC=C21 bide-click-am-678
-C#CC(C)(CC)N=[N+]=[N-] bide-click-am-679
 CC(N=[N+]=[N-])C1=C(C(F)(F)F)C=CC=C1 bide-click-am-680
 [N-]=[N+]=NCC1(O)CC1 bide-click-am-681
+CC1(C)OB(C2=CC=CC(CN=[N+]=[N-])=C2)OC1(C)C bide-click-am-682
 COC1=CC=CC([C@@H](C)N=[N+]=[N-])=C1 bide-click-am-683
 COC(=O)C(C)(C)CN=[N+]=[N-] bide-click-am-684
 CC1(N=[N+]=[N-])CCN(C(=O)OC(C)(C)C)CC1 bide-click-am-685
@@ -714,7 +721,6 @@ CC1(N=[N+]=[N-])CCC1 bide-click-am-723
 [N-]=[N+]=NCC1CCC(=O)N1 bide-click-am-725
 [N-]=[N+]=N[C@@H](CO)C1=CC(Cl)=CC=C1 bide-click-am-726
 CC(C)(N=[N+]=[N-])C1=NC=CC=C1 bide-click-am-727
-C#CCOCCN=[N+]=[N-] bide-click-am-728
 CCOC(=O)C[C@H](C)N=[N+]=[N-] bide-click-am-729
 [N-]=[N+]=NC1(C2=CC=C(Cl)C=C2)CC1 bide-click-am-730
 COC(=O)[C@H](CSC)N=[N+]=[N-] bide-click-am-731
@@ -767,8 +773,10 @@ CC(N=[N+]=[N-])C1=CC=C(C(F)(F)F)C=C1 bide-click-am-777
 [N-]=[N+]=N[C@@H]1C[C@@H]2CC[C@H]1C2 bide-click-am-778
 [N-]=[N+]=NCC1(CO)CC1 bide-click-am-779
 [N-]=[N+]=NCC1=C(Br)C=C(Cl)C=C1 bide-click-am-780
+[N-]=[N+]=NCC1=NC(Cl)=CC=C1 bide-click-am-781
 CC(C)(C)OC(=O)N1CCCC[C@@H](N=[N+]=[N-])C1 bide-click-am-782
 [N-]=[N+]=N[C@@H]1CCC[C@@H]1O bide-click-am-783
+N#CC1=CC=CC(OCCN=[N+]=[N-])=C1 bide-click-am-784
 [N-]=[N+]=N[C@@H]1C[C@H]2CC[C@@H]1C2 bide-click-am-785
 CN1C=CN=C1CN=[N+]=[N-] bide-click-am-786
 CC(N=[N+]=[N-])C1=CC(C(F)(F)F)=CC=C1 bide-click-am-787
@@ -784,6 +792,7 @@ CCC[C@@H](N=[N+]=[N-])C1=CC=C(C)C=C1 bide-click-am-794
 [N-]=[N+]=NC(CO)C1=CC=C(Br)C=C1 bide-click-am-797
 [N-]=[N+]=NC1CCN(C2=NC=CC=N2)CC1 bide-click-am-798
 CC(C)(C)OC(=O)N1CC[C@H](N=[N+]=[N-])[C@@H](F)C1 bide-click-am-799
+N#CC1=CC=C(CN2CCC(N=[N+]=[N-])CC2)C=C1 bide-click-am-800
 CN1N=CC=C1CN=[N+]=[N-] bide-click-am-801
 CC(C)(N=[N+]=[N-])C1=CC(C(F)(F)F)=CC=C1 bide-click-am-802
 C[C@@H](N=[N+]=[N-])C1=CC(F)=CC(F)=C1 bide-click-am-803
@@ -827,7 +836,6 @@ CCOC(=O)C1CCCC1N=[N+]=[N-] bide-click-am-840
 C[C@H]1CC[C@@H](N=[N+]=[N-])CN1C(=O)OCC1=CC=CC=C1 bide-click-am-841
 [N-]=[N+]=NCC1=C(O)C=CC(Br)=C1 bide-click-am-842
 C[C@@H](N=[N+]=[N-])C1=CC=NC=C1 bide-click-am-843
-C#CCNC(=O)CN=[N+]=[N-] bide-click-am-844
 CC(N=[N+]=[N-])C1=NC=CS1 bide-click-am-845
 CCC(N=[N+]=[N-])C1=CN=CC=C1 bide-click-am-846
 [N-]=[N+]=NCC1=C(I)C=CC=C1 bide-click-am-847
@@ -903,9 +911,13 @@ CCN(CC)C(=O)CN=[N+]=[N-] bide-click-am-916
 CC1(CN=[N+]=[N-])OCCO1 bide-click-am-917
 COC(=O)[C@H]1CCC[C@@H](N=[N+]=[N-])C1 bide-click-am-918
 N#CC1(N=[N+]=[N-])CCCC1 bide-click-am-919
+N#CC1=CC(CN=[N+]=[N-])=CC=C1F bide-click-am-920
+CC(C)(C)[PH+](CC[NH+]=[N+]=[N-])C(C)(C)C bide-click-am-921
 [N-]=[N+]=NCC1=C(F)N=CC=C1 bide-click-am-922
 CC(C)(C)OC(=O)N1CC[C@@H](N=[N+]=[N-])[C@H](F)C1 bide-click-am-923
+[N-]=[N+]=NCCNC(=O)CCl bide-click-am-924
 [N-]=[N+]=N[C@@H]1C2=C(C=CC=C2)CC12CCNCC2 bide-click-am-925
+[N-]=[N+]=NCC1=CC(Cl)=NC=C1 bide-click-am-926
 [N-]=[N+]=NCC1=CN2C=CC=NC2=N1 bide-click-am-927
 CC(N=[N+]=[N-])C1=C(F)C=CC(F)=C1 bide-click-am-928
 CC[C@H](C)N=[N+]=[N-] bide-click-am-929
@@ -932,7 +944,6 @@ CC1=CC=CC([C@@H](C)N=[N+]=[N-])=C1 bide-click-am-946
 C[C@@H](N=[N+]=[N-])C1=C(O)C=CC=C1 bide-click-am-950
 [N-]=[N+]=NC1CCC2=CC(F)=CC(F)=C21 bide-click-am-951
 COC1=C(OC)C=C(C(C)N=[N+]=[N-])C=C1 bide-click-am-952
-C#CCCCN=[N+]=[N-] bide-click-am-953
 CN1CCC[C@H](N=[N+]=[N-])C1 bide-click-am-954
 [N-]=[N+]=NCCN1CCCC2=CC=CC=C21 bide-click-am-955
 [N-]=[N+]=NC(CO)C1=NC=CC=C1 bide-click-am-956
@@ -940,6 +951,7 @@ CN1CCC[C@H](N=[N+]=[N-])C1 bide-click-am-954
 CC(CC1=CSC=C1)N=[N+]=[N-] bide-click-am-958
 [N-]=[N+]=NC1(C2=C(Br)C=CC=C2)CC1 bide-click-am-959
 CC(C)(C)OC(=O)N1CCC(N=[N+]=[N-])C(F)(F)C1 bide-click-am-960
+N#CC1=C(CN=[N+]=[N-])C=CC=C1 bide-click-am-961
 [N-]=[N+]=NC1CCN(C2=CC=CC=C2)CC1 bide-click-am-962
 C[C@@H](CC(C)(C)C)N=[N+]=[N-] bide-click-am-963
 [N-]=[N+]=N[C@H]1CCCOC1 bide-click-am-964
@@ -972,7 +984,6 @@ CO[C@H]1C[C@@H](N=[N+]=[N-])C1 bide-click-am-990
 CCN(CCN=[N+]=[N-])C(=O)OC(C)(C)C bide-click-am-991
 COC(=O)N1CCC(N=[N+]=[N-])CC1 bide-click-am-992
 [N-]=[N+]=N[C@@H]1CCCOC1 bide-click-am-993
-C#CC(C)N=[N+]=[N-] bide-click-am-994
 C[C@@H](N=[N+]=[N-])C1=C(F)C=CC=C1 bide-click-am-995
 CSC1=CC=C([C@H](C)N=[N+]=[N-])C=C1 bide-click-am-996
 CC(C)(C)OC(=O)[C@H]1C[C@@H](N=[N+]=[N-])C1 bide-click-am-997
@@ -1004,7 +1015,6 @@ COC(=O)C12CCC(N=[N+]=[N-])(CC1)CC2 bide-click-am-1022
 [N-]=[N+]=N[C@H]1CCOC2=CC=CC=C21 bide-click-am-1023
 CN(C)C(=O)CCN=[N+]=[N-] bide-click-am-1024
 C=C[C@@H](CO)N=[N+]=[N-] bide-click-am-1025
-C#CCCCCN=[N+]=[N-] bide-click-am-1026
 [N-]=[N+]=NCC(=O)NC1=CC=CC=C1 bide-click-am-1027
 [N-]=[N+]=NC1CCCN(C2=NC=CC=N2)C1 bide-click-am-1028
 CC(C)N1C=NN=C1CN=[N+]=[N-] bide-click-am-1029
@@ -1035,6 +1045,7 @@ COC1=CC=CC(C(N=[N+]=[N-])C2=CC=CC=C2)=C1 bide-click-am-1053
 C[C@@H](N=[N+]=[N-])C1=CC(Cl)=C(F)C=C1 bide-click-am-1054
 C[C@H]1CC[C@@H](N=[N+]=[N-])CC1 bide-click-am-1055
 C[C@@H]1C[C@@H](N=[N+]=[N-])CN1C(=O)OC(C)(C)C bide-click-am-1056
+C[C@@H](N=[N+]=[N-])C1=CC=C(C#N)C=C1 bide-click-am-1057
 [N-]=[N+]=N[C@H](C1=CC=CC=C1)C(F)(F)F bide-click-am-1058
 [N-]=[N+]=NCC1=NC(C2=CC=CC=C2)=CS1 bide-click-am-1059
 CN1CC(CN=[N+]=[N-])C1 bide-click-am-1060
@@ -1049,6 +1060,7 @@ CCC(C)(C)C1CCC(N=[N+]=[N-])CC1 bide-click-am-1068
 [N-]=[N+]=NCC1=C(C(F)(F)F)N=CC=C1 bide-click-am-1069
 [N-]=[N+]=NCCOC1CCCC1 bide-click-am-1070
 [N-]=[N+]=N[C@@H]1CN(CC2=CC=CC=C2)CC12CC2 bide-click-am-1071
+N#CC1=CC=C(C2(N=[N+]=[N-])CC2)C=C1 bide-click-am-1072
 CCSCCN=[N+]=[N-] bide-click-am-1073
 [N-]=[N+]=NCC1=CC(OC2=CC=CC=C2)=CC=C1 bide-click-am-1074
 CC(=O)CCN=[N+]=[N-] bide-click-am-1075
@@ -1076,7 +1088,6 @@ CN(C)C(=O)[C@@H](N=[N+]=[N-])C1=CC=CC=C1 bide-click-am-1095
 COC1CCCCC1N=[N+]=[N-] bide-click-am-1097
 CC(C)(C)OC(=O)N1C[C@@H](F)[C@H](N=[N+]=[N-])C1 bide-click-am-1098
 CC(C)(N=[N+]=[N-])C1=CC=C(Cl)C=C1 bide-click-am-1099
-C[Si](C)(C)C#CC1=CC=C(CN=[N+]=[N-])C=C1 bide-click-am-1100
 [N-]=[N+]=NCC1=C(F)C=C(F)C=N1 bide-click-am-1101
 [N-]=[N+]=N[C@H]1CC[C@H](OCC2CC2)CC1 bide-click-am-1102
 CC1=CC=CC(CN=[N+]=[N-])=C1F bide-click-am-1103
@@ -1140,10 +1151,9 @@ CC[C@H](N=[N+]=[N-])C1=CC=C(Br)C=C1 bide-click-am-1159
 CO[C@@H](C)CN=[N+]=[N-] bide-click-am-1161
 [N-]=[N+]=NCCC1=NC=CS1 bide-click-am-1162
 COC(=O)C1(CN=[N+]=[N-])CC1 bide-click-am-1163
-[N-]=[N+]=NCC#CC1=CC=C(Cl)C=C1 bide-click-am-1164
-C#CC1=CC=C(CN=[N+]=[N-])C=C1 bide-click-am-1165
 CC1CCN(C2=C(CN=[N+]=[N-])C=CC=C2)CC1 bide-click-am-1166
 COC1=CC=CC(OC)=C1[C@H](C)N=[N+]=[N-] bide-click-am-1167
+[N-]=[N+]=NC1(C2=CN=C(Cl)C=C2)CCC1 bide-click-am-1168
 [N-]=[N+]=NCC1=CN(C2=CC=CC=C2)N=C1 bide-click-am-1169
 [N-]=[N+]=NCCCN1CCCCCC1=O bide-click-am-1170
 C[C@H](N=[N+]=[N-])C(=S)N1CCCC1 bide-click-am-1171
@@ -1175,9 +1185,7 @@ CCC(N=[N+]=[N-])C1=CNC2=CC=CC=C12 bide-click-am-1196
 [N-]=[N+]=NCCC(=O)N1CCCC1 bide-click-am-1197
 [N-]=[N+]=NCCCCCl bide-click-am-1198
 CSC1=CC=C(CN=[N+]=[N-])C=C1 bide-click-am-1199
-C#CC1=C(CN=[N+]=[N-])C=CC=C1 bide-click-am-1200
 C[C@H](N=[N+]=[N-])C1=CC=C(C(F)(F)F)C=C1 bide-click-am-1201
-C#CC1(N=[N+]=[N-])CC1 bide-click-am-1202
 CC1=C(C)C2=C(C=CC(CN=[N+]=[N-])=C2)N1 bide-click-am-1203
 [N-]=[N+]=NCCCC1=CC(C(F)(F)F)=CC=C1 bide-click-am-1204
 CC(N=[N+]=[N-])C1=CC(Br)=CS1 bide-click-am-1205
@@ -1233,6 +1241,7 @@ CC(C)(C)OC(=O)N1CCC(N2CCC(N=[N+]=[N-])CC2)CC1 bide-click-am-1254
 C[C@H](N=[N+]=[N-])C1=CC=C(I)C=C1 bide-click-am-1255
 CC1=CC=C(C(CO)N=[N+]=[N-])C=C1 bide-click-am-1256
 COC(=O)C(F)(F)CN=[N+]=[N-] bide-click-am-1257
+C[C@H](N=[N+]=[N-])C1=CC(C#N)=CC=C1 bide-click-am-1258
 COC1=CC=CC([C@H](N=[N+]=[N-])C(F)(F)F)=C1 bide-click-am-1259
 N#CC(N=[N+]=[N-])C1=CC(Cl)=C(Cl)C=C1 bide-click-am-1260
 CCC(N=[N+]=[N-])C1=CC=C(Cl)C=C1 bide-click-am-1261
@@ -1293,6 +1302,7 @@ CC1=NN(CCN=[N+]=[N-])C(C)=N1 bide-click-am-1315
 [N-]=[N+]=NCC1=C(Cl)C=C(Cl)C=N1 bide-click-am-1316
 C[C@H](N=[N+]=[N-])C1=CN=CC=C1 bide-click-am-1317
 [N-]=[N+]=NCCC1=CNC2=CC(OC(F)(F)F)=CC=C12 bide-click-am-1318
+COC1=C(CN=[N+]=[N-])C=CC(Cl)=N1 bide-click-am-1319
 CNC(=O)[C@@H](CC1=CC=CC=C1)N=[N+]=[N-] bide-click-am-1320
 CN1CC[C@@H](N=[N+]=[N-])[C@@H](F)C1 bide-click-am-1321
 CCN1CC(N=[N+]=[N-])C1 bide-click-am-1322
@@ -1385,6 +1395,8 @@ N#C[C@H]1CCC[C@@H](N=[N+]=[N-])C1 bide-click-am-1404
 [N-]=[N+]=NCC1=CC=C(Br)O1 bide-click-am-1409
 C[C@@H](N=[N+]=[N-])C1=NC=CN=C1 bide-click-am-1410
 CC1=CC=CC(CN=[N+]=[N-])=C1O bide-click-am-1411
+[N-]=[N+]=NCC1=CC(Cl)=NC(Cl)=C1 bide-click-am-1412
+C[C@@H](N=[N+]=[N-])C1=CC(C#N)=CC=C1 bide-click-am-1413
 CC1(O)CCC(N=[N+]=[N-])CC1 bide-click-am-1414
 [N-]=[N+]=NCC1=CC=C(N2C=C(Cl)C=N2)C=C1 bide-click-am-1415
 [N-]=[N+]=NC1CCNC1=O bide-click-am-1416
@@ -1406,6 +1418,7 @@ CC1(CN=[N+]=[N-])CCN(C(=O)OC(C)(C)C)CC1 bide-click-am-1429
 [N-]=[N+]=NCC1=CN2C=CC=CC2=N1 bide-click-am-1432
 CC(N=[N+]=[N-])C1=NC(Br)=CC=C1 bide-click-am-1433
 COC(=O)C1CCCCC1N=[N+]=[N-] bide-click-am-1434
+CC1(C)OB(C2=CC=C(C3(N=[N+]=[N-])CC3)C=C2)OC1(C)C bide-click-am-1435
 [N-]=[N+]=NC1CN(C(=O)C2CC2)C1 bide-click-am-1436
 CC[C@H](N=[N+]=[N-])C1=C(Cl)C=CC=C1 bide-click-am-1437
 COC(=O)C(CC1=CC(F)=CC=C1)N=[N+]=[N-] bide-click-am-1438
@@ -1454,6 +1467,7 @@ C[C@@H]1OCC2(CCNCC2)[C@@H]1N=[N+]=[N-] bide-click-am-1480
 CC1=C([C@H](C)N=[N+]=[N-])C=C(F)C=C1 bide-click-am-1481
 CC(N=[N+]=[N-])C1=CC=C(C2=CC=NC=C2)C=C1 bide-click-am-1482
 [N-]=[N+]=NCCC12CCCN1CCC2 bide-click-am-1483
+N#CC1=CC(F)=C(CN=[N+]=[N-])C=C1 bide-click-am-1484
 [N-]=[N+]=N[C@H]1C[C@H](F)C1 bide-click-am-1485
 [N-]=[N+]=NCC1=C(Cl)C=CC=N1 bide-click-am-1486
 [N-]=[N+]=N[C@H]1CCSC1=O bide-click-am-1487
@@ -1468,6 +1482,7 @@ COC(=O)[C@H](N=[N+]=[N-])C1=CC=C(Br)C=C1 bide-click-am-1495
 CC(C)(C)OC(=O)N1CC2CC(N=[N+]=[N-])C1C2 bide-click-am-1496
 CCC(N=[N+]=[N-])C1CCCN(C(=O)OC(C)(C)C)C1 bide-click-am-1497
 CCC(N=[N+]=[N-])C1=CC=C(F)C=C1 bide-click-am-1498
+CC(N=[N+]=[N-])C1=CC(C#N)=CC=C1 bide-click-am-1499
 [N-]=[N+]=NC1CC2(CCC2)C1 bide-click-am-1500
 [N-]=[N+]=NC1COC2=CC=C(Cl)C=C21 bide-click-am-1501
 [N-]=[N+]=N[C@@H]1CCC2=CC=C(F)C=C21 bide-click-am-1502
@@ -1546,6 +1561,7 @@ CCC1=CC=C([C@H](CC)N=[N+]=[N-])C=C1 bide-click-am-1573
 C[C@H](N=[N+]=[N-])C1=C(F)C=CC(Cl)=C1 bide-click-am-1575
 CC[C@@H](N=[N+]=[N-])C1=CC(OC)=CC=C1 bide-click-am-1576
 [N-]=[N+]=NCC1COC2=CC=CC=C2C1 bide-click-am-1577
+[N-]=[N+]=NCC1=C(Cl)N=C(Cl)C=C1 bide-click-am-1578
 CN1CCC[C@@H]1CN=[N+]=[N-] bide-click-am-1579
 C=CC[C@H](N=[N+]=[N-])C(=O)OC bide-click-am-1580
 C[C@H](CC#N)N=[N+]=[N-] bide-click-am-1581
@@ -1568,7 +1584,10 @@ COC(=O)C1=CC=CC([C@H](C)N=[N+]=[N-])=C1 bide-click-am-1597
 C=CC[C@H](CO)N=[N+]=[N-] bide-click-am-1598
 CC(C)(CCN1CCOCC1)N=[N+]=[N-] bide-click-am-1599
 [N-]=[N+]=NCC1=C(Br)C=NC=C1 bide-click-am-1600
+[N-]=[N+]=NCC1=C(F)C=CC(Cl)=N1 bide-click-am-1601
 COC1=C2C(=CC=C1)CCC2N=[N+]=[N-] bide-click-am-1602
+[N-]=[N+]=NC(C1=CC(Cl)=NC=C1)C1CC1 bide-click-am-1603
+N#CC1=C2CC[C@H](N=[N+]=[N-])C2=CC=C1 bide-click-am-1604
 CC(C)C1=CC=C([C@H](C)N=[N+]=[N-])C=C1 bide-click-am-1605
 COC1=CC=C2OCCC(N=[N+]=[N-])C2=C1 bide-click-am-1606
 [N-]=[N+]=NCC1=CC(C2CC2)=CC=C1 bide-click-am-1607
@@ -1581,8 +1600,8 @@ C[C@H](N=[N+]=[N-])C1=C(Cl)C=CC=C1 bide-click-am-1613
 [N-]=[N+]=NC(CO)CC1=CC(Cl)=C(Cl)C=C1 bide-click-am-1614
 CC1=CC=CC(C)=C1NC(=O)C(C)N=[N+]=[N-] bide-click-am-1615
 [N-]=[N+]=NC1CCC(N2CCCCC2)CC1 bide-click-am-1616
-[N-]=[N+]=NCC#CC1=CC=CC=C1 bide-click-am-1617
 C[C@H](N=[N+]=[N-])C1=CC(F)=C(Br)C=C1 bide-click-am-1618
+N#CC1=CC(Br)=C(CN=[N+]=[N-])C=C1 bide-click-am-1619
 CCC[C@@H](N=[N+]=[N-])C1=C(C)C=CC=C1 bide-click-am-1620
 COCC1(CN=[N+]=[N-])CCCC1 bide-click-am-1621
 [N-]=[N+]=N[C@H](CO)C1=CC(Cl)=C(Cl)C=C1 bide-click-am-1622
@@ -1625,7 +1644,6 @@ COC(=O)C[C@H](N=[N+]=[N-])C1=CC=C(Br)C=C1 bide-click-am-1656
 [N-]=[N+]=NC(CO)C1=C(Cl)C=C(Cl)C=C1 bide-click-am-1659
 CC1(C)OC2=CC=CC(CN=[N+]=[N-])=C2O1 bide-click-am-1660
 CC[C@H](N=[N+]=[N-])C(F)(F)F bide-click-am-1661
-C#C[C@H](C)N=[N+]=[N-] bide-click-am-1662
 C[C@@H](N=[N+]=[N-])C1=NC=C(F)C=C1 bide-click-am-1663
 [N-]=[N+]=N[C@@H](CO)C1=CC(C(F)(F)F)=C(Cl)C=C1 bide-click-am-1664
 CC1=CC=C(C(N=[N+]=[N-])C(C)C)C=C1 bide-click-am-1665
@@ -1651,12 +1669,14 @@ CC(C)(C)OC(=O)N1CCC(CN=[N+]=[N-])C(F)(F)C1 bide-click-am-1684
 [N-]=[N+]=NC(C1=CC=CC=C1)C1(O)CC1 bide-click-am-1685
 [N-]=[N+]=N[C@H]1CCCC2=C(Br)C=CC=C21 bide-click-am-1686
 CN1C=C(CCN=[N+]=[N-])C2=CC=CC=C21 bide-click-am-1687
+N#CC1=CC(F)=CC(CN=[N+]=[N-])=C1 bide-click-am-1688
 [N-]=[N+]=NC1CCN(C2=CC=CC=C2)C1 bide-click-am-1689
 CC(C)CC(N=[N+]=[N-])C1=C(N)C=CC=C1 bide-click-am-1690
 CC1=C(C)N=C(CN=[N+]=[N-])C=C1 bide-click-am-1691
 [N-]=[N+]=NC1CCC(I)CC1 bide-click-am-1692
 C[C@@H](N=[N+]=[N-])C1=C(Br)C=C(F)C=C1 bide-click-am-1693
 [N-]=[N+]=NCCC1=NNC2=CC(F)=CC=C12 bide-click-am-1694
+CC(C)C[C@H](N=[N+]=[N-])B1OC(C)(C)C(C)(C)O1 bide-click-am-1695
 [N-]=[N+]=NCCC1(O)CCCCC1 bide-click-am-1696
 CC(C)(O)CCCN=[N+]=[N-] bide-click-am-1697
 [N-]=[N+]=NC1CCC2=CC(F)=CC=C21 bide-click-am-1698
@@ -1664,7 +1684,6 @@ CC1=CC=CC([C@H](C)N=[N+]=[N-])=C1 bide-click-am-1699
 CC1=C(CN=[N+]=[N-])C(=O)NC=C1 bide-click-am-1700
 CC1=CC2=C(C=CC=C2)N=C1CN=[N+]=[N-] bide-click-am-1701
 C[C@@H](N=[N+]=[N-])C1=C(F)C=CC(F)=C1 bide-click-am-1702
-C#CC(N=[N+]=[N-])C1=CC=CC=C1 bide-click-am-1703
 [N-]=[N+]=N[C@@H](C1=CC=CC=C1)C(F)(F)F bide-click-am-1704
 CC1=CC=C(C(N=[N+]=[N-])C(F)(F)F)C=C1 bide-click-am-1705
 [N-]=[N+]=N[C@H]1CCOC2=CC=C(Br)C=C21 bide-click-am-1706
@@ -1711,6 +1730,7 @@ CC(C)(C)OC(=O)N1CC(N=[N+]=[N-])CC(F)(F)C1 bide-click-am-1746
 [N-]=[N+]=NC1CC1C1=CC=C(C(F)(F)F)C=C1 bide-click-am-1747
 C[C@@H]1CN(C(=O)OC(C)(C)C)CC[C@H]1N=[N+]=[N-] bide-click-am-1748
 [N-]=[N+]=N[C@@H]1CCOC2=C(F)C=CC=C21 bide-click-am-1749
+[N-]=[N+]=NCC1=NC(Cl)=CN=C1 bide-click-am-1750
 [N-]=[N+]=NC[C@H]1C[C@@H](O)C1 bide-click-am-1751
 CC(C)C(N=[N+]=[N-])C1=CC=C(F)C=C1 bide-click-am-1752
 [N-]=[N+]=NC1(CC2=CC=CC=C2)CC1 bide-click-am-1753
@@ -1720,6 +1740,7 @@ COC(=O)C[C@@H](N=[N+]=[N-])C1=CC=C(Br)C=C1 bide-click-am-1755
 CCC(N=[N+]=[N-])C1=CC=C(C)O1 bide-click-am-1757
 C[C@@H]1C[C@H](N=[N+]=[N-])CN(C(=O)OC(C)(C)C)C1 bide-click-am-1758
 COC1=CC=C(C2(CN=[N+]=[N-])CC2)C=C1 bide-click-am-1759
+C[C@H](N=[N+]=[N-])C1=CC=C(C#N)C=C1 bide-click-am-1760
 CC(N=[N+]=[N-])C1=C(F)C=C(Br)C=C1F bide-click-am-1761
 CCC(=O)CN=[N+]=[N-] bide-click-am-1762
 COC(=O)C1=CC=C2CCC[C@H](N=[N+]=[N-])C2=C1 bide-click-am-1763
@@ -1745,6 +1766,7 @@ CC1=C(F)C=C([C@H](C)N=[N+]=[N-])C=C1 bide-click-am-1781
 C[C@@H]1C[C@H](N=[N+]=[N-])CN1C(=O)OC(C)(C)C bide-click-am-1783
 CS(=O)CCCN=[N+]=[N-] bide-click-am-1784
 CC1=C([C@H](CO)N=[N+]=[N-])C=CC=C1F bide-click-am-1785
+CC[C@@H](N=[N+]=[N-])C1=CC(C#N)=CC=C1 bide-click-am-1786
 CC[C@H](N=[N+]=[N-])C1=C(C)C=C(C)C=C1 bide-click-am-1787
 CC1=CC(Br)=CC(CN=[N+]=[N-])=N1 bide-click-am-1788
 [N-]=[N+]=N[C@H](C1=C(F)C=CC=C1)C1CC1 bide-click-am-1789
@@ -1768,6 +1790,7 @@ CC1=CC(CN=[N+]=[N-])=CC=C1O bide-click-am-1804
 CC(C)(N=[N+]=[N-])C1=CC=CS1 bide-click-am-1807
 CC1=NOC(CN=[N+]=[N-])=C1 bide-click-am-1808
 C[C@H](N=[N+]=[N-])C1=CC=C(Cl)S1 bide-click-am-1809
+[N-]=[N+]=NCC1=NC(Cl)=C(Br)C=C1 bide-click-am-1810
 [N-]=[N+]=N[C@H](CO)C1=CC(Cl)=C(F)C=C1 bide-click-am-1811
 [N-]=[N+]=N[C@H]1CCOC[C@@H]1O bide-click-am-1812
 [N-]=[N+]=NCCC(=O)C1=CC=CC=C1 bide-click-am-1813
@@ -1790,6 +1813,7 @@ C=CC[C@@H](N=[N+]=[N-])C1=CC=C(F)C=C1 bide-click-am-1829
 C[C@@H](N=[N+]=[N-])C1=C(F)C=C(Br)C=C1 bide-click-am-1830
 CCCOC(=O)[C@H](C)N=[N+]=[N-] bide-click-am-1831
 CC(N=[N+]=[N-])C1=C(Br)C=C(F)C=C1 bide-click-am-1832
+[N-]=[N+]=NCC1=CC(C(F)(F)F)=C(Cl)N=C1 bide-click-am-1833
 CC(C)COC(=O)[C@H](C)N=[N+]=[N-] bide-click-am-1834
 [N-]=[N+]=NCC1=CCCCC1 bide-click-am-1835
 [N-]=[N+]=NCC1=CC(Cl)=CN=C1 bide-click-am-1836
@@ -1798,6 +1822,7 @@ CC(C)COC(=O)[C@H](C)N=[N+]=[N-] bide-click-am-1834
 COC1=C([C@H](C)N=[N+]=[N-])C(F)=CC=C1 bide-click-am-1839
 CCC(N=[N+]=[N-])C1=CC=CO1 bide-click-am-1840
 [N-]=[N+]=NC1CC1C1=C(F)C=CC=C1 bide-click-am-1841
+CC(N=[N+]=[N-])C1=CC=C(C#N)C=C1 bide-click-am-1842
 CC1=C([C@@H](CCO)N=[N+]=[N-])C=CC(Br)=C1 bide-click-am-1843
 CCOC(=O)C(N=[N+]=[N-])C(C(F)(F)F)C(F)(F)F bide-click-am-1844
 CSC1=NC=CC(CN=[N+]=[N-])=N1 bide-click-am-1845
@@ -1813,6 +1838,7 @@ CC1=C(N)C=C([C@H](C)N=[N+]=[N-])C=C1 bide-click-am-1854
 COC1=CC(F)=C(CN=[N+]=[N-])C=C1 bide-click-am-1855
 CC1=CC([C@H](C)N=[N+]=[N-])=CC(C)=C1 bide-click-am-1856
 [N-]=[N+]=NC(C1=CC=C(Cl)C=C1)C1CC1 bide-click-am-1857
+C[C@@H](N=[N+]=[N-])C1=CN=C(Cl)C=C1 bide-click-am-1858
 [N-]=[N+]=NC1(C(F)(F)F)CCC1 bide-click-am-1859
 C[C@@H](N=[N+]=[N-])C1=NC=C(C(F)(F)F)C=C1 bide-click-am-1860
 COC(=O)C1CC2(CC(N=[N+]=[N-])C2)C1 bide-click-am-1861
@@ -1841,9 +1867,11 @@ CCCOC(=O)C1(N=[N+]=[N-])CC1 bide-click-am-1881
 [N-]=[N+]=N[C@@H]1CCOC[C@@H]1F bide-click-am-1884
 COC(=O)C(N=[N+]=[N-])C1=CC(Cl)=CC=C1 bide-click-am-1885
 CC(C)(N=[N+]=[N-])C(=O)NCC1CCCC1 bide-click-am-1886
+[N-]=[N+]=NCC1=NN=C(Cl)C=C1 bide-click-am-1887
 [N-]=[N+]=NC1CCOC2=CC(Br)=CC=C21 bide-click-am-1888
 [N-]=[N+]=NCC1=C(Br)N=CC(F)=C1 bide-click-am-1889
 CC1=CC=C([C@H](CO)N=[N+]=[N-])C=C1 bide-click-am-1890
+N#CC1=C(Cl)C=C(CN=[N+]=[N-])C=C1 bide-click-am-1891
 CC(C)(C)OC(=O)N1C[C@@H](N=[N+]=[N-])CC(F)(F)C1 bide-click-am-1892
 [N-]=[N+]=N[C@@H]1COC2=CC=CC(F)=C21 bide-click-am-1893
 COC1=CC([C@@H](C)N=[N+]=[N-])=CC(OC)=C1 bide-click-am-1894
@@ -1922,6 +1950,7 @@ CC1=C(Br)SC(CN=[N+]=[N-])=N1 bide-click-am-1965
 CC(C)(C)OC1=CC=C(C(CO)N=[N+]=[N-])C=C1 bide-click-am-1967
 CC(C)CC(C)(CO)N=[N+]=[N-] bide-click-am-1968
 CCC(N=[N+]=[N-])C1=CC(C)=CC=C1 bide-click-am-1969
+C[C@@H](N=[N+]=[N-])C1=NC(Cl)=CC=C1 bide-click-am-1970
 CN1N=CC2=C1C=CC=C2CN=[N+]=[N-] bide-click-am-1971
 [N-]=[N+]=N[C@@H](CO)C1CC1 bide-click-am-1972
 CN1CCN(C(=O)OC(C)(C)C)CC1CN=[N+]=[N-] bide-click-am-1973
@@ -1956,6 +1985,7 @@ CC1=CC([C@@H](C)N=[N+]=[N-])=CC(C)=C1 bide-click-am-2001
 CCC1=CC=CC(CN=[N+]=[N-])=C1 bide-click-am-2002
 N#CCC1(N=[N+]=[N-])CCC1 bide-click-am-2003
 COC(=O)C1=CC=CC(C2(N=[N+]=[N-])CC2)=C1 bide-click-am-2004
+CC(N=[N+]=[N-])C1=NC(Cl)=CC=C1 bide-click-am-2005
 [N-]=[N+]=N[C@@H](CO)C1=C(F)C=CC=C1 bide-click-am-2006
 [N-]=[N+]=NC1COC2=CC(Cl)=CC=C2C1 bide-click-am-2007
 CC(C)(N=[N+]=[N-])C1=NC(C(F)(F)F)=CC=C1 bide-click-am-2008
@@ -1975,7 +2005,6 @@ CC(N=[N+]=[N-])C1=CC(C(F)(F)F)=NC=C1 bide-click-am-2021
 [N-]=[N+]=N[C@H](CO)C1=C2C=CC=CC2=CC=C1 bide-click-am-2022
 [N-]=[N+]=NCC1=C(O)C=C(F)C=C1 bide-click-am-2023
 CC1=C(Cl)C=C(C(C)N=[N+]=[N-])C=C1 bide-click-am-2024
-C#CC1=CC=CC(CN=[N+]=[N-])=C1 bide-click-am-2025
 [N-]=[N+]=NC1CC2(C1)CC(F)(F)C2 bide-click-am-2026
 CC(N=[N+]=[N-])C1=C(Cl)C=C(F)C=N1 bide-click-am-2027
 [N-]=[N+]=NCC1=C2C=CC=NC2=C(O)C=C1 bide-click-am-2028
@@ -1989,13 +2018,13 @@ C[C@H](N=[N+]=[N-])C1=CC(Br)=NC=C1 bide-click-am-2035
 CC1(O)CC(CN=[N+]=[N-])C1 bide-click-am-2036
 COC1=CC=CC([C@@H](N=[N+]=[N-])C(F)(F)F)=C1 bide-click-am-2037
 [N-]=[N+]=NC1CC(N2CCCC2)C1 bide-click-am-2038
+N#CC1=CC(C(F)(F)F)=C(CN=[N+]=[N-])C=C1 bide-click-am-2039
 [N-]=[N+]=N[C@@H](C1=C(F)C=CC=C1)C1CC1 bide-click-am-2040
 CN1CC[C@@H](CN=[N+]=[N-])C1 bide-click-am-2041
 CN1C[C@H](N=[N+]=[N-])CCC1=O bide-click-am-2042
 COC1=CC=CC([C@H](CO)N=[N+]=[N-])=C1 bide-click-am-2043
 CC(C)[C@H](N=[N+]=[N-])C1=CC=C(F)C=C1 bide-click-am-2044
 CC[C@H](N=[N+]=[N-])C1=CC(F)=C(F)C=C1 bide-click-am-2045
-[N-]=[N+]=NCC#CCO bide-click-am-2046
 CC(C)(C)OC(=O)N1C[C@@H](N=[N+]=[N-])[C@H](C2=CC=CC=C2)C1 bide-click-am-2047
 CCCC1=C(CN=[N+]=[N-])C(=O)NC(C)=C1 bide-click-am-2048
 C[C@@H](N=[N+]=[N-])C1=CC(OC(F)(F)F)=CC=C1 bide-click-am-2049
@@ -2013,6 +2042,7 @@ COC(=O)C[C@H](N=[N+]=[N-])C1=CC(Cl)=C(Cl)C=C1 bide-click-am-2060
 [N-]=[N+]=NCC1=C(CO)C=CC=N1 bide-click-am-2061
 [N-]=[N+]=N[C@@H](C1=CC=C(F)C=C1)C(F)(F)F bide-click-am-2062
 [N-]=[N+]=NCC1=CC2=C(C=CC=C2)C=N1 bide-click-am-2063
+[N-]=[N+]=NCC1=CC(Cl)=C(Cl)N=C1 bide-click-am-2064
 CC(C)C[C@H](N=[N+]=[N-])C1=CC=CC=C1 bide-click-am-2065
 [N-]=[N+]=NCC1=CC=C(C2CC2)C=C1 bide-click-am-2066
 CCCC(N=[N+]=[N-])C1=C(C)C=CC=C1 bide-click-am-2067
@@ -2029,7 +2059,6 @@ C[C@H](N=[N+]=[N-])C1=C(O)C=C(Br)C=C1 bide-click-am-2076
 C[C@H](N=[N+]=[N-])C1=CC=C(N(C)C)C=C1 bide-click-am-2078
 C=CC(C)N=[N+]=[N-] bide-click-am-2079
 [N-]=[N+]=NC1CCNC2=CC=CC=C21 bide-click-am-2080
-C#CC(CC1=CC(F)=CC=C1)N=[N+]=[N-] bide-click-am-2081
 CC1=CC([C@H](C)N=[N+]=[N-])=NC=C1Br bide-click-am-2082
 CC1CCN(CCN=[N+]=[N-])CC1 bide-click-am-2083
 C=CCC(CO)N=[N+]=[N-] bide-click-am-2084
@@ -2037,6 +2066,7 @@ C=CCC(CO)N=[N+]=[N-] bide-click-am-2084
 C=CCC(N=[N+]=[N-])C1=CC=C(F)C=C1 bide-click-am-2086
 [N-]=[N+]=N[C@H]1COC2=CC(F)=CC=C21 bide-click-am-2087
 COC1=C(C2(CN=[N+]=[N-])CC2)C=CC=C1 bide-click-am-2088
+CC(N=[N+]=[N-])C1=CC(Cl)=NC=C1 bide-click-am-2089
 [N-]=[N+]=N[C@H](CO)C1=C(Br)C=CC=C1 bide-click-am-2090
 [N-]=[N+]=N[C@@H]1CCN(C2COC2)C1 bide-click-am-2091
 COC(=O)C1=C2CCC(N=[N+]=[N-])C2=CC=C1 bide-click-am-2092
@@ -2051,8 +2081,8 @@ COC1=CC=CC(OC)=C1[C@@H](C)N=[N+]=[N-] bide-click-am-2100
 [N-]=[N+]=N[C@H]1CCCC2=CC=C(Br)C=C21 bide-click-am-2101
 [N-]=[N+]=NCC1=C(F)C=C(C(F)(F)F)C=N1 bide-click-am-2102
 CC[C@@H](N=[N+]=[N-])C1=CC(Br)=CC=C1 bide-click-am-2103
+[N-]=[N+]=NC(C1=CN=C(Cl)C=C1)C1CC1 bide-click-am-2104
 [N-]=[N+]=NCC12CC(F)(C1)C2 bide-click-am-2105
-C#C[C@@H](C)N=[N+]=[N-] bide-click-am-2106
 [N-]=[N+]=NC1CCN(C2COC2)CC1 bide-click-am-2107
 COC(C)(C)C(O)CN=[N+]=[N-] bide-click-am-2108
 CC(C)(C)OC(=O)N1CC2CCCC(N=[N+]=[N-])C2C1 bide-click-am-2109
@@ -2137,6 +2167,7 @@ CC(CCl)N=[N+]=[N-] bide-click-am-2187
 CC[C@H](N=[N+]=[N-])C1=CC=C(C)C=C1 bide-click-am-2188
 CC1=C(CN=[N+]=[N-])C(Cl)=CC=C1 bide-click-am-2189
 CC(C)(C)OC(=O)N1CC2C(C1)C2N=[N+]=[N-] bide-click-am-2190
+CC(N=[N+]=[N-])C1=C(F)C=C(C#N)C=C1 bide-click-am-2191
 [N-]=[N+]=NC(C1=CC=CO1)C(F)(F)F bide-click-am-2192
 COC1=C([C@H](CO)N=[N+]=[N-])C=CC=C1 bide-click-am-2193
 [N-]=[N+]=NCC1=CON=C1 bide-click-am-2194
@@ -2144,6 +2175,7 @@ CC(C)(C)C(N=[N+]=[N-])C1=NC=CC=C1 bide-click-am-2195
 CC1=CC=C2C(=C1)CC[C@@H]2N=[N+]=[N-] bide-click-am-2196
 CC(C)(C)OC(=O)CC1=CC=CC(CN=[N+]=[N-])=C1 bide-click-am-2197
 CC1=CC(C(C)N=[N+]=[N-])=CC=N1 bide-click-am-2198
+C[C@@H](N=[N+]=[N-])C1=C(F)C=C(C#N)C=C1 bide-click-am-2199
 COC1=CC(Cl)=CC(C(C)N=[N+]=[N-])=C1 bide-click-am-2200
 CCCC(N=[N+]=[N-])C1=CC2=C(C=C1)OCO2 bide-click-am-2201
 [N-]=[N+]=N[C@H]1CCC2=CC(F)=C(F)C=C21 bide-click-am-2202
@@ -2168,6 +2200,7 @@ CC(C)(C)OC(=O)N1CCCC(C(N=[N+]=[N-])C(F)(F)F)C1 bide-click-am-2220
 CC(=O)NC1=CC=C([C@@H](C)N=[N+]=[N-])C=C1 bide-click-am-2221
 C[C@@H](N=[N+]=[N-])C1=C2CCCCC2=CC=C1 bide-click-am-2222
 [N-]=[N+]=NC(CO)C1=C(F)C=CC=C1F bide-click-am-2223
+C[C@H](N=[N+]=[N-])C1=CC(Cl)=NC=C1 bide-click-am-2224
 COC1=CC([C@H](CO)N=[N+]=[N-])=CC=C1F bide-click-am-2225
 [N-]=[N+]=N[C@H](C1CC1)C(F)(F)F bide-click-am-2226
 COC1=C([C@H](N=[N+]=[N-])C(F)(F)F)C=CC=C1 bide-click-am-2227
@@ -2187,6 +2220,7 @@ COC1=C(C(C)N=[N+]=[N-])C=C(Cl)C=C1 bide-click-am-2240
 CC1=CC(CN=[N+]=[N-])=NC=C1Br bide-click-am-2241
 CC1=C2OCC[C@@H](N=[N+]=[N-])C2=CC=C1 bide-click-am-2242
 [N-]=[N+]=N[C@H](CO)C1=C(Cl)C=CC(F)=C1 bide-click-am-2243
+N#CC1=C2CC[C@@H](N=[N+]=[N-])C2=CC=C1 bide-click-am-2244
 C=CCC(CC)N=[N+]=[N-] bide-click-am-2245
 COC1=CC=C2C(=C1)CC[C@H]2N=[N+]=[N-] bide-click-am-2246
 [N-]=[N+]=NC(CO)C1=CC(Cl)=CC(Cl)=C1 bide-click-am-2247
@@ -2214,6 +2248,7 @@ CC1=CC(C(C)N=[N+]=[N-])=CC=C1Br bide-click-am-2267
 [N-]=[N+]=NC1COC2=CC(C(F)(F)F)=CC=C21 bide-click-am-2269
 [N-]=[N+]=N[C@H](CO)C1=CC(C(F)(F)F)=C(F)C=C1 bide-click-am-2270
 COC1=C2CC[C@H](N=[N+]=[N-])C2=CC=C1 bide-click-am-2271
+C[C@@H](N=[N+]=[N-])C1=CC(Cl)=NC=C1 bide-click-am-2272
 COC1=NC=C([C@H](C)N=[N+]=[N-])C=C1 bide-click-am-2273
 C[C@H](N=[N+]=[N-])C1=CC(Cl)=CN=C1 bide-click-am-2274
 [N-]=[N+]=NC1CCC2=CC=CC(Cl)=C21 bide-click-am-2275
@@ -2240,6 +2275,7 @@ COC1=CC=C([C@@H](CO)N=[N+]=[N-])C=C1 bide-click-am-2293
 [N-]=[N+]=N[C@@H]1CCOC2=CC(Cl)=CC=C21 bide-click-am-2296
 COC1=C(C(C)N=[N+]=[N-])C(F)=CC=C1 bide-click-am-2297
 [N-]=[N+]=NCC1=C(F)N=CC(Br)=C1 bide-click-am-2298
+CCOC1=C(CN=[N+]=[N-])C=NC(Cl)=C1 bide-click-am-2299
 C[C@H](N=[N+]=[N-])C1CCCC1 bide-click-am-2300
 [N-]=[N+]=NCC1=CC=C(C(F)(F)F)S1 bide-click-am-2301
 [N-]=[N+]=NCC1=C(C(F)(F)F)C=C(Br)N=C1 bide-click-am-2302
@@ -2294,6 +2330,7 @@ CCOC(=O)CC1(N=[N+]=[N-])CCC1 bide-click-am-2350
 C[C@H](N=[N+]=[N-])C1=CC=C(Br)O1 bide-click-am-2351
 CC1=CC([C@H](C)N=[N+]=[N-])=CC=C1Cl bide-click-am-2352
 [N-]=[N+]=N[C@H](CO)C1=CC(Br)=C(Cl)C=C1 bide-click-am-2353
+COC1=CC(CN=[N+]=[N-])=CC(Cl)=N1 bide-click-am-2354
 [N-]=[N+]=NC(CO)C1CC1 bide-click-am-2355
 CC(N=[N+]=[N-])C1=C(F)C=CC=N1 bide-click-am-2356
 COC1=CC=C2OCC[C@@H](N=[N+]=[N-])C2=C1 bide-click-am-2357
@@ -2308,7 +2345,6 @@ COCC1(CN=[N+]=[N-])CC1 bide-click-am-2364
 [N-]=[N+]=N[C@@H](CO)C1=C(Br)C=CC=C1 bide-click-am-2366
 CN1CC[C@H]1CN=[N+]=[N-] bide-click-am-2367
 [N-]=[N+]=N[C@H]1CCC2=C1C=CC=C2C(F)(F)F bide-click-am-2368
-[N-]=[N+]=NCCCC(=O)N1CC2=C(C#CC3=CC=CC=C31)C=CC=C2 bide-click-am-2369
 CCOC(=O)[C@H]1CCCC[C@H]1N=[N+]=[N-] bide-click-am-2370
 CC1=C2C(=CC=C1)CCC2N=[N+]=[N-] bide-click-am-2371
 [N-]=[N+]=NCC1=NC2=C(C=C(Cl)C(Cl)=C2)N1 bide-click-am-2372
@@ -2321,6 +2357,7 @@ CC(C)(C)OC(=O)N1CC[C@H](F)[C@@H](N=[N+]=[N-])C1 bide-click-am-2378
 [N-]=[N+]=NC1CCN2C=NC=C2C1 bide-click-am-2379
 CC[C@@H](N=[N+]=[N-])C1=C(Br)C=CC=C1 bide-click-am-2380
 [N-]=[N+]=NCC1=CC(F)=C(C2=CC=CO2)C=C1 bide-click-am-2381
+[N-]=[N+]=N[C@@H](CO)C1=CN=C(Cl)C=C1 bide-click-am-2382
 [N-]=[N+]=NC(CCO)C1=CN=CS1 bide-click-am-2383
 CC1=NC=C(CN=[N+]=[N-])O1 bide-click-am-2384
 C[C@@H](N=[N+]=[N-])C1=CC(F)=CC(O)=C1 bide-click-am-2385
@@ -2338,7 +2375,9 @@ C=C[C@H](N=[N+]=[N-])C1=CC=CC=C1 bide-click-am-2396
 CC1=CC(C)=C(C(CO)N=[N+]=[N-])C(C)=C1 bide-click-am-2397
 CC(C)C1=CC=C([C@H](CO)N=[N+]=[N-])C=C1 bide-click-am-2398
 [N-]=[N+]=NC1COC2=CC=C(Br)C=C21 bide-click-am-2399
+C[C@H](N=[N+]=[N-])C1=C(C#N)C=CC=C1 bide-click-am-2400
 [N-]=[N+]=N[C@@H](CO)C1=C(Cl)C=CC(Cl)=C1 bide-click-am-2401
+C[C@H](N=[N+]=[N-])C1=CN=C(Cl)C=C1 bide-click-am-2402
 CC1=C([C@@H](CO)N=[N+]=[N-])C=CC(F)=C1 bide-click-am-2403
 [N-]=[N+]=NCC1=NN=C2CCCN21 bide-click-am-2404
 CC1=CC(Cl)=C([C@@H](C)N=[N+]=[N-])C=C1 bide-click-am-2405
@@ -2359,6 +2398,7 @@ CC(N=[N+]=[N-])C1=C(F)C(F)=CC=C1 bide-click-am-2419
 CC(C)(C)OC(=O)N1CCC(N=[N+]=[N-])CC1(C)C bide-click-am-2420
 CC1=CC=C(C)C([C@@H](N=[N+]=[N-])C(C)C)=C1 bide-click-am-2421
 [N-]=[N+]=N[C@@H](CO)C1=CC(Br)=CC(Br)=C1 bide-click-am-2422
+C[C@@H](N=[N+]=[N-])C1=C(Cl)C=C(C#N)C=C1 bide-click-am-2423
 [N-]=[N+]=N[C@@H](CO)C1=NC(Br)=CC=C1 bide-click-am-2424
 C[C@@H](N=[N+]=[N-])C1=C(F)C(F)=CC=C1F bide-click-am-2425
 [N-]=[N+]=NC(CO)C1=CC(Br)=CN=C1 bide-click-am-2426
@@ -2393,9 +2433,11 @@ C=C[C@@H](N=[N+]=[N-])C1=CC=CC=C1 bide-click-am-2452
 COC(=O)[C@H](N=[N+]=[N-])C1=C(Br)C=C(F)C=C1 bide-click-am-2455
 [N-]=[N+]=NC12CCC(O)(CC1)CC2 bide-click-am-2456
 [N-]=[N+]=NCC1=CN=C2C=CC(F)=CN12 bide-click-am-2457
+C[C@@H](N=[N+]=[N-])C1=C(C#N)C=CC=C1 bide-click-am-2458
 [N-]=[N+]=NCCC1=CNC(C2=CC=CC=C2)=N1 bide-click-am-2459
 COC(=O)CC(N=[N+]=[N-])C1=C(C)C=CC=C1C bide-click-am-2460
 C[C@H](N=[N+]=[N-])C1=NC(Br)=CC=C1 bide-click-am-2461
+[N-]=[N+]=NCC1=NC(Cl)=CC(Cl)=C1 bide-click-am-2462
 [N-]=[N+]=NC1C(=O)NCCC2=CC=CC=C21 bide-click-am-2463
 C[C@H](O)[C@H](N=[N+]=[N-])C1=CC=C(F)C=C1 bide-click-am-2464
 C[C@H](N=[N+]=[N-])C1=CN=C(C(F)(F)F)C=C1 bide-click-am-2465
@@ -2416,9 +2458,12 @@ CC[C@H](N=[N+]=[N-])C1=C(Cl)C=CC=C1F bide-click-am-2479
 C[C@@H](N=[N+]=[N-])C1=NC=C(Br)C=C1 bide-click-am-2480
 CC(C)(C)[C@H](N=[N+]=[N-])C1=CC=CC=C1 bide-click-am-2481
 [N-]=[N+]=NCC1CC=CC1 bide-click-am-2482
+[N-]=[N+]=NC1CCN(C2=NC(Cl)=CC=C2)CC1 bide-click-am-2483
 [N-]=[N+]=N[C@@H]1CCCC2=CC(O)=CC=C21 bide-click-am-2484
+COC[C@H](N=[N+]=[N-])C1=CC=C(C#N)C=C1 bide-click-am-2485
 COC1=NC=C([C@@H](C)N=[N+]=[N-])C=C1 bide-click-am-2486
 C[C@H](N=[N+]=[N-])C1=CC=C(OC(F)F)C=C1 bide-click-am-2487
+CC[C@H](N=[N+]=[N-])C1=CC(C#N)=CC=C1 bide-click-am-2488
 [N-]=[N+]=N[C@H]1CCOC2=CC=C(C(F)(F)F)C=C21 bide-click-am-2489
 C[C@H](N=[N+]=[N-])C1=COC=C1 bide-click-am-2490
 [N-]=[N+]=NCC1=NN=CC=C1 bide-click-am-2491
@@ -2453,6 +2498,7 @@ COC(=O)[C@H](C)[C@@H](C)N=[N+]=[N-] bide-click-am-2519
 C[C@@H](N=[N+]=[N-])C1=CC(C(F)(F)F)=CC(N)=C1 bide-click-am-2520
 CCOC(=O)C(CC(F)(F)F)N=[N+]=[N-] bide-click-am-2521
 [N-]=[N+]=N[C@H]1COC2=C(Cl)C=CC=C21 bide-click-am-2522
+CC(C)[C@H](N=[N+]=[N-])C1=C(C#N)C=CC=C1 bide-click-am-2523
 [N-]=[N+]=NCCC1=CC=C(C(F)(F)F)S1 bide-click-am-2524
 [N-]=[N+]=NCC1=CC(Br)=CO1 bide-click-am-2525
 [N-]=[N+]=NC12CC(N3CCOCC3)(C1)C2 bide-click-am-2526
@@ -2478,6 +2524,7 @@ COC1=C(OC)C=C2C(=C1)CC[C@H]2N=[N+]=[N-] bide-click-am-2545
 COC1=C2CCC[C@@H](N=[N+]=[N-])C2=CC=C1 bide-click-am-2546
 [N-]=[N+]=NCC(O)CF bide-click-am-2547
 CC(C)C1CN(C)CCC1N=[N+]=[N-] bide-click-am-2548
+N#CC1=CC(CN=[N+]=[N-])=CC=C1Cl bide-click-am-2549
 COC1=C([C@@H](C)N=[N+]=[N-])C=C(F)C=N1 bide-click-am-2550
 [N-]=[N+]=N[C@H]1COC2=C(F)C=C(F)C=C21 bide-click-am-2551
 CSC1=CC=CC([C@H](CO)N=[N+]=[N-])=C1 bide-click-am-2552
@@ -2504,6 +2551,7 @@ COC1=CC=CC([C@H](C)N=[N+]=[N-])=N1 bide-click-am-2572
 [N-]=[N+]=N[C@H](CO)C1=CC2=CC3=CC=CC=C3C=C2C=C1 bide-click-am-2573
 COC1=C([C@H](C)N=[N+]=[N-])C=CC=C1Br bide-click-am-2574
 C[C@@H](N=[N+]=[N-])C1=C(F)C=CC=N1 bide-click-am-2575
+C[C@H](N=[N+]=[N-])C1=C(F)C=CC(C#N)=C1 bide-click-am-2576
 N#CCC(N=[N+]=[N-])C1CC1 bide-click-am-2577
 CC(C)(C)OC(=O)N1CC[C@@H](N=[N+]=[N-])C(F)(F)C1 bide-click-am-2578
 [N-]=[N+]=N[C@H]1COC2=CC=C(Br)C=C21 bide-click-am-2579
@@ -2517,6 +2565,7 @@ COC1=C2CCCC(N=[N+]=[N-])C2=CC=C1C bide-click-am-2585
 [N-]=[N+]=NC1CCC2=CC(C(F)(F)F)=CC=C21 bide-click-am-2587
 [N-]=[N+]=N[C@H](C1=C(O)C=CC=C1)C(F)(F)F bide-click-am-2588
 C[C@H](N=[N+]=[N-])C1=C2CCCC2=CC=C1 bide-click-am-2589
+N#CC1=CC=C2C(=C1)CCC[C@H]2N=[N+]=[N-] bide-click-am-2590
 CC1=CC=C2C(=C1)OC[C@@H]2N=[N+]=[N-] bide-click-am-2591
 [N-]=[N+]=N[C@@H]1COC2=C(Br)C=CC=C21 bide-click-am-2592
 [N-]=[N+]=N[C@H]1COC2=C(Br)C=CC=C21 bide-click-am-2593
@@ -2565,7 +2614,6 @@ COC(=O)/C=C/CN=[N+]=[N-] bide-click-am-2635
 [N-]=[N+]=N[C@H](CO)CF bide-click-am-2637
 C[C@@H](N=[N+]=[N-])C1=C(F)C(C(F)(F)F)=CC=C1 bide-click-am-2638
 [N-]=[N+]=NCC1=CC2=C(C=C1)OC(C1=CC=CC=C1)=N2 bide-click-am-2639
-[N-]=[N+]=NCCC(=O)N1CC2=C(C#CC3=CC=CC=C31)C=CC=C2 bide-click-am-2640
 C[C@H](O)[C@H](N=[N+]=[N-])C1=CC=CC=C1 bide-click-am-2641
 [N-]=[N+]=N[C@@H]1COC2=CC(C(F)(F)F)=CC=C21 bide-click-am-2642
 [N-]=[N+]=N[C@H]1COC2=CC(C(F)(F)F)=CC=C21 bide-click-am-2643
@@ -2599,8 +2647,9 @@ C[C@H](N=[N+]=[N-])C1=NC=CC(C(F)(F)F)=C1 bide-click-am-2670
 C[C@H](N=[N+]=[N-])C1=C(C(F)(F)F)C=CC=N1 bide-click-am-2671
 C[C@H](N=[N+]=[N-])C1=NC(C(F)(F)F)=CC=C1 bide-click-am-2672
 C[C@](CO)(N=[N+]=[N-])C1=CC=CC=C1 bide-click-am-2673
-C#CC(N=[N+]=[N-])C(C)CC bide-click-am-2675
+N#CC1=CC=C2C(=C1)CCC[C@@H]2N=[N+]=[N-] bide-click-am-2674
 COC1=C(C2(CN=[N+]=[N-])CCCC2)C=CC=C1 bide-click-am-2676
+N#CC1=CC=C2C(=C1)OC[C@@H]2N=[N+]=[N-] bide-click-am-2677
 [N-]=[N+]=N[C@@H](CO)C1=NC=CC(Cl)=C1 bide-click-am-2678
 [N-]=[N+]=NC12CC(C(F)F)(C1)C2 bide-click-am-2679
 [N-]=[N+]=NCC1=C2CCCN2N=C1 bide-click-am-2680

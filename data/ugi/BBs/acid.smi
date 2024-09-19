@@ -1241,7 +1241,6 @@ O=C(O)c1occc1Br bide-uc-3878
 CC(C)c1cccc(C(=O)O)c1O bide-uc-3883
 O=C(O)c1cc2c(F)cccc2s1 bide-uc-3890
 O=C(O)c1nc(Cl)sc1Cl bide-uc-3891
-[2H]c1c([2H])c([2H])c(C(=O)O)c([2H])c1[2H] bide-uc-3896
 Cc1ccc(F)c(C(=O)O)c1Br bide-uc-3899
 CC1=CCC(C(=O)O)CC1 bide-uc-3902
 O=C(O)C[C@@H]1CCCN1 bide-uc-3903
