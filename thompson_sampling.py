@@ -184,6 +184,7 @@ class ThompsonSampler:
         # initialize each reagent
         prior_mean = np.mean(warmup_scores)
         prior_std = np.std(warmup_scores)
+        self._warmup_std = prior_std
         for i in range(0, len(self.reagent_lists)):
             for j in range(0, len(self.reagent_lists[i])):
                 reagent = self.reagent_lists[i][j]
