@@ -1,0 +1,19 @@
+{
+    "reagent_file_list": [
+        "data/aminobenzoic_100.smi",
+        "data/primary_amines_100.smi",
+        "data/carboxylic_acids_100.smi"
+    ],
+    "reaction_smarts": "N[c:4][c:3]C(O)=O.[#6:1][NH2].[#6:2]C(=O)[OH]>>[C:2]c1n[c:4][c:3]c(=O)n1[C:1]",
+    "num_warmup_trials": 10,
+    "num_ts_iterations": 10000,
+    "evaluator_class_name": "DBEvaluator",
+    "evaluator_arg": {
+	"query_smiles": "COc1cccc2c(=O)n([C@@H]3C[C@@H](O)[C@@H](O)C3)c([C@@H](N)CNC(N)=O)nc12",
+	"db_filename": "data/quinazoline_1M_90.sqlite",
+	"db_prefix": ""
+    },
+    "ts_mode": "maximize",
+    "log_filename": "ts_logs.txt",
+    "results_filename": "examples/quinazoline_fp_100_results.csv.gz"
+}

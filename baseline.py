@@ -128,11 +128,13 @@ def exhaustive_baseline(input_dict, num_to_select=None, num_to_save=100, invert_
             product_mol = prod[0][0]
             Chem.SanitizeMol(product_mol)
             product_smiles = Chem.MolToSmiles(product_mol)
+            product_name = "_".join([x.reagent_name for x in reagents])
             score = evaluator.evaluate(product_mol)
             if invert_score:
                 score = score * -1.0
-            score_list = keep_largest(score_list + [[score, product_smiles]], num_to_save)
-    score_df = pd.DataFrame(score_list, columns=["score", "SMILES"])
+            score_list.append([score,product_smiles, product_name])
+#            score_list = keep_largest(score_list + [[score, product_smiles, product_name]], num_to_save)
+    score_df = pd.DataFrame(score_list, columns=["score", "SMILES","Name"])
     score_df.sort_values(by="score", ascending=False).to_csv("exhaustive_scores.csv", index=False)
 
 
