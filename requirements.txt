@@ -7,3 +7,4 @@ pillow>=9.5  # See discussion here https://github.com/python-pillow/Pillow/issue
 jupyter
 scikit-learn
 seaborn
+sqlitedict
