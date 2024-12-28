@@ -2,6 +2,8 @@ import os
 import warnings
 from abc import ABC, abstractmethod
 import numpy as np
+from rdkit import Chem
+from rdkit.Chem import rdFingerprintGenerator
 
 import useful_rdkit_utils as uru
 
@@ -52,8 +54,11 @@ class FPEvaluator(Evaluator):
 
     def __init__(self, input_dict):
         self.ref_smiles = input_dict["query_smiles"]
-        self.ref_fp = uru.smi2morgan_fp(self.ref_smiles)
+        self.fpgen = rdFingerprintGenerator.GetMorganGenerator()
+        self.ref_mol = Chem.MolFromSmiles(self.ref_smiles)
+        self.ref_fp = self.fpgen.GetFingerprint(self.ref_mol)
         self.num_evaluations = 0
+        self.fpgen = rdFingerprintGenerator.GetMorganGenerator()
 
     @property
     def counter(self):
@@ -61,7 +66,7 @@ class FPEvaluator(Evaluator):
 
     def evaluate(self, rd_mol_in):
         self.num_evaluations += 1
-        rd_mol_fp = uru.mol2morgan_fp(rd_mol_in)
+        rd_mol_fp = self.fpgen.GetFingerprint(rd_mol_in)
         return DataStructs.TanimotoSimilarity(self.ref_fp, rd_mol_fp)
 
 
