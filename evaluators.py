@@ -138,8 +138,15 @@ class LookupEvaluator(Evaluator):
     def __init__(self, input_dictionary):
         self.num_evaluations = 0
         ref_filename = input_dictionary['ref_filename']
-        ref_df = pd.read_csv(ref_filename)
-        self.ref_dict = dict([(a, b) for a, b in ref_df[['SMILES', 'val']].values])
+        ref_colname = input_dictionary['ref_colname']
+        if ref_filename.endswith(".csv"):
+            ref_df = pd.read_csv(ref_filename)
+        elif ref_filename.endswith(".parquet"):
+            ref_df = pd.read_parquet(ref_filename)
+        else:
+            print(ref_filename,"does not have valid extendsion must be in [.csv,.parquet]")
+            assert(False)
+        self.ref_dict = dict([(a, b) for a, b in ref_df[['SMILES', ref_colname]].values])
 
     @property
     def counter(self):
@@ -148,7 +155,11 @@ class LookupEvaluator(Evaluator):
     def evaluate(self, mol):
         self.num_evaluations += 1
         smi = Chem.MolToSmiles(mol)
-        return self.ref_dict[smi]
+        val = self.ref_dict.get(smi)
+        if val is not None:
+            return val
+        else:
+            return np.nan
 
 class DBEvaluator(Evaluator):
     """A simple evaluator class that looks up values from a database.
