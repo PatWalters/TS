@@ -75,7 +75,7 @@ class DisallowTracker:
                 disallowed_selections = self.get_disallowed_selection_mask(retire_mask)
                 # added this to catch cases where a reaction fails or a reagent doesn't score - PW
                 if len(disallowed_selections):
-                    ts_locations[np.array(list(disallowed_selections))] = np.NaN
+                    ts_locations[np.array(list(disallowed_selections))] = np.nan
                 # anything that is not nan is still in play so we need to denote
                 # that pairing it with the synthon we will retire is not allowed
                 for synthon_idx in np.argwhere(~np.isnan(ts_locations)).flatten():
