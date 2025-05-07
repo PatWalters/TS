@@ -165,7 +165,7 @@ class ThompsonSampler:
                             disallow_mask = self._disallow_tracker.get_disallowed_selection_mask(current_list)
                             selection_scores = np.random.uniform(size=reagent_count_list[p])
                             # null out the disallowed ones
-                            selection_scores[list(disallow_mask)] = np.NaN
+                            selection_scores[list(disallow_mask)] = np.nan
                             # and select a random one
                             current_list[p] = np.nanargmax(selection_scores).item(0)
                         self._disallow_tracker.update(current_list)
@@ -213,7 +213,7 @@ class ThompsonSampler:
                 mu = np.array([r.current_mean for r in reagent_list])
                 choice_row = rng.normal(size=len(reagent_list)) * stds + mu
                 if disallow_mask:
-                    choice_row[np.array(list(disallow_mask))] = np.NaN
+                    choice_row[np.array(list(disallow_mask))] = np.nan
                 selected_reagents[cycle_id] = self.pick_function(choice_row)
             self._disallow_tracker.update(selected_reagents)
             # Select a reagent for each component, according to the choice function
